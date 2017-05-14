@@ -1,0 +1,43 @@
+gerenciar chamados
+	solicitante
+		abrir chamado
+			descrever o que está acontecendo + detalhes
+			alocar prioridade [dar opções ou fazer perguntas]
+		acompanhar chamado [mostrar justificativa de status]
+		incrementar chamado
+		cancelar chamado
+	técnico
+		ver chamados abertos
+		alterar prioridade de chamado [justificar ação]
+		ver chamados que está atendendo
+		transferir chamado para outro servidor [justificar ação]
+		cancelar chamado [justificar ação]
+	administrador
+		configurações
+			tempo estimado de atendimento para cada prioridade
+		gerenciamento de usuários
+		gerenciamento de chamado
+		geração de relatórios
+
+histórico
+	hora e data de todas as ações
+	relatório de atendimentos
+		quantos chamados em um período de tempo
+	(ações: abertura/cancelamento/alteração[prioridade/status/comentário]/transferência de chamado, geração de relatório, cadastro/alteração/exclusão de usuários)
+
+STATUS:
+	aberto
+	em atendimento
+	em espera
+	fechado (sucesso/falha/cancelado)
+
+AÇÕES:
+	Solicitante abriu chamado
+	Solicitante incrementou chamado
+	Solicitante cancelou chamado
+    ...
+
+
+BÔNUS:
+	calcular tempo médio de atendimento para cada prioridade
+	pontuação para servidor (calculo baseado em sua estatistica) (considerar peso diferente para cada prioridade de chamado)
