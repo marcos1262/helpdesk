@@ -1,10 +1,12 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * Usuário do sistema (Administrador, Técnico ou Solicitante)
  * @author marcos
  */
-public class Usuario {
+public class Usuario implements Serializable {
     private String nome,
             usuario,
             senha;
