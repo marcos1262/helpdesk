@@ -2,11 +2,21 @@ package model;
 
 public class Usuario {
     private String nome,
-                    usuario,
-                    senha,
-                    tipo;
+            usuario,
+            senha;
+    private tipos tipo;
 
-    public Usuario(String nome, String usuario, String senha, String tipo) {
+    public Usuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public static enum tipos {
+        ADMIN,  // Adminstrador
+        TECNI,  // Técnico
+        SOLIC   // Solicitante
+    }
+
+    public Usuario(String nome, String usuario, String senha, tipos tipo) {
         this.nome = nome;
         this.usuario = usuario;
         this.senha = senha;
@@ -37,11 +47,11 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public String getTipo() {
+    public tipos getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(tipos tipo) {
         this.tipo = tipo;
     }
 }

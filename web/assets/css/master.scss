@@ -9,10 +9,18 @@ $primary-text-color:   #212121;
 $secondary-text-color: #757575;
 $divider-color:        #BDBDBD;
 
+
+
 .button.primary-color-dark {
   // $text-color, $back-color
   @include button(#fff, $primary-color-dark);
 }
+
+#container-login > div {
+  padding: 20px;
+}
+
+
 
 .primary-color-dark    	{ background: #303F9F; }
 .primary-color 			{ background: #3F51B5; }

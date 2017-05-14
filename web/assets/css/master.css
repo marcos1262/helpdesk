@@ -1,0 +1,49 @@
+.button.primary-color-dark {
+  color: #fff;
+  background-color: #303F9F; }
+  .button.primary-color-dark:hover {
+    color: #fff;
+    background-color: #6573d0; }
+  .button.primary-color-dark:disabled, .button.primary-color-dark.disabled {
+    color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(48, 63, 159, 0.7); }
+  .button.primary-color-dark.outline {
+    background: none;
+    color: #303F9F;
+    border-color: #303F9F; }
+    .button.primary-color-dark.outline:hover {
+      color: rgba(48, 63, 159, 0.6);
+      border-color: rgba(48, 63, 159, 0.5); }
+    .button.primary-color-dark.outline:disabled, .button.primary-color-dark.outline.disabled {
+      background: none;
+      color: rgba(48, 63, 159, 0.7);
+      border-color: rgba(48, 63, 159, 0.5); }
+
+#container-login > div {
+  padding: 20px; }
+
+.primary-color-dark {
+  background: #303F9F; }
+
+.primary-color {
+  background: #3F51B5; }
+
+.primary-color-light {
+  background: #C5CAE9; }
+
+.primary-color-text {
+  color: #FFFFFF; }
+
+.accent-color {
+  background: #9E9E9E; }
+
+.primary-text-color {
+  color: #212121; }
+
+.secondary-text-color {
+  color: #757575; }
+
+.divider-color {
+  border-color: #BDBDBD; }
+
+/*# sourceMappingURL=master.css.map */

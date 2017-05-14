@@ -12,7 +12,7 @@ public class DAOUsuario {
 
     public Usuario consulta(Usuario usuario) {
         // TODO consultar no BD
-        return new Usuario("Marcos", usuario.getUsuario(), "123456", "ADMIN");
+        return new Usuario("Marcos", usuario.getUsuario(), "123456", Usuario.tipos.ADMIN);
     }
 
 }
