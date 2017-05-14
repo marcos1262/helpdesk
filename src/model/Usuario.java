@@ -1,16 +1,20 @@
 package model;
 
+/**
+ * Usuário do sistema (Administrador, Técnico ou Solicitante)
+ * @author marcos
+ */
 public class Usuario {
     private String nome,
             usuario,
             senha;
     private tipos tipo;
 
-    public Usuario(String usuario) {
+    Usuario(String usuario) {
         this.usuario = usuario;
     }
 
-    public static enum tipos {
+    public enum tipos {
         ADMIN,  // Adminstrador
         TECNI,  // Técnico
         SOLIC   // Solicitante
