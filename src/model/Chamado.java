@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Chamado realizado por um solicitante (@see {@link Usuario}) e atendido por um técnico (@see {@link Usuario})
@@ -14,6 +15,7 @@ public class Chamado {
     private LocalDateTime data;
     private Usuario solicitante,
                     tecnico;
+    private List<String> descricoes;
 
     public enum prioridades {
         ALTA,
@@ -84,5 +86,13 @@ public class Chamado {
 
     public void setTecnico(Usuario tecnico) {
         this.tecnico = tecnico;
+    }
+
+    public List<String> getDescricoes() {
+        return descricoes;
+    }
+
+    public void setDescricoes(List<String> descricoes) {
+        this.descricoes = descricoes;
     }
 }

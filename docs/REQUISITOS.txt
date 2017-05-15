@@ -1,3 +1,9 @@
+DISCUTIR:
+    adicionar categorias de serviço
+    deixar solicitante sugerir quem deseja para atender o chamado
+    solicitante por informar o seu horário disponível (dar opções na interface)
+
+
 gerenciar chamados
 	solicitante
 		abrir chamado
@@ -7,9 +13,10 @@ gerenciar chamados
 		incrementar chamado
 		cancelar chamado
 	técnico
+	    assumir chamado
 		ver chamados abertos
-		alterar prioridade de chamado [justificar ação]
 		ver chamados que está atendendo
+		alterar prioridade de chamado [justificar ação]
 		transferir chamado para outro servidor [justificar ação]
 		cancelar chamado [justificar ação]
 	administrador
@@ -32,10 +39,17 @@ STATUS:
 	fechado (sucesso/falha/cancelado)
 
 AÇÕES:
-	Solicitante abriu chamado
-	Solicitante incrementou chamado
-	Solicitante cancelou chamado
-    ...
+	*Solicitante abriu/
+	            incrementou descrição/
+	            cancelou *Chamado
+    *Técnico alterou prioridade/
+            alterou status/
+            assumiu/
+            transferiu para outro *Técnico/
+            cancelou *Chamado
+    *Administrador cadastrou/
+                    alterou *Usuário
+    *Administrador gerou relatório
 
 
 BÔNUS:
