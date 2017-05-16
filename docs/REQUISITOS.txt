@@ -3,8 +3,7 @@ DISCUTIR:
     deixar solicitante sugerir quem deseja para atender o chamado
     solicitante por informar o seu horário disponível (dar opções na interface)
 
-
-gerenciar chamados
+REQUISITOS:
 	solicitante
 		abrir chamado
 			descrever o que está acontecendo + detalhes
@@ -26,11 +25,9 @@ gerenciar chamados
 		gerenciamento de chamado
 		geração de relatórios
 
-histórico
-	hora e data de todas as ações
-	relatório de atendimentos
-		quantos chamados em um período de tempo
-	(ações: abertura/cancelamento/alteração[prioridade/status/comentário]/transferência de chamado, geração de relatório, cadastro/alteração/exclusão de usuários)
+RELATÓRIOS:
+    número de atendimentos realizados por um técnico em um perído de tempo
+	número de chamados que foram abertos em um período de tempo
 
 STATUS:
 	aberto
