@@ -500,7 +500,8 @@ $overlay-background-color: rgba(#fff, .95);
 @mixin retina-background-image($file, $type, $width:  auto, $height:  auto) {
 
     background-repeat: no-repeat;
-    background-image: url($file + '.' + $type);
+    background-image: url($file + "." + $type);
+    
 
     @media
       only screen and (-webkit-min-device-pixel-ratio: 2),
@@ -509,7 +510,7 @@ $overlay-background-color: rgba(#fff, .95);
       only screen and (min-device-pixel-ratio: 2),
       only screen and (min-resolution: 192dpi),
       only screen and (min-resolution: 2dppx) {
-        background-image: url($file + '-2x.' + $type);
+        background-image: url($file + "-2x." + $type);
         background-size: $width $height;
     }
 }
