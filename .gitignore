@@ -1,1 +1,15 @@
 /build/
+
+bin/
+out/
+src/java/conf/
+META-INF/
+
+.settings/
+.idea/
+.classpath
+.project
+.sass-cache/
+
+*.iml
+*.bak

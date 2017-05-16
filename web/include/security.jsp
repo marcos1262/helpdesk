@@ -1,5 +1,5 @@
-<%@ page import="model.Usuario" %>
-<%@ page import="model.Facade" %>
+<%@ page import="java.model.Usuario" %>
+<%@ page import="java.model.Facade" %>
 <%
     Usuario usuario = (Usuario) session.getAttribute("usuario");
 
@@ -14,6 +14,7 @@
                 out.print("<script>alert('O campo senha é obrigatório!');</script>");
             else {
                 Facade f = new Facade();
+                // TODO criptografar senha com MD5
                 Usuario usuario1 = f.autentica(login, senha);
 
                 if (usuario1 == null)

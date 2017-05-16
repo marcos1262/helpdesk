@@ -1,14 +1,15 @@
-package model;
+package java.model;
 
 import java.time.LocalDateTime;
 
 /**
  * Registro de uma ação importante realizada no sistema
+ *
  * @author marcos
  */
 public class Historico {
     private String acao,
-                    justificativa;
+            justificativa;
     private LocalDateTime hora;
     private Usuario usuario1;
     private Chamado chamado;

@@ -1,9 +1,10 @@
-package model;
+package java.model;
 
 import java.io.Serializable;
 
 /**
  * Usuário do sistema (Administrador, Técnico ou Solicitante)
+ *
  * @author marcos
  */
 public class Usuario implements Serializable {
@@ -12,8 +13,9 @@ public class Usuario implements Serializable {
             senha;
     private tipos tipo;
 
-    Usuario(String usuario) {
+    Usuario(String usuario, String senha) {
         this.usuario = usuario;
+        this.senha = senha;
     }
 
     public enum tipos {
@@ -45,8 +47,8 @@ public class Usuario implements Serializable {
         this.usuario = usuario;
     }
 
-    String getSenha() {
-        return senha;
+    public boolean validaSenha(Usuario usuario) {
+        return usuario.senha.equals(this.senha);
     }
 
     public void setSenha(String senha) {
@@ -59,5 +61,19 @@ public class Usuario implements Serializable {
 
     public void setTipo(tipos tipo) {
         this.tipo = tipo;
+    }
+
+    public void setTipo(String tipo) {
+        switch (tipo) {
+            case "ADMIN":
+                this.tipo = tipos.ADMIN;
+                break;
+            case "TECNI":
+                this.tipo = tipos.TECNI;
+                break;
+            case "SOLIC":
+                this.tipo = tipos.SOLIC;
+                break;
+        }
     }
 }

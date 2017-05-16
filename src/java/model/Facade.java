@@ -1,18 +1,22 @@
-package model;
+package java.model;
 
-import dao.DAOUsuario;
+import java.dao.DAOUsuario;
 
+/**
+ * Interface entre visão da aplicação e implementação das funcionalidades da aplicação
+ *
+ * @author marcos
+ */
 public class Facade {
-    public Usuario autentica (String login, String senha) {
+    public Usuario autentica(String login, String senha) {
         //TODO autentica
         DAOUsuario du = new DAOUsuario();
-        Usuario usuario = du.consulta(new Usuario(login));
+        Usuario usuario = du.consulta(new Usuario(login,senha));
 
         //TODO testar retorno de Usuario null
-        if (usuario!= null && usuario.getSenha().equals(senha)) {
+        if (usuario != null)
             return usuario;
-        }
-        return null;
+        else return null;
     }
 
 

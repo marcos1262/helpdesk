@@ -1,10 +1,11 @@
-package model;
+package java.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * Chamado realizado por um solicitante (@see {@link Usuario}) e atendido por um técnico (@see {@link Usuario})
+ *
  * @author marcos
  */
 public class Chamado {
@@ -14,7 +15,7 @@ public class Chamado {
     private status status;
     private LocalDateTime data;
     private Usuario solicitante,
-                    tecnico;
+            tecnico;
     private List<String> descricoes;
 
     public enum prioridades {
