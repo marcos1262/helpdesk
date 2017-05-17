@@ -13,3 +13,4 @@ META-INF/
 
 *.iml
 *.bak
+/nbproject/private/

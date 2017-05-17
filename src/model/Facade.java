@@ -1,6 +1,6 @@
-package java.model;
+package model;
 
-import java.dao.DAOUsuario;
+import dao.DAOUsuario;
 
 /**
  * Interface entre visão da aplicação e implementação das funcionalidades da aplicação

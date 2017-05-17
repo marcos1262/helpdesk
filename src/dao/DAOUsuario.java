@@ -1,10 +1,9 @@
-package java.dao;
+package dao;
 
-import java.dao.bd.ConnectionFactory;
-import java.model.Usuario;
+import dao.bd.ConnectionFactory;
+import model.Usuario;
 import java.sql.*;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 /**
  * Classe de acesso aos dados de um usuário (@see {@link Usuario}) no Banco de Dados

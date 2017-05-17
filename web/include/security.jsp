@@ -1,5 +1,5 @@
-<%@ page import="java.model.Usuario" %>
-<%@ page import="java.model.Facade" %>
+<%@ page import="model.Usuario" %>
+<%@ page import="model.Facade" %>
 <%
     Usuario usuario = (Usuario) session.getAttribute("usuario");
 
