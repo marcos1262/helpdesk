@@ -9,10 +9,10 @@ import java.util.List;
  * @author marcos
  */
 public class Chamado {
-    private int id;
+    private long id;
     private String titulo;
     private prioridades prioridade;
-    private status status;
+    private statusOpcoes status;
     private LocalDateTime data;
     private Usuario solicitante,
             tecnico;
@@ -24,7 +24,7 @@ public class Chamado {
         BAIXA
     }
 
-    public enum status {
+    public enum statusOpcoes {
         ABERTO,             // Ainda não foi avaliado por um técnico
         ATENDENDO,          // Um técnico se prontificou em atender
         ESPERANDO,          // Ainda não pode ser atendido
@@ -33,11 +33,11 @@ public class Chamado {
         FECHADO_CANCELADO   // O usuário cancelou o chamado
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -53,16 +53,45 @@ public class Chamado {
         return prioridade;
     }
 
-    public void setPrioridade(prioridades prioridade) {
-        this.prioridade = prioridade;
+    public void setPrioridade(String prioridade) {
+        switch (prioridade) {
+            case "ALTA":
+                this.prioridade = prioridades.ALTA;
+                break;
+            case "NORMAL":
+                this.prioridade = prioridades.NORMAL;
+                break;
+            case "BAIXA":
+                this.prioridade = prioridades.BAIXA;
+                break;
+        }
     }
 
-    public Chamado.status getStatus() {
+    public statusOpcoes getStatus() {
         return status;
     }
 
-    public void setStatus(Chamado.status status) {
-        this.status = status;
+    public void setStatus(String status) {
+        switch (status) {
+            case "ABERTO":
+                this.status = statusOpcoes.ABERTO;
+                break;
+            case "ATENDENDO":
+                this.status = statusOpcoes.ATENDENDO;
+                break;
+            case "ESPERANDO":
+                this.status = statusOpcoes.ESPERANDO;
+                break;
+            case "FECHADO_SUCESSO":
+                this.status = statusOpcoes.FECHADO_SUCESSO;
+                break;
+            case "FECHADO_FALHA":
+                this.status = statusOpcoes.FECHADO_FALHA;
+                break;
+            case "FECHADO_CANCELADO":
+                this.status = statusOpcoes.FECHADO_CANCELADO;
+                break;
+        }
     }
 
     public LocalDateTime getData() {
@@ -95,5 +124,19 @@ public class Chamado {
 
     public void setDescricoes(List<String> descricoes) {
         this.descricoes = descricoes;
+    }
+
+    @Override
+    public String toString() {
+        return "Chamado{" +
+                "id=" + id +
+                ", titulo='" + titulo + '\'' +
+                ", prioridade=" + prioridade +
+                ", status=" + status +
+                ", data=" + data +
+                ", solicitante=" + solicitante +
+                ", tecnico=" + tecnico +
+                ", descricoes=" + descricoes +
+                '}';
     }
 }

@@ -14,7 +14,6 @@
                 out.print("<script>alert('O campo senha é obrigatório!');</script>");
             else {
                 Facade f = new Facade();
-                // TODO criptografar senha com MD5
                 Usuario usuario1 = f.autentica(login, senha);
 
                 if (usuario1 == null)

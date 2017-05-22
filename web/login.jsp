@@ -37,7 +37,7 @@
         <form method="post" action="" class="form">
             <div class="form-item">
                 <label>Usuário<br>
-                    <input type="text" name="usuario" required>
+                    <input type="text" name="usuario" required autofocus>
                 </label>
             </div>
 

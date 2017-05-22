@@ -1,4 +1,5 @@
 <%@ page import="model.Usuario" %>
+<%@ page import="model.Facade" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -9,9 +10,9 @@
     <%
         Usuario usuario;
 
-        if ((usuario = (Usuario) session.getAttribute("usuario")) == null) {
+        if ((usuario = (Usuario) session.getAttribute("usuario")) == null)
             response.sendRedirect("login.jsp");
-        } else {
+        else {
     %>
 
     <meta charset="utf-8">
@@ -22,8 +23,13 @@
 </head>
 <body>
 
-<h1>Bem vindo, <%=usuario.getNome()%>
+<h1>
+    Bem vindo, <%=usuario.getNome()%>
 </h1>
+
+<%
+//    new Facade().abreChamado("teste", "ALTA", "I'm with problems", usuario.getId());
+%>
 
 </body>
 <%

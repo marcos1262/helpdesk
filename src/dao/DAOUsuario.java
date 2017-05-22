@@ -15,7 +15,7 @@ public class DAOUsuario {
     private Connection conexao;
 
     /**
-     * Consulta fatia de todos os usuársuios (ideal para paginação)
+     * Consulta fatia de todos os usuários (ideal para paginação)
      *
      * @param inicio número de tupla inicial
      * @param qtd    quantidades de tuplas
@@ -44,6 +44,7 @@ public class DAOUsuario {
                 {
                     ResultSet rs = ps.executeQuery();
                     if (rs.next()) {
+                        usuario1.setId(rs.getLong("idusuario"));
                         usuario1.setNome(rs.getString("nome"));
                         usuario1.setUsuario(rs.getString("login"));
                         usuario1.setSenha(rs.getString("senha"));
