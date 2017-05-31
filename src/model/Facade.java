@@ -17,6 +17,7 @@ public class Facade {
     /**
      * Autentica um usuário (login e senha) no sistema
      * (consulta no Banco de Dados).
+     *
      * @param login login do usuário
      * @param senha senha do usuário
      * @return {@link Usuario} com dados consultados ou NULL quando não há resultados
@@ -38,6 +39,7 @@ public class Facade {
     /**
      * Abre um chamado no sistema
      * (cadastra no Banco de Dados).
+     *
      * @param titulo        titulo do chamado
      * @param prioridade    prioridade do chamado
      * @param descricao     descrição do chamado
@@ -45,7 +47,7 @@ public class Facade {
      * @return Verdadeiro caso seja aberto com sucesso ou Falso caso contrário
      */
     public boolean abreChamado(String titulo, String prioridade, String descricao, long idsolicitante) {
-        DAOChamado dc= new DAOChamado();
+        DAOChamado dc = new DAOChamado();
         Chamado chamado = new Chamado();
         chamado.setTitulo(titulo);
         chamado.setPrioridade(prioridade);
@@ -58,9 +60,10 @@ public class Facade {
      * Consulta fatia de todos os chamados (ideal para paginação),
      * considerando os atributos não nulos de uma instância de {@link Chamado}
      * (consulta no Banco de Dados).
-     * @param chamado   objeto que definirá os parâmetros da busca
-     * @param inicio    número de registro inicial
-     * @param qtd       quantidades de registros
+     *
+     * @param chamado objeto que definirá os parâmetros da busca
+     * @param inicio  número de registro inicial
+     * @param qtd     quantidades de registros
      * @return Lista de chamados começando em [inicio] com [qtd] itens ou NULL quando não há resultados
      */
     public List<Chamado> consultaChamados(Chamado chamado, int inicio, int qtd) {
@@ -71,6 +74,7 @@ public class Facade {
     /**
      * Atualiza informações de um chamado
      * (atualiza no Banco de Dados).
+     *
      * @param chamado objeto que definirá os atributos e valores a serem alterados
      * @return Verdadeiro caso seja atualizado com sucesso ou Falso caso contrário
      */
@@ -80,6 +84,7 @@ public class Facade {
 
     /**
      * Criptografa texto com MD5
+     *
      * @param s texto a ser criptografado
      * @return texto criptografado
      */

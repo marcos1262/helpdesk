@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,41 +40,34 @@ public class DAOChamado {
 
                 if (chamado.getId() != 0)
                     sql += "idchamado='" + chamado.getId() + "' ";
-                else sql += "true ";
+                else sql += "TRUE ";
                 if (!chamado.getTitulo().equals(""))
-                    sql += "AND titulo='" + chamado.getTitulo() + "' ";
-                else sql += "AND true ";
+                    sql += "AND titulo LIKE '%" + chamado.getTitulo() + "%' ";
                 if (chamado.getPrioridade() != null)
                     sql += "AND prioridade='" + chamado.getPrioridade() + "' ";
-                else sql += "AND true ";
                 if (chamado.getStatus() != null)
                     sql += "AND status='" + chamado.getStatus() + "' ";
-                else sql += "AND true ";
                 if (chamado.getData() != null)
                     sql += "AND data='" + dataHoraMysql(chamado.getData()) + "' ";
-                else sql += "AND true ";
                 if (chamado.getSolicitante() != null)
                     sql += "AND usuario_idsolicitante='" + chamado.getSolicitante().getId() + "' ";
-                else sql += "AND true ";
                 if (chamado.getTecnico() != null)
                     sql += "AND usuario_idtecnico='" + chamado.getTecnico().getId() + "' ";
-                else sql += "AND true ";
 
                 sql += "LIMIT " + inicio + ", " + qtd;
-
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 {
                     ResultSet rs = ps.executeQuery();
-                    if (rs.next()) {
+                    while (rs.next()) {
                         Chamado c = new Chamado();
                         {
                             c.setId(rs.getLong("idchamado"));
                             c.setTitulo(rs.getString("titulo"));
                             c.setPrioridade(rs.getString("prioridade"));
                             c.setStatus(rs.getString("status"));
-                            c.setData(dataHoraJava(rs.getString("tipo")));
-                            c.setSolicitante(new Usuario(Long.parseLong(rs.getString("usuario_idsolicitante"))));
-                            c.setTecnico(new Usuario(Long.parseLong(rs.getString("usuario_idtecnico"))));
+                            c.setData(dataHoraJava(rs.getString("data")));
+                            c.setSolicitante(new Usuario(rs.getLong("usuario_idsolicitante")));
+                            c.setTecnico(new Usuario(rs.getLong("usuario_idtecnico")));
                         }
                         l.add(c);
                     }
@@ -109,7 +101,6 @@ public class DAOChamado {
                 ps.setString(3, Chamado.statusOpcoes.ABERTO.toString());
                 ps.setString(4, dataHoraMysql(LocalDateTime.now()));
                 ps.setString(5, String.valueOf(chamado.getSolicitante().getId()));
-                System.out.println(chamado);
                 executou = ps.execute();
                 ps.close();
             }
@@ -136,10 +127,8 @@ public class DAOChamado {
     }
 
     private LocalDateTime dataHoraJava(String dataHora) {
-        DateTimeFormatter fmt = new DateTimeFormatterBuilder()
-                .appendPattern("yyyy-MM-dd")
-                .appendPattern(" hh:mm:ss")
-                .toFormatter();
+        System.out.println("HORA: "+dataHora);
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         return LocalDateTime.parse(dataHora, fmt);
     }
 }
