@@ -14,6 +14,9 @@ import java.util.List;
  * @author marcos
  */
 public class Facade {
+    //==========================================================================//
+    //                              SESSÃO USUÁRIO
+    //==========================================================================//
     /**
      * Autentica um usuário (login e senha) no sistema
      * (consulta no Banco de Dados).
@@ -35,7 +38,16 @@ public class Facade {
     public boolean cadastraUsuario(Usuario usuario) {
         return false;
     }
+    public boolean atualizaUsuario(Usuario usuario) {
+        return false;
+    }
+    public boolean excluiUsuario(Usuario usuario) {
+        return false;
+    }
 
+    //==========================================================================//
+    //                              SESSÃO CHAMADO
+    //==========================================================================//
     /**
      * Abre um chamado no sistema
      * (cadastra no Banco de Dados).
@@ -57,7 +69,17 @@ public class Facade {
         chamado.addDescrição(descricao);
         return dc.cadastra(chamado);
     }
-
+   
+    /**
+     * Exclui um chamado no sistema
+     * (Exclui do Banco de Dados).
+     *
+     * @param idChamado codigo do chamado a ser excluido
+     * @return Verdadeiro caso seja excluido com sucesso ou Falso caso contrário
+     */
+    public boolean excluiChamado(long idChamado) {
+        return false;
+    }
     /**
      * Consulta fatia de todos os chamados (ideal para paginação),
      * considerando os atributos não nulos de uma instância de {@link Chamado}
@@ -84,6 +106,9 @@ public class Facade {
         return new DAOChamado().atualiza(chamado);
     }
 
+    //==========================================================================//
+    //                         SESSÃO SERVIÇOS DIVERSOS
+    //==========================================================================//
     /**
      * Criptografa texto com MD5
      *
