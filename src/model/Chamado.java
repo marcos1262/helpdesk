@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,12 @@ public class Chamado {
     private Usuario solicitante,
             tecnico;
     private List<String> descricoes;
+
+    void addDescrição(String descricao) {
+        if(descricoes==null)
+            descricoes = new ArrayList<>();
+        descricoes.add(descricao);
+    }
 
     public enum prioridades {
         ALTA,

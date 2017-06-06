@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -95,13 +96,19 @@ public class DAOChamado {
                 String sql = "INSERT INTO chamado " +
                         "(titulo, prioridade, status, data, usuario_idsolicitante) " +
                         "VALUES (?, ?, ?, ?, ?)";
-                PreparedStatement ps = conexao.prepareStatement(sql);
+                PreparedStatement ps = conexao.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, chamado.getTitulo());
                 ps.setString(2, chamado.getPrioridade().toString());
                 ps.setString(3, Chamado.statusOpcoes.ABERTO.toString());
                 ps.setString(4, dataHoraMysql(LocalDateTime.now()));
                 ps.setString(5, String.valueOf(chamado.getSolicitante().getId()));
                 executou = ps.execute();
+                final ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    //Gravando Descricao
+                    chamado.setId(rs.getInt("idchamado"));
+                    cadastraDescricao(chamado);
+                }
                 ps.close();
             }
             conexao.close();
@@ -110,16 +117,56 @@ public class DAOChamado {
         }
         return executou;
     }
-
+    private boolean cadastraDescricao(Chamado chamado) {
+        boolean executou = false;
+        try {
+            this.conexao = new ConnectionFactory().getConnection();
+            String sql = "INSERT INTO descricao (descricao, chamado_idchamado) VALUES (?,?)";
+            PreparedStatement ps = conexao.prepareStatement(sql);
+            ps.setString(1, chamado.getDescricoes().get(0));
+            ps.setLong(2, chamado.getId());
+            executou = ps.execute();
+            ps.close();
+            conexao.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return executou;
+    }
     /**
      * Atualiza chamado.
      * @param chamado objeto que definirá os atributos e valores a serem alterados
      * @return Verdadeiro caso seja atualizado com sucesso ou Falso caso contrário
      */
     public boolean atualiza(Chamado chamado) {
-        return false;
+        boolean executou;
+        try {
+            this.conexao = new ConnectionFactory().getConnection();
+            {
+                String sql = "UPDATE chamado set " +
+                        "prioridade = ?, status = ?, usuario_idtecnico = ?" +
+                        "WHERE idchamado = ?";
+                PreparedStatement ps = conexao.prepareStatement(sql);
+                ps.setString(1, chamado.getPrioridade().toString());
+                ps.setString(2, chamado.getStatus().toString());
+                ps.setString(3, String.valueOf(chamado.getTecnico().getId()));
+                ps.setLong(4, chamado.getId());
+                executou = ps.execute();
+                //Atualizando Descricões
+                atualizaDescricões(chamado);
+                ps.close();
+            }
+            conexao.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return executou;
     }
-
+    private boolean atualizaDescricões(Chamado chamado) {
+        boolean executou = false;
+           //todo atualiza
+        return executou;
+    }
     private String dataHoraMysql(LocalDateTime dataHora) {
         DateTimeFormatter formatador =
                 DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
