@@ -52,8 +52,10 @@ public class Facade {
         chamado.setTitulo(titulo);
         chamado.setPrioridade(prioridade);
         chamado.setSolicitante(new Usuario(idsolicitante));
+//      TODO cadastrar descrição
+//      Resolvido -- a descrição inicial "String descrição" vai junto com o objeto "chamado" e é gravado no proprio DAOchamado
+        chamado.addDescrição(descricao);
         return dc.cadastra(chamado);
-//        TODO cadastrar descrição
     }
 
     /**
@@ -79,7 +81,7 @@ public class Facade {
      * @return Verdadeiro caso seja atualizado com sucesso ou Falso caso contrário
      */
     public boolean atualizaChamado(Chamado chamado) {
-        return false;
+        return new DAOChamado().atualiza(chamado);
     }
 
     /**
