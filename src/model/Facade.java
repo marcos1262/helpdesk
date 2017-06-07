@@ -104,7 +104,10 @@ public class Facade {
     public boolean atualizaChamado(Chamado chamado) {
         return new DAOChamado().atualiza(chamado);
     }
-
+    public boolean addDescrição(long idchamado, String Descrição){
+        return new DAOChamado().addDescricao(idchamado, Descrição);
+    }
+    
     //==========================================================================//
     //                         SESSÃO SERVIÇOS DIVERSOS
     //==========================================================================//

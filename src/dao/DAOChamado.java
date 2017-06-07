@@ -117,6 +117,7 @@ public class DAOChamado {
         }
         return executou;
     }
+    //o método está preparado para gravar apenas uma descrição que venha inclusa no objeto chamado.
     private boolean cadastraDescricao(Chamado chamado) {
         boolean executou = false;
         try {
@@ -198,4 +199,8 @@ public class DAOChamado {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         return LocalDateTime.parse(dataHora, fmt);
     } 
+
+    public boolean addDescricao(long idchamado, String descrição) {
+        return cadastraDescricao(new Chamado(idchamado,descrição));
+    }
 }

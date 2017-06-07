@@ -19,7 +19,15 @@ public class Chamado {
             tecnico;
     private List<String> descricoes;
 
-    void addDescrição(String descricao) {
+    public Chamado(long id, String descrição) {
+        this.id = id;
+        addDescrição(descrição);
+    }
+
+    public Chamado() {
+    }
+
+    final void addDescrição(String descricao) {
         if(descricoes==null)
             descricoes = new ArrayList<>();
         descricoes.add(descricao);
