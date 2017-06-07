@@ -170,7 +170,20 @@ public class DAOChamado {
     
     public boolean exclui(long idChamado) {
         boolean executou = false;
-           //todo exclui
+           try {
+            this.conexao = new ConnectionFactory().getConnection();
+            {
+                String sql = "DELETE FROM chamado " +
+                        "WHERE idchamado = ?";
+                PreparedStatement ps = conexao.prepareStatement(sql);
+                ps.setLong(1, idChamado);
+                executou = ps.execute();
+                ps.close();
+            }
+            conexao.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return executou;
     }
     

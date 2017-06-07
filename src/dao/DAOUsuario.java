@@ -90,14 +90,27 @@ public class DAOUsuario {
     }
 
     public boolean atualiza(Usuario usuario) {
-         boolean executou = false;
+        boolean executou = false;
            //todo atualiza
         return executou;
     }
 
     public boolean exclui(long idusuario) {
          boolean executou = false;
-           //todo exclui
+           try {
+            this.conexao = new ConnectionFactory().getConnection();
+            {
+                String sql = "DELETE FROM usuario " +
+                        "WHERE idusuario = ?";
+                PreparedStatement ps = conexao.prepareStatement(sql);
+                ps.setLong(1, idusuario);
+                executou = ps.execute();
+                ps.close();
+            }
+            conexao.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return executou;
     }
 
