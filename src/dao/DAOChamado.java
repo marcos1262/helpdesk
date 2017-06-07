@@ -167,6 +167,13 @@ public class DAOChamado {
            //todo atualiza
         return executou;
     }
+    
+    public boolean exclui(long idChamado) {
+        boolean executou = false;
+           //todo exclui
+        return executou;
+    }
+    
     private String dataHoraMysql(LocalDateTime dataHora) {
         DateTimeFormatter formatador =
                 DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
@@ -177,5 +184,5 @@ public class DAOChamado {
         System.out.println("HORA: "+dataHora);
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         return LocalDateTime.parse(dataHora, fmt);
-    }
+    } 
 }
