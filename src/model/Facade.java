@@ -36,13 +36,13 @@ public class Facade {
     }
 
     public boolean cadastraUsuario(Usuario usuario) {
-        return false;
+         return new DAOUsuario().cadastra(usuario);
     }
     public boolean atualizaUsuario(Usuario usuario) {
-        return false;
+        return new DAOUsuario().atualiza(usuario);
     }
-    public boolean excluiUsuario(Usuario usuario) {
-        return false;
+    public boolean excluiUsuario(long idusuario) {
+        return new DAOUsuario().exclui(idusuario);
     }
 
     //==========================================================================//
@@ -59,7 +59,6 @@ public class Facade {
      * @return Verdadeiro caso seja aberto com sucesso ou Falso caso contrário
      */
     public boolean abreChamado(String titulo, String prioridade, String descricao, long idsolicitante) {
-        DAOChamado dc = new DAOChamado();
         Chamado chamado = new Chamado();
         chamado.setTitulo(titulo);
         chamado.setPrioridade(prioridade);
@@ -67,7 +66,7 @@ public class Facade {
 //      TODO cadastrar descrição
 //      Resolvido -- a descrição inicial "String descrição" vai junto com o objeto "chamado" e é gravado no proprio DAOchamado
         chamado.addDescrição(descricao);
-        return dc.cadastra(chamado);
+        return new DAOChamado().cadastra(chamado);
     }
    
     /**
@@ -78,7 +77,7 @@ public class Facade {
      * @return Verdadeiro caso seja excluido com sucesso ou Falso caso contrário
      */
     public boolean excluiChamado(long idChamado) {
-        return false;
+        return new DAOChamado().exclui(idChamado);
     }
     /**
      * Consulta fatia de todos os chamados (ideal para paginação),

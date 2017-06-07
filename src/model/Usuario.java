@@ -55,7 +55,11 @@ public class Usuario implements Serializable {
     public boolean validaSenha(Usuario usuario) {
         return usuario.senha.equals(this.senha);
     }
-
+    
+    public String getSenha() {
+        return senha;
+    }
+    
     public void setSenha(String senha) {
         this.senha = senha;
     }
