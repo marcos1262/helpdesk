@@ -1,30 +1,13 @@
 <%@ page import="model.Usuario" %>
+<%@ page import="model.Usuario" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
-<head>
-    <title>Sistema HelpDesk</title>
-
-    <%-- Java Code --%>
-    <jsp:include page="include/security.jsp"/>
-    <%
-        Usuario usuario;
-
-        if ((usuario = (Usuario) session.getAttribute("usuario")) == null)
-            response.sendRedirect("login.jsp");
-        else {
-    %>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Kube CSS -->
-    <link rel="stylesheet" href="assets/css/kube.css">
-</head>
-<body>
-
+    <%@include file="header.jsp" %>
+ 
 <h1>
     Bem vindo, <%=usuario.getNome()%>
 </h1>
@@ -70,8 +53,8 @@ Crie seu chamado:
 %>
 
 
-<%
-<%--TESTANDO abreChamado--%>
+<%--
+
 <%--
 new Facade().abreChamado("teste", "ALTA", "I'm with problems", usuario.getId());
 --%>
@@ -89,7 +72,7 @@ for (Chamado c : res) {
 %>
 
 </body>
-<%
-    }
-%>
+        <%
+            }
+        %>
 </html>

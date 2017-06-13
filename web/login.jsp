@@ -22,42 +22,60 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="assets/AdminLTE-2.3.11/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/AdminLTE-2.3.11/dist/css/AdminLTE.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    
+    <style>
+        body {
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            background-image: url("assets/img/bglogin3.jpg");
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .color-white{
+            color: #fff;
+            text-shadow:1px 1px 1px rgba(0,0,0, 0.35)
+	}
+    </style>
 
-    <!-- Kube CSS -->
-    <link rel="stylesheet" href="assets/css/kube.css">
-
-    <link rel="stylesheet" href="assets/css/master.css">
+    
 </head>
 <body>
 
-<div class="row align-center align-middle h100" id="container-login">
-    <div class="col">
-        <h2>Login</h2>
-
+<div class="login-box">
+    <div class="login-logo color-white">
+        <b>Help</b>desk
+    </div>
+    <div class="login-box-body">
+        <div class="login-box-msg">
+            <h3>Login</h3>
+        </div>
         <form method="post" action="" class="form">
-            <div class="form-item">
-                <label>Usuário<br>
-                    <input type="text" name="usuario" required autofocus>
-                </label>
+            <div class="form-group">
+                <input type="text" name="usuario" class="form-control" placeholder="Usuário" required autofocus>
             </div>
 
-            <div class="form-item">
-                <label>Senha<br>
-                    <input type="password" name="senha" required>
-                </label>
+            <div class="form-group">
+                <input type="password" name="senha" placeholder="Senha" class="form-control" required>
             </div>
 
-            <div class="form-item row gutters">
-                <input type="reset" class="button secondary outline col col-6" value="Cancelar">
-                <button class="button primary-color-dark col col-6">Entrar</button>
+            <div class="form-group">
+                <input type="reset" class="btn btn-info btn-flat" value="Cancelar">
+                <button type="submit" class="btn btn-primary btn-flat">Entrar</button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Kube JS + jQuery are used for some functionality, but are not required for the basic setup -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="assets/js/kube.js"></script>
+<!-- AdminLTE jQuery / Bootstrap js -->
+<script src="assets/AdminLTE-2.3.11/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="assets/AdminLTE-2.3.11/bootstrap/js/bootstrap.min.js"></script>
 <script>
     $('#container-login').animation('fadeIn');
 </script>
