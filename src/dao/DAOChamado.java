@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import model.Descricao;
 
 /**
  * Classe de acesso aos dados de um chamado (@see {@link Chamado}) no Banco de Dados
@@ -69,6 +70,7 @@ public class DAOChamado {
                             c.setData(dataHoraJava(rs.getString("data")));
                             c.setSolicitante(new Usuario(rs.getLong("usuario_idsolicitante")));
                             c.setTecnico(new Usuario(rs.getLong("usuario_idtecnico")));
+                            // FIXME as descrições não vem incluso?
                         }
                         l.add(c);
                     }
@@ -107,7 +109,7 @@ public class DAOChamado {
                 if (rs.next()) {
                     //Gravando Descricao
                     chamado.setId(rs.getInt("idchamado"));
-                    cadastraDescricao(chamado);
+                    new DAODescricao().cadastraDescricao(chamado);
                 }
                 ps.close();
             }
@@ -117,23 +119,7 @@ public class DAOChamado {
         }
         return executou;
     }
-    //o método está preparado para gravar apenas uma descrição que venha inclusa no objeto chamado.
-    private boolean cadastraDescricao(Chamado chamado) {
-        boolean executou = false;
-        try {
-            this.conexao = new ConnectionFactory().getConnection();
-            String sql = "INSERT INTO descricao (descricao, chamado_idchamado) VALUES (?,?)";
-            PreparedStatement ps = conexao.prepareStatement(sql);
-            ps.setString(1, chamado.getDescricoes().get(0));
-            ps.setLong(2, chamado.getId());
-            executou = ps.execute();
-            ps.close();
-            conexao.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return executou;
-    }
+    
     /**
      * Atualiza chamado.
      * @param chamado objeto que definirá os atributos e valores a serem alterados
@@ -154,7 +140,7 @@ public class DAOChamado {
                 ps.setLong(4, chamado.getId());
                 executou = ps.execute();
                 //Atualizando Descricões
-                atualizaDescricões(chamado);
+                new DAODescricao().atualizaDescricões(chamado);
                 ps.close();
             }
             conexao.close();
@@ -163,11 +149,7 @@ public class DAOChamado {
         }
         return executou;
     }
-    private boolean atualizaDescricões(Chamado chamado) {
-        boolean executou = false;
-           //todo atualiza
-        return executou;
-    }
+    
     
     public boolean exclui(long idChamado) {
         boolean executou = false;
@@ -200,7 +182,7 @@ public class DAOChamado {
         return LocalDateTime.parse(dataHora, fmt);
     } 
 
-    public boolean addDescricao(long idchamado, String descrição) {
-        return cadastraDescricao(new Chamado(idchamado,descrição));
+    public boolean addDescricao(long idchamado, Descricao descrição) {
+        return new DAODescricao().cadastraDescricao(new Chamado(idchamado,descrição));
     }
 }

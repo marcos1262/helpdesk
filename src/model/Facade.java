@@ -58,7 +58,7 @@ public class Facade {
      * @param idsolicitante id do solicitante ({@link Usuario}) do chamado
      * @return Verdadeiro caso seja aberto com sucesso ou Falso caso contrário
      */
-    public boolean abreChamado(String titulo, String prioridade, String descricao, long idsolicitante) {
+    public boolean abreChamado(String titulo, String prioridade, Descricao descricao, long idsolicitante) {
         Chamado chamado = new Chamado();
         chamado.setTitulo(titulo);
         chamado.setPrioridade(prioridade);
@@ -104,7 +104,13 @@ public class Facade {
     public boolean atualizaChamado(Chamado chamado) {
         return new DAOChamado().atualiza(chamado);
     }
-    public boolean addDescrição(long idchamado, String Descrição){
+    
+    public boolean assumirChamado(Chamado chamado, long idtecnico){
+        
+        return false;
+    }
+    
+    public boolean addDescrição(long idchamado, Descricao Descrição){
         return new DAOChamado().addDescricao(idchamado, Descrição);
     }
     

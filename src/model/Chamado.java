@@ -17,9 +17,9 @@ public class Chamado {
     private LocalDateTime data;
     private Usuario solicitante,
             tecnico;
-    private List<String> descricoes;
+    private List<Descricao> descricoes;
 
-    public Chamado(long id, String descrição) {
+    public Chamado(long id, Descricao descrição) {
         this.id = id;
         addDescrição(descrição);
     }
@@ -27,7 +27,7 @@ public class Chamado {
     public Chamado() {
     }
 
-    final void addDescrição(String descricao) {
+    final void addDescrição(Descricao descricao) {
         if(descricoes==null)
             descricoes = new ArrayList<>();
         descricoes.add(descricao);
@@ -133,11 +133,11 @@ public class Chamado {
         this.tecnico = tecnico;
     }
 
-    public List<String> getDescricoes() {
+    public List<Descricao> getDescricoes() {
         return descricoes;
     }
 
-    public void setDescricoes(List<String> descricoes) {
+    public void setDescricoes(List<Descricao> descricoes) {
         this.descricoes = descricoes;
     }
 
