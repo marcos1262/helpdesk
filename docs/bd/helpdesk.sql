@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `helpdesk`.`usuario` (
   `senha` VARCHAR(45) NOT NULL,
   `tipo` ENUM('ADMIN', 'TECNI', 'SOLIC') NOT NULL,
   `ativo` TINYINT(1) NOT NULL DEFAULT 1,
+  `imagem` VARCHAR(255),
   PRIMARY KEY (`idusuario`))
 ENGINE = InnoDB;
 

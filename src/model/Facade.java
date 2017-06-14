@@ -35,12 +35,35 @@ public class Facade {
         else return null;
     }
 
+    /**
+     * Cadastra um usuário no sistema
+     * (cadastra no Banco de Dados).
+     *
+     * @param usuario Objeto com dados do usuário
+     * @return Verdadeiro caso seja cadastrado com sucesso ou Falso caso contrário
+     */
     public boolean cadastraUsuario(Usuario usuario) {
          return new DAOUsuario().cadastra(usuario);
     }
+
+    /**
+     * Atualiza informações de um usuário do sistema
+     * (atualiza no Banco de Dados).
+     *
+     * @param usuario Objeto com novos dados do usuário
+     * @return Verdadeiro caso seja atualizado com sucesso ou Falso caso contrário
+     */
     public boolean atualizaUsuario(Usuario usuario) {
         return new DAOUsuario().atualiza(usuario);
     }
+
+    /**
+     * Remove um usuário do sistema
+     * (deleta no Banco de Dados).
+     *
+     * @param idusuario id do usuário
+     * @return Verdadeiro caso seja removido com sucesso ou Falso caso contrário
+     */
     public boolean excluiUsuario(long idusuario) {
         return new DAOUsuario().exclui(idusuario);
     }
@@ -48,6 +71,7 @@ public class Facade {
     //==========================================================================//
     //                              SESSÃO CHAMADO
     //==========================================================================//
+
     /**
      * Abre um chamado no sistema
      * (cadastra no Banco de Dados).
@@ -58,14 +82,14 @@ public class Facade {
      * @param idsolicitante id do solicitante ({@link Usuario}) do chamado
      * @return Verdadeiro caso seja aberto com sucesso ou Falso caso contrário
      */
-    public boolean abreChamado(String titulo, String prioridade, Descricao descricao, long idsolicitante) {
+    public boolean abreChamado(String titulo, String prioridade, String descricao, long idsolicitante) {
         Chamado chamado = new Chamado();
         chamado.setTitulo(titulo);
         chamado.setPrioridade(prioridade);
         chamado.setSolicitante(new Usuario(idsolicitante));
 //      TODO cadastrar descrição
 //      Resolvido -- a descrição inicial "String descrição" vai junto com o objeto "chamado" e é gravado no proprio DAOchamado
-        chamado.addDescrição(descricao);
+        chamado.addDescrição(new Descricao(descricao));
         return new DAOChamado().cadastra(chamado);
     }
    
@@ -76,9 +100,13 @@ public class Facade {
      * @param idChamado codigo do chamado a ser excluido
      * @return Verdadeiro caso seja excluido com sucesso ou Falso caso contrário
      */
-    public boolean excluiChamado(long idChamado) {
-        return new DAOChamado().exclui(idChamado);
+    public boolean cancelaChamado(long idChamado) {
+        Chamado c = new Chamado();
+        c.setId(idChamado);
+        c.setStatus("FECHADO_CANCELADO");
+        return new DAOChamado().atualiza(c);
     }
+
     /**
      * Consulta fatia de todos os chamados (ideal para paginação),
      * considerando os atributos não nulos de uma instância de {@link Chamado}
@@ -94,29 +122,28 @@ public class Facade {
         return new DAOChamado().consulta(chamado, inicio, qtd);
     }
 
-    /**
-     * Atualiza informações de um chamado
-     * (atualiza no Banco de Dados).
-     *
-     * @param chamado objeto que definirá os atributos e valores a serem alterados
-     * @return Verdadeiro caso seja atualizado com sucesso ou Falso caso contrário
-     */
-    public boolean atualizaChamado(Chamado chamado) {
-        return new DAOChamado().atualiza(chamado);
+    public boolean assumeChamado(long idChamado, long idTecnico) {
+        Chamado c = new Chamado();
+        c.setId(idChamado);
+        c.setTecnico(new Usuario(idTecnico));
+        return new DAOChamado().atualiza(c);
     }
-    
-    public boolean assumirChamado(Chamado chamado, long idtecnico){
-        
-        return false;
+
+    public boolean alteraPrioridadeChamado(long idChamado, String prioridade) {
+        Chamado c = new Chamado();
+        c.setId(idChamado);
+        c.setPrioridade(prioridade);
+        return new DAOChamado().atualiza(c);
     }
-    
-    public boolean addDescrição(long idchamado, Descricao Descrição){
-        return new DAOChamado().addDescricao(idchamado, Descrição);
+
+    public boolean addDescricao(long idchamado, Descricao descricao){
+        return new DAOChamado().addDescricao(idchamado,descricao);
     }
     
     //==========================================================================//
     //                         SESSÃO SERVIÇOS DIVERSOS
     //==========================================================================//
+
     /**
      * Criptografa texto com MD5
      *

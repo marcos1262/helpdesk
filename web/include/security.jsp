@@ -7,7 +7,7 @@
         String login = request.getParameter("usuario"),
                 senha = request.getParameter("senha");
 
-        if (login != null && senha != null)
+        if (login != null && senha != null) {
             if (login.equals(""))
                 out.print("<script>alert('O campo usuário é obrigatório!');</script>");
             else if (senha.equals(""))
@@ -21,5 +21,12 @@
                 else
                     session.setAttribute("usuario", usuario1);
             }
+        } else response.sendRedirect("login.jsp");
+    }
+
+    boolean result = request.getParameter("Sair") != null;
+    if (result) {
+        session.invalidate();
+        response.sendRedirect("../login.jsp");
     }
 %>

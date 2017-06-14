@@ -4,6 +4,10 @@ public class Descricao {
     private long id;
     private String descricao;
 
+    public Descricao(String descricao) {
+        this.descricao = descricao;
+    }
+
     public long getId() {
         return id;
     }
@@ -19,5 +23,5 @@ public class Descricao {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-    
+
 }

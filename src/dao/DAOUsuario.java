@@ -3,9 +3,7 @@ package dao;
 import dao.bd.ConnectionFactory;
 import model.Usuario;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.List;
-import model.Chamado;
 
 /**
  * Classe de acesso aos dados de um usuário (@see {@link Usuario}) no Banco de Dados

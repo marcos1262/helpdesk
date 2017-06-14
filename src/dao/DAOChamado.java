@@ -70,7 +70,7 @@ public class DAOChamado {
                             c.setData(dataHoraJava(rs.getString("data")));
                             c.setSolicitante(new Usuario(rs.getLong("usuario_idsolicitante")));
                             c.setTecnico(new Usuario(rs.getLong("usuario_idtecnico")));
-                            // FIXME as descrições não vem incluso?
+                            // TODO consultar descrições
                         }
                         l.add(c);
                     }
@@ -87,6 +87,7 @@ public class DAOChamado {
 
     /**
      * Cadastra chamado (dados passados por um solicitante).
+     *
      * @param chamado objeto com os dados a serem salvos
      * @return Verdadeiro caso seja cadastrado com sucesso ou Falso caso contrário
      */
@@ -98,7 +99,7 @@ public class DAOChamado {
                 String sql = "INSERT INTO chamado " +
                         "(titulo, prioridade, status, data, usuario_idsolicitante) " +
                         "VALUES (?, ?, ?, ?, ?)";
-                PreparedStatement ps = conexao.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, chamado.getTitulo());
                 ps.setString(2, chamado.getPrioridade().toString());
                 ps.setString(3, Chamado.statusOpcoes.ABERTO.toString());
@@ -119,14 +120,15 @@ public class DAOChamado {
         }
         return executou;
     }
-    
+
     /**
      * Atualiza chamado.
+     *
      * @param chamado objeto que definirá os atributos e valores a serem alterados
      * @return Verdadeiro caso seja atualizado com sucesso ou Falso caso contrário
      */
     public boolean atualiza(Chamado chamado) {
-        boolean executou;
+        boolean executou = false;
         try {
             this.conexao = new ConnectionFactory().getConnection();
             {
@@ -134,13 +136,19 @@ public class DAOChamado {
                         "prioridade = ?, status = ?, usuario_idtecnico = ?" +
                         "WHERE idchamado = ?";
                 PreparedStatement ps = conexao.prepareStatement(sql);
-                ps.setString(1, chamado.getPrioridade().toString());
-                ps.setString(2, chamado.getStatus().toString());
-                ps.setString(3, String.valueOf(chamado.getTecnico().getId()));
-                ps.setLong(4, chamado.getId());
-                executou = ps.execute();
-                //Atualizando Descricões
-                new DAODescricao().atualizaDescricões(chamado);
+                {
+                    ps.setLong(1, chamado.getId());
+                    ps.setLong(2, chamado.getId());
+
+                    if (ps.execute()) {
+                        //Atualizando Descricões
+                        if (new DAODescricao().atualizaDescricões(chamado)) {
+                            executou = true;
+                        } else {
+                            exclui(chamado);
+                        }
+                    }
+                }
                 ps.close();
             }
             conexao.close();
@@ -149,9 +157,8 @@ public class DAOChamado {
         }
         return executou;
     }
-    
-    
-    public boolean exclui(long idChamado) {
+
+    public boolean exclui(Chamado chamado) {
         boolean executou = false;
            try {
             this.conexao = new ConnectionFactory().getConnection();
@@ -159,7 +166,7 @@ public class DAOChamado {
                 String sql = "DELETE FROM chamado " +
                         "WHERE idchamado = ?";
                 PreparedStatement ps = conexao.prepareStatement(sql);
-                ps.setLong(1, idChamado);
+                ps.setLong(1, chamado.getId());
                 executou = ps.execute();
                 ps.close();
             }
@@ -169,7 +176,7 @@ public class DAOChamado {
         }
         return executou;
     }
-    
+
     private String dataHoraMysql(LocalDateTime dataHora) {
         DateTimeFormatter formatador =
                 DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
@@ -177,7 +184,6 @@ public class DAOChamado {
     }
 
     private LocalDateTime dataHoraJava(String dataHora) {
-        System.out.println("HORA: "+dataHora);
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         return LocalDateTime.parse(dataHora, fmt);
     } 
