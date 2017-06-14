@@ -41,7 +41,7 @@ desired effect
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
                         <% if (usuario.getImagem() != null) { %>
-                        <img src="assets/uploads/<%= usuario.getImagem() %>" class="user-image"
+                        <img src="uploads/<%= usuario.getImagem() %>" class="user-image"
                              alt="<%= usuario.getNome() %>"/>
                         <% } else { %>
                         <img src="assets/AdminLTE-2.3.11/dist/img/avatar.png" class="user-image"
@@ -56,7 +56,7 @@ desired effect
                         <li class="user-header">
 
                             <% if (usuario.getImagem() != null) { %>
-                            <img src="assets/uploads/<%= usuario.getImagem() %>" class="img-circle"
+                            <img src="uploads/<%= usuario.getImagem() %>" class="img-circle"
                                  alt="<%= usuario.getNome() %>"/>
                             <% } else { %>
                             <img src="assets/AdminLTE-2.3.11/dist/img/avatar.png" class="img-circle"
@@ -98,10 +98,10 @@ desired effect
         <div class="user-panel">
             <div class="pull-left image">
                 <% if (usuario.getImagem() != null) { %>
-                <img src="assets/uploads/<%= usuario.getImagem() %>" class="img-circle"
+                <img src="uploads/<%= usuario.getImagem() %>" class="img-circle"
                      alt="<%= usuario.getNome() %>"/>
                 <% } else { %>
-                <img src="assets/AdminLTE-2.3.11/dist/img/avatar.png" class="img-circle"
+                <img src="AdminLTE-2.3.11/dist/img/avatar.png" class="img-circle"
                      alt="<%= usuario.getNome() %>"/>
                 <% } %>
             </div>
@@ -109,8 +109,6 @@ desired effect
 
                 <p><%= usuario.getNome() %>
                 </p>
-                <!-- Status -->
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
 
@@ -130,7 +128,7 @@ desired effect
             </li>
 
             <li class="treeview <% if(request.getRequestURI().contains("chamado.jsp")){%> active <%}%>">
-                <a href="#"><i class="fa fa-fw fa-users"></i> <span>Chamados</span> <i
+                <a href="#"><i class="fa fa-fw fa-desktop"></i> <span>Chamados</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="#">Novo Chamado</a></li>
