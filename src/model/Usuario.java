@@ -11,7 +11,8 @@ public class Usuario implements Serializable {
     private long id;
     private String nome,
             usuario,
-            senha;
+            senha,
+            imagem;
     private tipos tipo;
 
     public enum tipos {
@@ -103,5 +104,13 @@ public class Usuario implements Serializable {
                 ", senha='" + senha + '\'' +
                 ", tipo=" + tipo +
                 '}';
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 }

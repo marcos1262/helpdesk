@@ -32,7 +32,7 @@
             position: fixed;
             height: 100%;
             width: 100%;
-            background-image: url("assets/img/bglogin3.jpg");
+            background-image: url("assets/img/bglogin.jpg");
             background-attachment: fixed;
             background-repeat: no-repeat;
             background-size: cover;

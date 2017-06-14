@@ -1,5 +1,4 @@
 <%@ page import="model.Usuario" %>
-<%@ page import="model.Usuario" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
 <%@ page import="java.util.List" %>
@@ -85,41 +84,38 @@
                                         <!-- Menu Toggle Button -->
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                                 <!-- The user image in the navbar-->
-                                                <!-- TEM QUE MUDAR ISSO AQUI!!!!!!!!!!
-                                                <?php if($usuarioLogado['imagem']){ ?>
-                                                <img src="<?= base_url("uploads/{$usuarioLogado['imagem']}");?>" class="user-image" alt="<?= $usuarioLogado['nome'];?>" />
-                                                <?php }else{ ?>	
-                                                <img src="<?= base_url("front/dist/img/zethus-logo.jpg");?>" class="user-image" alt="<?= $usuarioLogado['nome'];?>" />
-                                                <?php } ?>	-->								<!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                                <% if(usuario.getImagem() != null){ %>
+                                                    <img src="assets/uploads/<%= usuario.getImagem() %>" class="user-image" alt="<%= usuario.getNome() %>" />
+                                                <% }else{ %>	
+                                                    <img src="assets/AdminLTE-2.3.11/dist/img/avatar.png" class="user-image" alt="<%= usuario.getNome() %>" />
+                                                <% } %>								<!-- hidden-xs hides the username on small devices so only the image appears. -->
                                                 
-                                                <!-- É PRA MUDAR TAMBÉM!!!!!!
-                                                <span class="hidden-xs"><?= $usuarioLogado['nome'];?></span> -->
+                                                <span class="hidden-xs"><%= usuario.getNome() %></span>
                                         </a>
                                         <ul class="dropdown-menu">
                                                 <!-- The user image in the menu -->
                                                 <li class="user-header">
                                                         
-                                                        <!-- É PRA MUDAR TAMBÉM!!!!!!
-                                                        <?php if($usuarioLogado['imagem']){ ?>
-                                                        <img src="<?= base_url("uploads/{$usuarioLogado['imagem']}");?>" class="img-circle" alt="<?= $usuarioLogado['nome'];?>" />
-                                                        <?php }else{ ?>	
-                                                        <img src="<?= base_url("front/dist/img/zethus-logo.jpg");?>" class="img-circle" alt="<?= $usuarioLogado['nome'];?>" />
-                                                        <?php } ?>	
+                                                        <% if(usuario.getImagem() != null){ %>
+                                                            <img src="assets/uploads/<%= usuario.getImagem() %>" class="img-circle" alt="<%= usuario.getNome() %>" />
+                                                        <% }else{ %>	
+                                                            <img src="assets/AdminLTE-2.3.11/dist/img/avatar.png" class="img-circle" alt="<%= usuario.getNome() %>" />
+                                                        <% } %>	
 
                                                         <p>
-                                                                <?= $usuarioLogado['nome'];?>
-                                                        </p> -->
+                                                                <%= usuario.getNome() %>
+                                                        </p> 
                                                 </li>
 
                                                 <!-- Menu Footer-->
                                                 <li class="user-footer">
                                                         <div class="pull-left">
-                                                                <!-- É PRA MUDAR TAMBÉM!!!!!!
-                                                                <?= anchor('gerencial/usuarios/visualiza/'.$usuarioLogado['id_usuario'], 'Perfil', array('class' => 'btn btn-default btn-flat'));?> -->
+                                                                <!-- Visualizar usuário -->
+                                                                <a href="#" class="btn btn-default btn-flat">Perfil</a>
                                                         </div>
                                                         <div class="pull-right">
-                                                                <!-- É PRA MUDAR TAMBÉM!!!!!!
-                                                                <?= anchor('gerencial/logout', 'Sair', array('class' => 'btn btn-default btn-flat'));?> -->
+                                                                <!-- LOGOUT -->
+                                                                <a href="#" class="btn btn-default btn-flat">Sair</a>
                                                         </div>
                                                 </li>
                                         </ul>
@@ -128,5 +124,53 @@
                 </div>
                 </nav>
             </header>
+            <!-- Left side column. contains the logo and sidebar -->
+            <aside class="main-sidebar">
+
+                    <!-- sidebar: style can be found in sidebar.less -->
+                    <section class="sidebar">
+
+                            <!-- Sidebar user panel (optional) -->
+                            <div class="user-panel">
+                                    <div class="pull-left image">
+                                            <% if(usuario.getImagem() != null){ %>
+                                                <img src="assets/uploads/<%= usuario.getImagem() %>" class="img-circle" alt="<%= usuario.getNome() %>" />
+                                            <% }else{ %>	
+                                                <img src="assets/AdminLTE-2.3.11/dist/img/avatar.png" class="img-circle" alt="<%= usuario.getNome() %>" />
+                                            <% } %>
+                                    </div>
+                                    <div class="pull-left info">
+                                            
+                                            <p><%= usuario.getNome() %></p>
+                                            <!-- Status -->
+                                            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                                    </div>
+                            </div>
+
+                            <!-- Sidebar Menu -->
+                            <ul class="sidebar-menu">
+
+                                    <!-- Optionally, you can add icons to the links -->
+                                    <li class="<% if(request.getRequestURI().contains("index.jsp")){%> active <%}%>"<a href="index.jsp"><i class="fa fa-fw fa-home"></i> <span>Início</span></a></li>
+                                    <li class="treeview <% if(request.getRequestURI().contains("usuario.jsp")){%> active <%}%>">
+                                            <a href="#"><i class="fa fa-fw fa-user"></i> <span>Usuários</span> <i class="fa fa-angle-left pull-right"></i></a>
+                                            <ul class="treeview-menu">
+                                                <li><a href="#">Novo Usuário</a></li>
+                                                <li><a href="#">Lista de Usuários</a></li>
+                                            </ul>
+                                    </li>
+
+                                    <li class="treeview <% if(request.getRequestURI().contains("chamado.jsp")){%> active <%}%>">
+                                            <a href="#"><i class="fa fa-fw fa-users"></i> <span>Chamados</span> <i class="fa fa-angle-left pull-right"></i></a>
+                                            <ul class="treeview-menu">
+                                                <li><a href="#">Novo Chamado</a></li>
+                                                <li><a href="#">Lista de Chamados</a></li>
+                                            </ul>
+                                    </li>
+
+                            </ul><!-- /.sidebar-menu -->
+                    </section>
+                    <!-- /.sidebar -->
+            </aside>
         </div>
  

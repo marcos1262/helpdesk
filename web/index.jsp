@@ -1,5 +1,4 @@
 <%@ page import="model.Usuario" %>
-<%@ page import="model.Usuario" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
 <%@ page import="java.util.List" %>

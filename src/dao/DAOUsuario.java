@@ -51,6 +51,7 @@ public class DAOUsuario {
                         usuario1.setUsuario(rs.getString("login"));
                         usuario1.setSenha(rs.getString("senha"));
                         usuario1.setTipo(rs.getString("tipo"));
+                        usuario1.setImagem(rs.getString("imagem"));
                     }
                     rs.close();
                 }
@@ -72,13 +73,14 @@ public class DAOUsuario {
             this.conexao = new ConnectionFactory().getConnection();
             {
                 String sql = "INSERT INTO usuario " +
-                        "(nome, login, senha, tipo) " +
-                        "VALUES (?, ?, ?, ?)";
+                        "(nome, login, senha, tipo, imagem) " +
+                        "VALUES (?, ?, ?, ?, ?)";
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 ps.setString(1, usuario.getNome());
                 ps.setString(2, usuario.getUsuario());
                 ps.setString(3, usuario.getSenha());
                 ps.setString(4, usuario.getTipo().toString());
+                ps.setString(5, usuario.getImagem());
                 executou = ps.execute();
                 ps.close();
             }
