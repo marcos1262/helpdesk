@@ -1,8 +1,11 @@
+<%@ page import="java.time.format.DateTimeFormatter"%>
 <%@ page import="model.Usuario" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
+<%@ page import="dao.DAOChamado" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -17,6 +20,7 @@
             response.sendRedirect("login.jsp");
             return;
         }
+        
     %>
 
     <jsp:include page="importCSS.jsp"/>
@@ -29,16 +33,17 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Dashboard
-                <small>Control panel</small>
+                <b>Help</b>desk
+                <small>Chamados</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Dashboard</li>
             </ol>
         </section>
 
         <section class="content">
+            
+            <!--
             Crie seu chamado:
             <br>
             <form name="chamado" action="index.jsp" method="post">
@@ -47,6 +52,71 @@
                 <input type="text" name="descricao" placeholder="Descrição"/>
                 <input type="submit" name="gerar" placeholder="Criar chamado"/>
             </form>
+            
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <!-- Se tem chamados mostra a tabela -->
+                                <%
+                                Chamado c1 = new Chamado();
+                                c1.setTitulo("");
+                                c1.setSolicitante(usuario);
+                                List<Chamado> res = new Facade().consultaChamados(c1, 0, 20);
+                                if(res != null){
+
+                                %>
+                            <div class="table-responsive no-padding">                                
+                                <table class="table table-hover paginated">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Titulo</th>
+                                            <th>Prioridade</th>
+                                            <th>Status</th>
+                                            <th>Data</th>
+                                            
+                                            <th>Técnico</th>
+                                            <th style="width: 100px">#</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% 
+                                            for (Chamado c : res) {
+                                        %>
+                                        <tr>
+                                            <td><%= c.getId() %></td>
+                                            <td><%= c.getTitulo() %></td>
+                                            <td><%= c.getPrioridade().toString() %></td>
+                                            <td><%= c.getStatus().toString() %></td>
+                                            <td><%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %></td>
+                                            
+                                            <td><%= c.getTecnico().getNome() %></td>
+                                            <td>
+                                                <a style="margin-right: 20px;" href="" class="text-info" data-toggle="tooltip" title="Mais ações"><i class="fa fa-plus-circle"></i></a>
+                                                <a href="#" class="text-info" data-toggle="tooltip" title="Cancelar" onClick=""><i class="fa fa-trash-o"></i></a>
+                                            </td>
+                                        </tr>
+                                        <%  }  %>
+                                    </tbody>
+                                </table>          
+                            </div><!-- /.box-body -->
+                            <div class="clearfix">
+                                    <ul class="pagination pagination-sm no-margin pull-right"></ul>									
+                            </div>
+                            
+                            <!-- Senão mostra uma frase -->    
+                                <% } else { %>
+                                
+                                <p>Você ainda não possui chamados cadastrados <a href="#">Clique aqui</a> para adicionar um.</p>
+                                
+                                <% } %>
+                        </div>
+                    </div>						
+
+                </div>
+            </section><!-- /.content -->
 
             <%
                 /*String titulo=request.getParameter("titulo");
@@ -76,12 +146,12 @@
 
                 // TESTANDO consultaChamados
 
-                Chamado c1 = new Chamado();
-                c1.setTitulo("teste");
-                List<Chamado> res = new Facade().consultaChamados(c1, 0, 20);
-                for (Chamado c : res) {
-                    out.println("C:" + c.getId());
-                }
+                //Chamado c1 = new Chamado();
+                //c1.setTitulo("teste");
+                //List<Chamado> res = new Facade().consultaChamados(c1, 0, 20);
+                //for (Chamado c : res) {
+                //    out.println("C:"  c.getId());
+                //}
 
             %>
         </section>
