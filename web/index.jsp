@@ -2,7 +2,6 @@
 <%@ page import="model.Usuario" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
-<%@ page import="dao.DAOChamado" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -42,16 +41,6 @@
         </section>
 
         <section class="content">
-            
-            <!--
-            Crie seu chamado:
-            <br>
-            <form name="chamado" action="index.jsp" method="post">
-                <input type="text" name="titulo" placeholder="Título"/>
-                <input type="text" name="prioridade" placeholder="Prioridade"/>
-                <input type="text" name="descricao" placeholder="Descrição"/>
-                <input type="submit" name="gerar" placeholder="Criar chamado"/>
-            </form>
             
             <!-- Main content -->
             <section class="content">
@@ -94,8 +83,8 @@
                                             
                                             <td><%= c.getTecnico().getNome() %></td>
                                             <td>
-                                                <a style="margin-right: 20px;" href="" class="text-info" data-toggle="tooltip" title="Mais ações"><i class="fa fa-plus-circle"></i></a>
-                                                <a href="#" class="text-info" data-toggle="tooltip" title="Cancelar" onClick=""><i class="fa fa-trash-o"></i></a>
+                                                <a style="margin-right: 20px;" href="<%= application.getContextPath() %>/Chamado/visualiza.jsp" class="text-info" data-toggle="tooltip" title="Mais ações"><i class="fa fa-plus-circle"></i></a>
+                                                <a href="<%= application.getContextPath() %>/Chamado/cancelar.jsp" class="text-info" data-toggle="tooltip" title="Cancelar chamado"><i class="fa fa-trash-o"></i></a>
                                             </td>
                                         </tr>
                                         <%  }  %>

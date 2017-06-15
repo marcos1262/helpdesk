@@ -41,10 +41,10 @@ desired effect
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
                         <% if (usuario.getImagem() != null) { %>
-                        <img src="uploads/<%= usuario.getImagem() %>" class="user-image"
+                        <img src="<%= application.getContextPath() %>/uploads/<%= usuario.getImagem() %>" class="user-image"
                              alt="<%= usuario.getNome() %>"/>
                         <% } else { %>
-                        <img src="assets/AdminLTE-2.3.11/dist/img/avatar.png" class="user-image"
+                        <img src="<%= application.getContextPath() %>/assets/AdminLTE-2.3.11/dist/img/avatar.png" class="user-image"
                              alt="<%= usuario.getNome() %>"/>
                         <% } %>
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
@@ -56,10 +56,10 @@ desired effect
                         <li class="user-header">
 
                             <% if (usuario.getImagem() != null) { %>
-                            <img src="uploads/<%= usuario.getImagem() %>" class="img-circle"
+                            <img src="<%= application.getContextPath() %>/uploads/<%= usuario.getImagem() %>" class="img-circle"
                                  alt="<%= usuario.getNome() %>"/>
                             <% } else { %>
-                            <img src="assets/AdminLTE-2.3.11/dist/img/avatar.png" class="img-circle"
+                            <img src="<%= application.getContextPath() %>/assets/AdminLTE-2.3.11/dist/img/avatar.png" class="img-circle"
                                  alt="<%= usuario.getNome() %>"/>
                             <% } %>
 
@@ -76,7 +76,7 @@ desired effect
                             </div>
                             <div class="pull-right">
                                 <!-- LOGOUT -->
-                                <form name="Sair" action="include/security.jsp" method="post">
+                                <form name="Sair" action="<%= application.getContextPath() %>/include/security.jsp" method="post">
                                     <input type="submit" class="btn btn-default btn-flat" name="Sair" value="Sair"/>
                                 </form>
                             </div>
@@ -98,10 +98,10 @@ desired effect
         <div class="user-panel">
             <div class="pull-left image">
                 <% if (usuario.getImagem() != null) { %>
-                <img src="uploads/<%= usuario.getImagem() %>" class="img-circle"
+                <img src="<%= application.getContextPath() %>/uploads/<%= usuario.getImagem() %>" class="img-circle"
                      alt="<%= usuario.getNome() %>"/>
                 <% } else { %>
-                <img src="AdminLTE-2.3.11/dist/img/avatar.png" class="img-circle"
+                <img src="<%= application.getContextPath() %>/AdminLTE-2.3.11/dist/img/avatar.png" class="img-circle"
                      alt="<%= usuario.getNome() %>"/>
                 <% } %>
             </div>
