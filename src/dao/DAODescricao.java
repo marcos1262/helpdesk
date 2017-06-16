@@ -31,7 +31,7 @@ public class DAODescricao {
     }
 
     protected boolean atualizaDescricoes(Chamado chamado) {
-        boolean executou = false;
+        boolean executou = true;
         //todo atualiza
         return executou;
     }

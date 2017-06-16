@@ -150,11 +150,13 @@ public class DAOChamado {
             this.conexao = new ConnectionFactory().getConnection();
             {
                 String sql = "UPDATE chamado SET " +
-                        "prioridade = ?, status = ?, usuario_idtecnico = ?" +
+//                        "prioridade = ?, status = ?, " +
+                        "usuario_idtecnico = ? " +
                         "WHERE idchamado = ?";
+
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 {
-                    ps.setLong(1, chamado.getId());
+                    ps.setLong(1, chamado.getTecnico().getId());
                     ps.setLong(2, chamado.getId());
                     ps.execute();
 
