@@ -47,47 +47,51 @@
                 <div class="row">
                     <div class="col-md-12">
                         
-                        <!-------------------------------------------------->
-                        <!-- TEM QUE RECEBER UM CHAMADO E SETAR OS CAMPOS -->
-                        <!-- ACTION VAI PARA O JSP QUE MODIFICA NO BANCO  -->
-                        <!-------------------------------------------------->
-                        
+                                               
+                                   
+                        <%
+                            Chamado c1 = new Chamado();
+                            c1.setId(Integer.parseInt(request.getParameter("id")));
+                            List<Chamado> res = new Facade().consultaChamados(c1, 0, 1);
+                            Chamado c = res.get(0);
+                                
+                        %>
                         <form class="form-horizontal" action="">
-                            <input type="hidden" name="id" value=""/>
+                            <input type="hidden" name="id" value="<%= c.getId() %>"/>
                             
                             <div class="form-group">
                                 <label class="control-label col-md-2 required">Titulo <strong class="text-danger">*</strong></label>
                                 <div class="col-md-4">
-                                        <input name="titulo" type="text" class="form-control" value="">
+                                        <input name="titulo" type="text" class="form-control" value="<%= c.getTitulo() %>">
                                 </div>
 
                                 <label class="control-label col-md-1 required">Prioridade<strong class="text-danger">*</strong></label>
                                 <div class="col-md-2">
-                                        <input name="prioridade" type="text" class="form-control" value="">
+                                        <input name="prioridade" type="text" class="form-control" value="<%= c.getPrioridade() %>">
                                 </div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="control-label col-md-2 required">Status <strong class="text-danger">*</strong></label>
                                 <div class="col-md-4">
-                                        <input name="status" type="text" class="form-control" value="">
+                                        <input name="status" type="text" class="form-control" value="<%= c.getStatus() %>">
                                 </div>
 
                                 <label class="control-label col-md-1 required">Data<strong class="text-danger">*</strong></label>
                                 <div class="col-md-2">
-                                        <input name="data" type="text" class="form-control" value="">
+                                        <input name="data" type="text" class="form-control" value="<%= c.getData() %>">
                                 </div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="control-label col-md-2 required">Solicitante <strong class="text-danger">*</strong></label>
                                 <div class="col-md-4">
-                                    <input name="solicitante" type="text" class="form-control" value="<%= usuario.getId() %>" disabled="true"/>
+                                    <input name="solicitante" type="text" class="form-control" value="<%= c.getSolicitante().getNome() %>" disabled="true"/>
                                 </div>
 
                                 <label class="control-label col-md-1 required">Técnico<strong class="text-danger">*</strong></label>
                                 <div class="col-md-2">
-                                        <input name="tecnico" type="text" class="form-control" value=""/>
+                                        <input name="tecnico" type="text" class="form-control" value="<%= c.getTecnico() %>"/>
                                 </div>
                             </div>
                                 
@@ -97,7 +101,7 @@
                                     <textarea disabled="true" value="Aqui vai ter a justificativa"></textarea>
                                 </div>
                             </div>
-                                
+                     
                             <div class="form-group">
                                 <label class="control-label col-md-2 required">Adicione à descrição</label>
                                 <div class="col-md-4">
