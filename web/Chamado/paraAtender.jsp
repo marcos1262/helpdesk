@@ -88,21 +88,23 @@
                                         </td>
 
                                         <td>
-                                            <form name="formAssumir" id="formAssumir" method="post" action="visualizar.jsp" class="inline">
+                                            <form name="formAssumir" method="post" action="visualizar.jsp" class="inline">
                                                 <input type="hidden" name="id" value="<%= c.getId() %>">
                                                 <input type="hidden" name="assumirChamado" value="true">
-                                                <input type="submit" name="assumirChamado2">
                                                 <a style="margin-right: 20px;"
-                                                   href="<%= application.getContextPath() %>/Chamado/visualizar.jsp"
                                                    class="text-info" data-toggle="tooltip" title="Assumir chamado"
                                                    onclick="document.forms['formAssumir'].submit();">
                                                     <i class="fa fa-check-square"></i>
                                                 </a>
                                             </form>
-                                            <a href="<%= application.getContextPath() %>/Chamado/cancelar.jsp"
-                                               class="text-info" data-toggle="tooltip" title="Cancelar chamado">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
+                                            <form name="formCancelar" method="post" action="visualizar.jsp" class="inline">
+                                                <input type="hidden" name="id" value="<%= c.getId() %>">
+                                                <input type="hidden" name="cancelarChamado" value="true">
+                                                <a class="text-info" data-toggle="tooltip" title="Cancelar chamado"
+                                                   onclick="document.forms['formCancelar'].submit();">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                            </form>
                                         </td>
                                     </tr>
                                     <% } %>

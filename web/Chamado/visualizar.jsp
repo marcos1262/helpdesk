@@ -45,7 +45,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <%
-                            if (request.getParameter("id") != null) {
+                            if (request.getParameter("id") != null && request.getParameter("assumirChamado") == null) {
                                 Chamado c1 = new Chamado();
                                 c1.setId(Integer.parseInt(request.getParameter("id")));
                                 List<Chamado> res = new Facade().consultaChamados(c1, 0, 1);
@@ -137,16 +137,15 @@
 
 <%
     if (request.getParameter("assumirChamado") != null) {
-        System.out.println("OK");
         Long id = Long.parseLong(request.getParameter("id"));
 
         Facade facade = new Facade();
-        if (facade.assumeChamado(id, usuario.getId())) {
+        if (facade.assumeChamado(id, usuario.getId()))
 //                TODO mostrar acima do formulário (sem alert)
             out.println("<script>" +
                     "alert('Chamado assumido com sucesso!');" +
                     "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
-        } else
+        else
             out.println("<script>alert('Não foi possível assumir o chamado, por favor, contate um administrador.');</script>");
     }
 %>
