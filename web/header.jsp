@@ -1,4 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="model.Usuario" %>
 
 <!--
 BODY TAG OPTIONS:
@@ -24,7 +26,7 @@ desired effect
 <header class="main-header">
 
     <!-- Logo -->
-    <a href="index.jsp" class="logo"><b>Help</b>Desk</a>
+    <a href="<%= application.getContextPath() %>/index.jsp" class="logo"><b>Help</b>Desk</a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -41,10 +43,12 @@ desired effect
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
                         <% if (usuario.getImagem() != null) { %>
-                        <img src="<%= application.getContextPath() %>/uploads/<%= usuario.getImagem() %>" class="user-image"
+                        <img src="<%= application.getContextPath() %>/uploads/<%= usuario.getImagem() %>"
+                             class="user-image"
                              alt="<%= usuario.getNome() %>"/>
                         <% } else { %>
-                        <img src="<%= application.getContextPath() %>/assets/AdminLTE-2.3.11/dist/img/avatar.png" class="user-image"
+                        <img src="<%= application.getContextPath() %>/assets/AdminLTE-2.3.11/dist/img/avatar.png"
+                             class="user-image"
                              alt="<%= usuario.getNome() %>"/>
                         <% } %>
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
@@ -56,10 +60,12 @@ desired effect
                         <li class="user-header">
 
                             <% if (usuario.getImagem() != null) { %>
-                            <img src="<%= application.getContextPath() %>/uploads/<%= usuario.getImagem() %>" class="img-circle"
+                            <img src="<%= application.getContextPath() %>/uploads/<%= usuario.getImagem() %>"
+                                 class="img-circle"
                                  alt="<%= usuario.getNome() %>"/>
                             <% } else { %>
-                            <img src="<%= application.getContextPath() %>/assets/AdminLTE-2.3.11/dist/img/avatar.png" class="img-circle"
+                            <img src="<%= application.getContextPath() %>/assets/AdminLTE-2.3.11/dist/img/avatar.png"
+                                 class="img-circle"
                                  alt="<%= usuario.getNome() %>"/>
                             <% } %>
 
@@ -76,7 +82,8 @@ desired effect
                             </div>
                             <div class="pull-right">
                                 <!-- LOGOUT -->
-                                <form name="Sair" action="<%= application.getContextPath() %>/include/security.jsp" method="post">
+                                <form name="Sair" action="<%= application.getContextPath() %>/include/security.jsp"
+                                      method="post">
                                     <input type="submit" class="btn btn-default btn-flat" name="Sair" value="Sair"/>
                                 </form>
                             </div>
@@ -101,14 +108,14 @@ desired effect
                 <img src="<%= application.getContextPath() %>/uploads/<%= usuario.getImagem() %>" class="img-circle"
                      alt="<%= usuario.getNome() %>"/>
                 <% } else { %>
-                <img src="<%= application.getContextPath() %>/AdminLTE-2.3.11/dist/img/avatar.png" class="img-circle"
+                <img src="<%= application.getContextPath() %>/assets/AdminLTE-2.3.11/dist/img/avatar.png"
+                     class="img-circle"
                      alt="<%= usuario.getNome() %>"/>
                 <% } %>
             </div>
             <div class="pull-left info">
-
-                <p><%= usuario.getNome() %>
-                </p>
+                <p><%= usuario.getNome() %></p>
+                <%= usuario.getTipo().getDescricao()%>
             </div>
         </div>
 
@@ -117,22 +124,32 @@ desired effect
 
             <!-- Optionally, you can add icons to the links -->
             <li class="<% if(request.getRequestURI().contains("index.jsp")){%> active <%}%>">
-                <a href="index.jsp"><i class="fa fa-fw fa-home"></i> <span>Início</span></a></li>
-            <li class="treeview <% if(request.getRequestURI().contains("usuario.jsp")){%> active <%}%>">
-                <a href="#"><i class="fa fa-fw fa-user"></i> <span>Usuários</span> <i
-                        class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a href="#">Novo Usuário</a></li>
-                    <li><a href="#">Lista de Usuários</a></li>
-                </ul>
+                <a href="<%= application.getContextPath() %>/index.jsp"><i class="fa fa-fw fa-home"></i><span>
+                    Início
+                </span></a>
             </li>
+            <c:if test="${usuario.tipo == 'ADMIN'}">
+                <li class="treeview <% if(request.getRequestURI().contains("usuario.jsp")){%> active <%}%>">
+                    <a href="#"><i class="fa fa-fw fa-user"></i> <span>
+                    Usuários
+                </span><i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="#">
+                            Novo Usuário
+                        </a></li>
+                        <li><a href="#">
+                            Lista de Usuários
+                        </a></li>
+                    </ul>
+                </li>
+            </c:if>
 
             <li class="treeview <% if(request.getRequestURI().contains("chamado.jsp")){%> active <%}%>">
                 <a href="#"><i class="fa fa-fw fa-desktop"></i> <span>Chamados</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="#">Novo Chamado</a></li>
-                    <li><a href="#">Lista de Chamados</a></li>
+                    <li><a href="<%=application.getContextPath()%>/Chamado/abrir.jsp">Novo Chamado</a></li>
+                    <li><a href="<%=application.getContextPath()%>/Chamado/visualizar.jsp">Meus Chamados</a></li>
                 </ul>
             </li>
 
@@ -140,4 +157,3 @@ desired effect
     </section>
     <!-- /.sidebar -->
 </aside>
- 

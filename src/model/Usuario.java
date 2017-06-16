@@ -16,10 +16,22 @@ public class Usuario implements Serializable {
     private tipos tipo;
 
     public enum tipos {
-        ADMIN,  // Adminstrador
-        TECNI,  // Técnico
-        SOLIC   // Solicitante
+        ADMIN("Administrador"),  // Adminstrador
+        TECNI("Técnico"),  // Técnico
+        SOLIC("Solicitante");   // Solicitante
+
+        private final String descricao;
+
+        tipos(String value) {
+            descricao = value;
+        }
+
+        public String getDescricao() {
+            return descricao;
+        }
     }
+
+    public Usuario() {}
 
     public Usuario(long id) {
         this.id = id;
@@ -56,11 +68,11 @@ public class Usuario implements Serializable {
     public boolean validaSenha(Usuario usuario) {
         return usuario.senha.equals(this.senha);
     }
-    
+
     public String getSenha() {
         return senha;
     }
-    
+
     public void setSenha(String senha) {
         this.senha = senha;
     }

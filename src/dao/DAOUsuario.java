@@ -33,7 +33,7 @@ public class DAOUsuario {
      * @return Usuário com os dados consultados ou NULL quando não há resultados
      */
     public Usuario consulta(Usuario usuario) {
-        Usuario usuario1 = new Usuario("","","", null);
+        Usuario usuario1 = new Usuario();
 
         try {
             this.conexao = new ConnectionFactory().getConnection();
@@ -66,7 +66,6 @@ public class DAOUsuario {
     }
 
     public boolean cadastra(Usuario usuario) {
-        boolean executou = false;
            try {
             this.conexao = new ConnectionFactory().getConnection();
             {
@@ -79,14 +78,14 @@ public class DAOUsuario {
                 ps.setString(3, usuario.getSenha());
                 ps.setString(4, usuario.getTipo().toString());
                 ps.setString(5, usuario.getImagem());
-                executou = ps.execute();
+                ps.execute();
                 ps.close();
             }
             conexao.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return executou;
+        return true;
     }
 
     public boolean atualiza(Usuario usuario) {
@@ -96,7 +95,6 @@ public class DAOUsuario {
     }
 
     public boolean exclui(long idusuario) {
-         boolean executou = false;
            try {
             this.conexao = new ConnectionFactory().getConnection();
             {
@@ -104,14 +102,14 @@ public class DAOUsuario {
                         "WHERE idusuario = ?";
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 ps.setLong(1, idusuario);
-                executou = ps.execute();
+                ps.execute();
                 ps.close();
             }
             conexao.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return executou;
+        return true;
     }
 
 }

@@ -87,9 +87,7 @@ public class Facade {
         chamado.setTitulo(titulo);
         chamado.setPrioridade(prioridade);
         chamado.setSolicitante(new Usuario(idsolicitante));
-//      TODO cadastrar descrição
-//      Resolvido -- a descrição inicial "String descrição" vai junto com o objeto "chamado" e é gravado no proprio DAOchamado
-        chamado.addDescrição(new Descricao(descricao));
+        chamado.addDescricao(new Descricao(descricao));
         return new DAOChamado().cadastra(chamado);
     }
    
@@ -118,7 +116,6 @@ public class Facade {
      * @return Lista de chamados começando em [inicio] com [qtd] itens ou NULL quando não há resultados
      */
     public List<Chamado> consultaChamados(Chamado chamado, int inicio, int qtd) {
-//        TODO testar este método
         return new DAOChamado().consulta(chamado, inicio, qtd);
     }
 

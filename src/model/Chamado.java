@@ -21,16 +21,10 @@ public class Chamado {
 
     public Chamado(long id, Descricao descrição) {
         this.id = id;
-        addDescrição(descrição);
+        addDescricao(descrição);
     }
 
     public Chamado() {
-    }
-
-    final void addDescrição(Descricao descricao) {
-        if(descricoes==null)
-            descricoes = new ArrayList<>();
-        descricoes.add(descricao);
     }
 
     public enum prioridades {
@@ -139,6 +133,12 @@ public class Chamado {
 
     public void setDescricoes(List<Descricao> descricoes) {
         this.descricoes = descricoes;
+    }
+
+    void addDescricao(Descricao descricao) {
+        if(descricoes==null)
+            descricoes = new ArrayList<>();
+        descricoes.add(descricao);
     }
 
     @Override

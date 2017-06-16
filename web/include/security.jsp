@@ -1,9 +1,7 @@
 <%@ page import="model.Usuario" %>
 <%@ page import="model.Facade" %>
 <%
-    Usuario usuario = (Usuario) session.getAttribute("usuario");
-
-    if (usuario == null) {
+    if (session.getAttribute("usuario") == null) {
         String login = request.getParameter("usuario"),
                 senha = request.getParameter("senha");
 
@@ -21,12 +19,12 @@
                 else
                     session.setAttribute("usuario", usuario1);
             }
-        } else response.sendRedirect("login.jsp");
+        }
     }
 
     boolean result = request.getParameter("Sair") != null;
     if (result) {
         session.invalidate();
-        response.sendRedirect("../login.jsp");
+        response.sendRedirect(application.getContextPath()+"/login.jsp");
     }
 %>

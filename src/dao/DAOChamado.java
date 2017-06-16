@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
 import model.Descricao;
 
 /**
@@ -43,7 +44,7 @@ public class DAOChamado {
                 if (chamado.getId() != 0)
                     sql += "idchamado='" + chamado.getId() + "' ";
                 else sql += "TRUE ";
-                if (!chamado.getTitulo().equals(""))
+                if (chamado.getTitulo() != null)
                     sql += "AND titulo LIKE '%" + chamado.getTitulo() + "%' ";
                 if (chamado.getPrioridade() != null)
                     sql += "AND prioridade='" + chamado.getPrioridade() + "' ";
@@ -92,7 +93,7 @@ public class DAOChamado {
      * @return Verdadeiro caso seja cadastrado com sucesso ou Falso caso contrário
      */
     public boolean cadastra(Chamado chamado) {
-        boolean executou;
+        boolean executou = false;
         try {
             this.conexao = new ConnectionFactory().getConnection();
             {
@@ -100,17 +101,22 @@ public class DAOChamado {
                         "(titulo, prioridade, status, data, usuario_idsolicitante) " +
                         "VALUES (?, ?, ?, ?, ?)";
                 PreparedStatement ps = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1, chamado.getTitulo());
-                ps.setString(2, chamado.getPrioridade().toString());
-                ps.setString(3, Chamado.statusOpcoes.ABERTO.toString());
-                ps.setString(4, dataHoraMysql(LocalDateTime.now()));
-                ps.setString(5, String.valueOf(chamado.getSolicitante().getId()));
-                executou = ps.execute();
-                final ResultSet rs = ps.getGeneratedKeys();
-                if (rs.next()) {
-                    //Gravando Descricao
-                    chamado.setId(rs.getInt("idchamado"));
-                    new DAODescricao().cadastraDescricao(chamado);
+                {
+                    ps.setString(1, chamado.getTitulo());
+                    ps.setString(2, chamado.getPrioridade().toString());
+                    ps.setString(3, Chamado.statusOpcoes.ABERTO.toString());
+                    ps.setString(4, dataHoraMysql(LocalDateTime.now()));
+                    ps.setLong(5, chamado.getSolicitante().getId());
+                    ps.execute();
+                    final ResultSet rs = ps.getGeneratedKeys();
+                    if (rs.next()) {
+                        //Gravando Descricao
+                        chamado.setId(rs.getInt(1));
+                        executou = new DAODescricao().cadastraDescricao(chamado);
+                        if (!executou) {
+                            exclui(chamado);
+                        }
+                    }
                 }
                 ps.close();
             }
@@ -132,21 +138,20 @@ public class DAOChamado {
         try {
             this.conexao = new ConnectionFactory().getConnection();
             {
-                String sql = "UPDATE chamado set " +
+                String sql = "UPDATE chamado SET " +
                         "prioridade = ?, status = ?, usuario_idtecnico = ?" +
                         "WHERE idchamado = ?";
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 {
                     ps.setLong(1, chamado.getId());
                     ps.setLong(2, chamado.getId());
+                    ps.execute();
 
-                    if (ps.execute()) {
-                        //Atualizando Descricões
-                        if (new DAODescricao().atualizaDescricões(chamado)) {
-                            executou = true;
-                        } else {
-                            exclui(chamado);
-                        }
+                    //Atualizando Descricões
+                    if (new DAODescricao().atualizaDescricoes(chamado)) {
+                        executou = true;
+                    } else {
+                        exclui(chamado);
                     }
                 }
                 ps.close();
@@ -159,22 +164,23 @@ public class DAOChamado {
     }
 
     public boolean exclui(Chamado chamado) {
-        boolean executou = false;
-           try {
+        try {
             this.conexao = new ConnectionFactory().getConnection();
             {
                 String sql = "DELETE FROM chamado " +
                         "WHERE idchamado = ?";
                 PreparedStatement ps = conexao.prepareStatement(sql);
-                ps.setLong(1, chamado.getId());
-                executou = ps.execute();
+                {
+                    ps.setLong(1, chamado.getId());
+                    ps.execute();
+                }
                 ps.close();
             }
             conexao.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return executou;
+        return true;
     }
 
     private String dataHoraMysql(LocalDateTime dataHora) {
@@ -186,9 +192,9 @@ public class DAOChamado {
     private LocalDateTime dataHoraJava(String dataHora) {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         return LocalDateTime.parse(dataHora, fmt);
-    } 
+    }
 
     public boolean addDescricao(long idchamado, Descricao descrição) {
-        return new DAODescricao().cadastraDescricao(new Chamado(idchamado,descrição));
+        return new DAODescricao().cadastraDescricao(new Chamado(idchamado, descrição));
     }
 }
