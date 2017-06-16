@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="<%= application.getContextPath() %>/assets/AdminLTE-2.3.11/bootstrap/css/bootstrap.min.css">
 
 <!--FontAwesome-->
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="<%= application.getContextPath() %>/assets/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
 <!--AdminLTE | Theme style-->
 <link rel="stylesheet" href="<%= application.getContextPath() %>/assets/AdminLTE-2.3.11/dist/css/AdminLTE.min.css">

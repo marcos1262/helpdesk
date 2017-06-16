@@ -22,7 +22,7 @@
             <th>Status</th>
             <th>Data</th>
 
-            <th>TÃ©cnico</th>
+            <th>Técnico</th>
             <th style="width: 100px">#</th>
         </tr>
         </thead>
@@ -42,10 +42,13 @@
             <td><%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %>
             </td>
 
-            <%--TODO consultar nome--%>
-            <%--<td><%= c.getTecnico().getNome() %>--%>
-            <td><%= c.getTecnico().getId() %>
+                <% if(c.getTecnico().getId() != 0){ %>
+            <td><%= new Facade().consultaUsuario(c.getTecnico().getId()).getNome() %>
             </td>
+                <% } else { %>
+            <td>
+            </td>
+                <% } %>
             <td>
                 <a style="margin-right: 20px;"
                    href="<%= application.getContextPath() %>/Chamado/visualizar.jsp?id=<%= c.getId() %>"

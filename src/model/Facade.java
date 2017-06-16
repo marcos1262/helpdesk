@@ -68,6 +68,17 @@ public class Facade {
     public boolean excluiUsuario(long idusuario) {
         return new DAOUsuario().exclui(idusuario);
     }
+    
+    /**
+     * Busca um usuário a partir do id
+     * (deleta no Banco de Dados).
+     *
+     * @param idusuario id do usuário
+     * @return Verdadeiro caso seja removido com sucesso ou Falso caso contrário
+     */
+    public Usuario consultaUsuario(long idusuario) {
+        return new DAOUsuario().consulta(idusuario);
+    }
 
     //==========================================================================//
     //                              SESSÃO CHAMADO

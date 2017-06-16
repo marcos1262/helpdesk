@@ -1,3 +1,4 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
 <%@ page import="java.util.List" %>
@@ -54,7 +55,7 @@
                                 List<Chamado> res = new Facade().consultaChamados(c1, 0, 1);
                                 Chamado c = res.get(0);
                         %>
-                        <form class="form-horizontal" method="post" action="">
+                        <form class="form-horizontal" method="post" action="altera.jsp">
                             <input type="hidden" name="id" value="<%= c.getId() %>"/>
 
                             <div class="form-group">
@@ -115,7 +116,7 @@
                                 <label class="control-label col-md-1 required">Data<strong
                                         class="text-danger">*</strong></label>
                                 <div class="col-md-2">
-                                    <input name="data" type="text" class="form-control" value="<%= c.getData() %>"
+                                    <input name="data" type="text" class="form-control" value="<%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %>"
                                            disabled>
                                 </div>
                             </div>
@@ -125,14 +126,14 @@
                                         class="text-danger">*</strong></label>
                                 <div class="col-md-4">
                                     <input name="solicitante" type="text" class="form-control"
-                                           value="<%= c.getSolicitante().getNome() %>" disabled>
+                                           value="<%= new Facade().consultaUsuario(c.getSolicitante().getId()).getNome() %>" disabled>
                                 </div>
 
                                 <label class="control-label col-md-1 required">Técnico<strong
                                         class="text-danger">*</strong></label>
                                 <div class="col-md-2">
                                     <input name="tecnico" type="text" class="form-control"
-                                           value="<%= c.getTecnico().getNome() %>" disabled/>
+                                           value="<%= new Facade().consultaUsuario(c.getTecnico().getId()).getNome() %>" disabled/>
                                 </div>
                             </div>
 
@@ -140,7 +141,7 @@
                             <div class="form-group">
                                 <label class="control-label col-md-2 required">Adicione à descrição</label>
                                 <div class="col-md-4">
-                                    <textarea value=""></textarea>
+                                    <textarea name="adddesc" value=""></textarea>
                                 </div>
                             </div>
 
