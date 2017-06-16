@@ -87,16 +87,22 @@
                                         <td><%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %>
                                         </td>
 
-                                        <td><%= c.getTecnico().getNome() %>
-                                        </td>
                                         <td>
-                                            <a style="margin-right: 20px;"
-                                               href="<%= application.getContextPath() %>/chamado/visualizar.jsp"
-                                               class="text-info" data-toggle="tooltip" title="Assumir chamado"><i
-                                                    class="fa fa-check-square"></i></a>
-                                            <a href="<%= application.getContextPath() %>/chamado/cancelar.jsp"
-                                               class="text-info" data-toggle="tooltip" title="Cancelar chamado"><i
-                                                    class="fa fa-trash-o"></i></a>
+                                            <form name="formAssumir" id="formAssumir" method="post" action="visualizar.jsp" class="inline">
+                                                <input type="hidden" name="id" value="<%= c.getId() %>">
+                                                <input type="hidden" name="assumirChamado" value="true">
+                                                <input type="submit" name="assumirChamado2">
+                                                <a style="margin-right: 20px;"
+                                                   href="<%= application.getContextPath() %>/Chamado/visualizar.jsp"
+                                                   class="text-info" data-toggle="tooltip" title="Assumir chamado"
+                                                   onclick="document.forms['formAssumir'].submit();">
+                                                    <i class="fa fa-check-square"></i>
+                                                </a>
+                                            </form>
+                                            <a href="<%= application.getContextPath() %>/Chamado/cancelar.jsp"
+                                               class="text-info" data-toggle="tooltip" title="Cancelar chamado">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                     <% } %>
@@ -111,7 +117,7 @@
                             <% } else { %>
 
                             <p>Você ainda não possui chamados cadastrados <a
-                                    href="<%= application.getContextPath() %>/chamado/abrir.jsp">Clique aqui</a> para
+                                    href="<%= application.getContextPath() %>/Chamado/abrir.jsp">Clique aqui</a> para
                                 adicionar um.
                             </p>
 
