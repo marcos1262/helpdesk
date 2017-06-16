@@ -17,6 +17,7 @@ public class Facade {
     //==========================================================================//
     //                              SESSÃO USUÁRIO
     //==========================================================================//
+
     /**
      * Autentica um usuário (login e senha) no sistema
      * (consulta no Banco de Dados).
@@ -43,7 +44,7 @@ public class Facade {
      * @return Verdadeiro caso seja cadastrado com sucesso ou Falso caso contrário
      */
     public boolean cadastraUsuario(Usuario usuario) {
-         return new DAOUsuario().cadastra(usuario);
+        return new DAOUsuario().cadastra(usuario);
     }
 
     /**
@@ -90,7 +91,7 @@ public class Facade {
         chamado.addDescricao(new Descricao(descricao));
         return new DAOChamado().cadastra(chamado);
     }
-   
+
     /**
      * Exclui um chamado no sistema
      * (Exclui do Banco de Dados).
@@ -133,10 +134,19 @@ public class Facade {
         return new DAOChamado().atualiza(c);
     }
 
-    public boolean addDescricao(long idchamado, Descricao descricao){
-        return new DAOChamado().addDescricao(idchamado,descricao);
+    public boolean transfereChamado(long idChamado, long idNovoTecnico) {
+//        TODO transfere chamado
+        return false;
     }
-    
+
+    public boolean atualizaChamado(Chamado chamado) {
+        return new DAOChamado().atualiza(chamado);
+    }
+
+    public boolean addDescricao(long idchamado, Descricao descricao) {
+        return new DAOChamado().addDescricao(idchamado, descricao);
+    }
+
     //==========================================================================//
     //                         SESSÃO SERVIÇOS DIVERSOS
     //==========================================================================//

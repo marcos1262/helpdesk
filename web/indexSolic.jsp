@@ -51,7 +51,7 @@
                    href="<%= application.getContextPath() %>/Chamado/visualizar.jsp?id=<%= c.getId() %>"
                    class="text-info" data-toggle="tooltip" title="Mais ações"><i
                         class="fa fa-plus-circle"></i></a>
-                <a href="<%= application.getContextPath() %>/Chamado/cancelar.jsp"
+                <a href="<%= application.getContextPath() %>/Chamado/visualizar.jsp"
                    class="text-info" data-toggle="tooltip" title="Cancelar chamado"><i
                         class="fa fa-trash-o"></i></a>
             </td>

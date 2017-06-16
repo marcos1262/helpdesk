@@ -9,6 +9,7 @@
                             <%
                                 Chamado c1 = new Chamado();
                                 c1.setTecnico(new Usuario(0));
+                                c1.setStatus(Chamado.statusOpcoes.ABERTO.name());
 
                                 List<Chamado> res = new Facade().consultaChamados(c1, 0, 20);
                                 if (res.size() > 0) {
@@ -38,10 +39,11 @@
                                         </td>
                                         <%--TODO consultar descrição--%>
                                         <td>
-                                            <% if (c.getDescricoes() != null)
-                                                out.print("1ª de " + c.getDescricoes().size() + ": " +
-                                                        c.getDescricoes().get(0).getDescricao());
-                                            else out.print("Sem descrição...");
+                                            <% if (c.getDescricoes() != null) {
+                                                if (c.getDescricoes().size() > 1)
+                                                    out.print("1ª de " + c.getDescricoes().size() + ": ");
+                                                out.print(c.getDescricoes().get(0).getDescricao());
+                                            } else out.print("Sem descrição...");
                                             %>
                                         </td>
                                         <td><%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %>
@@ -57,6 +59,7 @@
                                                     <i class="fa fa-check-square"></i>
                                                 </a>
                                             </form>
+                                            <%--TODO pedir justificativa--%>
                                             <form name="formCancelar" method="post" action="Chamado/visualizar.jsp" class="inline">
                                                 <input type="hidden" name="id" value="<%= c.getId() %>">
                                                 <input type="hidden" name="cancelarChamado" value="true">

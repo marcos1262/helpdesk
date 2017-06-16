@@ -39,6 +39,7 @@ public class DAOChamado {
         try {
             this.conexao = new ConnectionFactory().getConnection();
             {
+//                TODO consultar usuários também
                 String sql = "SELECT * FROM chamado, descricao WHERE ";
 
                 if (chamado.getId() != 0)
@@ -149,24 +150,36 @@ public class DAOChamado {
         try {
             this.conexao = new ConnectionFactory().getConnection();
             {
-                String sql = "UPDATE chamado SET " +
-//                        "prioridade = ?, status = ?, " +
-                        "usuario_idtecnico = ? " +
-                        "WHERE idchamado = ?";
+                String sql = "UPDATE chamado SET ";
 
+                if (chamado.getPrioridade() != null)
+                    sql += "prioridade='" + chamado.getPrioridade() + "', ";
+                else
+                    sql += "prioridade = prioridade, ";
+                if (chamado.getStatus() != null)
+                    sql += "status='" + chamado.getStatus() + "', ";
+                else
+                    sql += "status = status, ";
+                if (chamado.getTecnico() != null)
+                    if (chamado.getTecnico().getId() == 0)
+                        sql += "usuario_idtecnico = NULL ";
+                    else
+                        sql += "usuario_idtecnico='" + chamado.getTecnico().getId() + "' ";
+                else
+                    sql += "usuario_idtecnico = usuario_idtecnico ";
+
+                sql += "WHERE idchamado = '"+chamado.getId()+"'";
                 PreparedStatement ps = conexao.prepareStatement(sql);
-                {
-                    ps.setLong(1, chamado.getTecnico().getId());
-                    ps.setLong(2, chamado.getId());
-                    ps.execute();
 
-                    //Atualizando Descricões
-                    if (new DAODescricao().atualizaDescricoes(chamado)) {
-                        executou = true;
-                    } else {
-                        exclui(chamado);
-                    }
+                ps.execute();
+
+                //Atualizando Descricões
+                if (new DAODescricao().atualizaDescricoes(chamado)) {
+                    executou = true;
+                } else {
+                    exclui(chamado);
                 }
+
                 ps.close();
             }
             conexao.close();
