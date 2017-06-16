@@ -44,10 +44,10 @@
                                 <%@include file="indexSolic.jsp" %>
                             </c:if>
                             <c:if test="${usuario.tipo=='TECNI'}">
-                                <%@include file="indexSolic.jsp" %>
+                                <%@include file="indexTecnico.jsp" %>
                             </c:if>
                             <c:if test="${usuario.tipo=='ADMIN'}">
-                                <%@include file="indexSolic.jsp" %>
+                                <%@include file="indexAdmin.jsp" %>
                             </c:if>
                         </div>
                     </div>

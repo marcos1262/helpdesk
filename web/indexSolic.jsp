@@ -22,7 +22,7 @@
             <th>Status</th>
             <th>Data</th>
 
-            <th>Técnico</th>
+            <th>TÃ©cnico</th>
             <th style="width: 100px">#</th>
         </tr>
         </thead>
@@ -48,10 +48,10 @@
             </td>
             <td>
                 <a style="margin-right: 20px;"
-                   href="<%= application.getContextPath() %>/chamado/visualizar.jsp"
+                   href="<%= application.getContextPath() %>/Chamado/visualizar.jsp?id=<%= c.getId() %>"
                    class="text-info" data-toggle="tooltip" title="Mais ações"><i
                         class="fa fa-plus-circle"></i></a>
-                <a href="<%= application.getContextPath() %>/chamado/cancelar.jsp"
+                <a href="<%= application.getContextPath() %>/Chamado/cancelar.jsp"
                    class="text-info" data-toggle="tooltip" title="Cancelar chamado"><i
                         class="fa fa-trash-o"></i></a>
             </td>
@@ -64,10 +64,10 @@
     <ul class="pagination pagination-sm no-margin pull-right"></ul>
 </div>
 
-<!-- Senão mostra uma frase -->
+<!-- SenÃ£o mostra uma frase -->
 <% } else { %>
 
-<p>Você ainda não possui chamados cadastrados <a href="<%= application.getContextPath() %>/chamado/abrir.jsp">Clique aqui</a> para adicionar um.
+<p>Você ainda não possui chamados cadastrados <a href="<%= application.getContextPath() %>/Chamado/abrir.jsp">Clique aqui</a> para adicionar um.
 </p>
 
 <% } %>

@@ -158,7 +158,7 @@ desired effect
                     <li><a href="<%=application.getContextPath()%>/Chamado/abrir.jsp">Novo Chamado</a></li>
                     <li><a href="<%=application.getContextPath()%>/index.jsp">Meus Chamados</a></li>
                     <c:if test="${usuario.tipo == 'TECNI'}">
-                        <li><a href="<%=application.getContextPath() %>/Chamado/paraAtender.jsp">Chamados para atender</a></li>
+                        <li><a href="<%=application.getContextPath() %>/index.jsp">Chamados para atender</a></li>
                     </c:if>
                 </ul>
             </li>

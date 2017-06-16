@@ -1,3 +1,4 @@
+<%@page import="model.Usuario"%>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
@@ -7,11 +8,11 @@
 <div>
     <!-- Se tem chamados mostra a tabela -->
     <%
-        Chamado c1 = new Chamado();
-        c1.setTecnico(new Usuario(0));
+        Chamado c2 = new Chamado();
+        c2.setTecnico(new Usuario(usuario.getId()));
 
-        List<Chamado> res = new Facade().consultaChamados(c1, 0, 20);
-        if (res.size() > 0) {
+        List<Chamado> res2 = new Facade().consultaChamados(c2, 0, 20);
+        if (res2.size() > 0) {
     %>
     <div class="table-responsive no-padding">
         <table class="table table-hover paginated">
@@ -27,7 +28,7 @@
             </thead>
             <tbody>
             <%
-                for (Chamado c : res) {
+                for (Chamado c : res2) {
             %>
             <tr>
                 <td><%= c.getId() %>
@@ -48,17 +49,6 @@
                 </td>
 
                 <td>
-                    <form name="formAssumir" id="formAssumir" method="post" action="visualizar.jsp" class="inline">
-                        <input type="hidden" name="id" value="<%= c.getId() %>">
-                        <input type="hidden" name="assumirChamado" value="true">
-                        <input type="submit" name="assumirChamado2">
-                        <a style="margin-right: 20px;"
-                           href="<%= application.getContextPath() %>/Chamado/visualizar.jsp"
-                           class="text-info" data-toggle="tooltip" title="Assumir chamado"
-                           onclick="document.forms['formAssumir'].submit();">
-                            <i class="fa fa-check-square"></i>
-                        </a>
-                    </form>
                     <a href="<%= application.getContextPath() %>/Chamado/cancelar.jsp"
                        class="text-info" data-toggle="tooltip" title="Cancelar chamado">
                         <i class="fa fa-trash-o"></i>
@@ -76,7 +66,7 @@
     <!-- Senão mostra uma frase -->
     <% } else { %>
 
-    <p>Não há chamados para serem atendidos.
+    <p>Você ainda não assumiu chamados.
     </p>
 
     <% } %>
