@@ -39,7 +39,7 @@ public class DAOChamado {
         try {
             this.conexao = new ConnectionFactory().getConnection();
             {
-                String sql = "SELECT * FROM chamado WHERE ";
+                String sql = "SELECT * FROM chamado, descricao WHERE ";
 
                 if (chamado.getId() != 0)
                     sql += "idchamado='" + chamado.getId() + "' ";
@@ -55,25 +55,36 @@ public class DAOChamado {
                 if (chamado.getSolicitante() != null)
                     sql += "AND usuario_idsolicitante='" + chamado.getSolicitante().getId() + "' ";
                 if (chamado.getTecnico() != null)
-                    sql += "AND usuario_idtecnico='" + chamado.getTecnico().getId() + "' ";
+                    if (chamado.getTecnico().getId() == 0)
+                        sql += "AND usuario_idtecnico IS NULL ";
+                    else
+                        sql += "AND usuario_idtecnico='" + chamado.getTecnico().getId() + "' ";
 
-                sql += "LIMIT " + inicio + ", " + qtd;
+                sql += "AND chamado.idchamado = descricao.chamado_idchamado ORDER BY idchamado LIMIT " + inicio + ", " + qtd;
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 {
                     ResultSet rs = ps.executeQuery();
                     while (rs.next()) {
-                        Chamado c = new Chamado();
-                        {
-                            c.setId(rs.getLong("idchamado"));
-                            c.setTitulo(rs.getString("titulo"));
-                            c.setPrioridade(rs.getString("prioridade"));
-                            c.setStatus(rs.getString("status"));
-                            c.setData(dataHoraJava(rs.getString("data")));
-                            c.setSolicitante(new Usuario(rs.getLong("usuario_idsolicitante")));
-                            c.setTecnico(new Usuario(rs.getLong("usuario_idtecnico")));
-                            // TODO consultar descrições
+                        if (l.size() > 0 && rs.getLong("idchamado") == l.get(l.size() - 1).getId()) {
+                            l.get(l.size() - 1).getDescricoes().add(new Descricao(rs.getString("descricao")));
+                        } else {
+                            Chamado c = new Chamado();
+                            {
+                                c.setId(rs.getLong("idchamado"));
+                                c.setTitulo(rs.getString("titulo"));
+                                c.setPrioridade(rs.getString("prioridade"));
+                                c.setStatus(rs.getString("status"));
+                                c.setData(dataHoraJava(rs.getString("data")));
+                                c.setSolicitante(new Usuario(rs.getLong("usuario_idsolicitante")));
+                                c.setTecnico(new Usuario(rs.getLong("usuario_idtecnico")));
+
+                                List<Descricao> ld = new ArrayList<>();
+                                ld.add(new Descricao(rs.getString("descricao")));
+                                c.setDescricoes(ld);
+                            }
+                            l.add(c);
                         }
-                        l.add(c);
+
                     }
                     rs.close();
                 }

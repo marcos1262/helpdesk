@@ -1,8 +1,3 @@
-<%@ page import="model.Usuario.tipos"%>
-<%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="model.Facade" %>
-<%@ page import="model.Chamado" %>
-<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
@@ -28,7 +23,6 @@
     <%@include file="header.jsp" %>
 
     <div class="content-wrapper">
-        <%--TODO criar própria página--%>
         <section class="content-header">
             <h1>
                 Meus chamados

@@ -24,7 +24,6 @@
     <%@include file="../header.jsp" %>
 
     <div class="content-wrapper">
-        <%--TODO criar própria página--%>
         <section class="content-header">
             <h1>
                 Abrir chamado
@@ -85,8 +84,9 @@
             Facade facade = new Facade();
             if (facade.abreChamado(titulo, prioridade, descricao, usuario.getId())) {
 //                TODO mostrar acima do formulário (sem alert)
-                out.println("<script>alert('Chamado aberto com sucesso!');</script>");
-                response.sendRedirect(application.getContextPath() + "/index.jsp");
+                out.println("<script>" +
+                        "alert('Chamado aberto com sucesso!');" +
+                        "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
             } else
                 out.println("<script>alert('Não foi possível abrir um chamado, por favor, contate um administrador.');</script>");
         }

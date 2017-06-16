@@ -37,6 +37,13 @@ desired effect
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
+                <c:if test="${usuario.tipo == 'ADMIN'}">
+                    <li>
+                        <a href="<%= application.getContextPath() %>/adm/index.jsp" style="padding: 7px 0 8px 0;">
+                            <button class="btn btn-default">Área administrativa</button>
+                        </a>
+                    </li>
+                </c:if>
                 <!-- User Account Menu -->
                 <li class="dropdown user user-menu">
                     <!-- Menu Toggle Button -->
@@ -148,8 +155,11 @@ desired effect
                 <a href="#"><i class="fa fa-fw fa-desktop"></i> <span>Chamados</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="<%=application.getContextPath()%>/Chamado/abrir.jsp">Novo Chamado</a></li>
+                    <li><a href="<%=application.getContextPath()%>/chamado/abrir.jsp">Novo Chamado</a></li>
                     <li><a href="<%=application.getContextPath()%>/index.jsp">Meus Chamados</a></li>
+                    <c:if test="${usuario.tipo == 'TECNI'}">
+                        <li><a href="<%=application.getContextPath() %>/chamado/paraAtender.jsp">Chamados para atender</a></li>
+                    </c:if>
                 </ul>
             </li>
 
