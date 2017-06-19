@@ -1,4 +1,4 @@
-<%@page import="java.time.format.DateTimeFormatter"%>
+<%@ page import="java.time.format.DateTimeFormatter"%>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
 <%@ page import="java.util.List" %>
@@ -55,7 +55,7 @@
                                 List<Chamado> res = new Facade().consultaChamados(c1, 0, 1);
                                 Chamado c = res.get(0);
                         %>
-                        <form class="form-horizontal" method="post" action="altera.jsp">
+                        <form class="form-horizontal" method="post" action="">
                             <input type="hidden" name="id" value="<%= c.getId() %>"/>
 
                             <div class="form-group">
