@@ -39,8 +39,10 @@ public class DAOChamado {
         try {
             this.conexao = new ConnectionFactory().getConnection();
             {
-//                TODO consultar usuários também
-                String sql = "SELECT * FROM chamado, descricao WHERE ";
+                String sql = "SELECT idchamado, titulo, prioridade, status, data, " +
+                        "u1.idusuario as solicId, u1.nome as solicNome, " +
+                        "u2.idusuario as tecniId, u2.nome as tecniNome " +
+                        "FROM chamado, descricao, usuario u1, usuario u2 ";
 
                 if (chamado.getId() != 0)
                     sql += "idchamado='" + chamado.getId() + "' ";
@@ -61,7 +63,10 @@ public class DAOChamado {
                     else
                         sql += "AND usuario_idtecnico='" + chamado.getTecnico().getId() + "' ";
 
-                sql += "AND chamado.idchamado = descricao.chamado_idchamado ORDER BY idchamado LIMIT " + inicio + ", " + qtd;
+                sql += "AND chamado.idchamado = descricao.chamado_idchamado " +
+                        "AND chamado.usuario_idsolicitante = u1.idusuario " +
+                        "AND chamado.usuario_idtecnico = u2.idusuario " +
+                        "ORDER BY idchamado LIMIT " + inicio + ", " + qtd;
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 {
                     ResultSet rs = ps.executeQuery();
@@ -76,8 +81,18 @@ public class DAOChamado {
                                 c.setPrioridade(rs.getString("prioridade"));
                                 c.setStatus(rs.getString("status"));
                                 c.setData(dataHoraJava(rs.getString("data")));
-                                c.setSolicitante(new Usuario(rs.getLong("usuario_idsolicitante")));
-                                c.setTecnico(new Usuario(rs.getLong("usuario_idtecnico")));
+
+                                Usuario solic = new Usuario(
+                                        rs.getLong("solicId"),
+                                        rs.getString("solicNome")
+                                );
+                                c.setSolicitante(solic);
+
+                                Usuario tecni = new Usuario(
+                                        rs.getLong("tecniId"),
+                                        rs.getString("tecniNome")
+                                );
+                                c.setTecnico(tecni);
 
                                 List<Descricao> ld = new ArrayList<>();
                                 ld.add(new Descricao(rs.getString("descricao")));
@@ -168,7 +183,7 @@ public class DAOChamado {
                 else
                     sql += "usuario_idtecnico = usuario_idtecnico ";
 
-                sql += "WHERE idchamado = '"+chamado.getId()+"'";
+                sql += "WHERE idchamado = '" + chamado.getId() + "'";
                 PreparedStatement ps = conexao.prepareStatement(sql);
 
                 ps.execute();

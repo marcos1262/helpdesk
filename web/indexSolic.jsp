@@ -62,15 +62,17 @@
         <% } %>
         </tbody>
     </table>
-</div><!-- /.box-body -->
+</div>
+<!-- /.box-body -->
 <div class="clearfix">
     <ul class="pagination pagination-sm no-margin pull-right"></ul>
 </div>
 
-<!-- SenÃ£o mostra uma frase -->
+<!-- Senão mostra uma frase -->
 <% } else { %>
 
-<p>Você ainda não possui chamados cadastrados <a href="<%= application.getContextPath() %>/Chamado/abrir.jsp">Clique aqui</a> para adicionar um.
+<p>Você ainda não possui chamados cadastrados <a href="<%= application.getContextPath() %>/Chamado/abrir.jsp">Clique
+    aqui</a> para adicionar um.
 </p>
 
 <% } %>

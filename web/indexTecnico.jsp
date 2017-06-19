@@ -24,8 +24,10 @@
         });
     </script> --%>
 
-<h3>PARA ATENDER</h3>
+<h4>Para Atender</h4>
 <%@include file="Chamado/paraAtender.jsp" %>
-<hr/>
-<h3>MEUS CHAMADOS</h3>
+
+<hr>
+
+<h4>Meus Chamados</h4>
 <%@include file="Chamado/chamadosTecnico.jsp" %>
