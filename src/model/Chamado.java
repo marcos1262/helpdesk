@@ -135,7 +135,7 @@ public class Chamado {
         this.descricoes = descricoes;
     }
 
-    void addDescricao(Descricao descricao) {
+    public void addDescricao(Descricao descricao) {
         if(descricoes==null)
             descricoes = new ArrayList<>();
         descricoes.add(descricao);

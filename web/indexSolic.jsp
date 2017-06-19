@@ -21,7 +21,6 @@
             <th>Prioridade</th>
             <th>Status</th>
             <th>Data</th>
-
             <th>Técnico</th>
             <th style="width: 100px">#</th>
         </tr>
@@ -41,14 +40,11 @@
             </td>
             <td><%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %>
             </td>
-
-                <% if(c.getTecnico().getId() != 0){ %>
-            <td><%= new Facade().consultaUsuario(c.getTecnico().getId()).getNome() %>
-            </td>
-                <% } else { %>
             <td>
+                <% if (c.getTecnico().getId() != 0) {
+                    out.print(c.getTecnico().getNome());
+                }%>
             </td>
-                <% } %>
             <td>
                 <a style="margin-right: 20px;"
                    href="<%= application.getContextPath() %>/Chamado/visualizar.jsp?id=<%= c.getId() %>"

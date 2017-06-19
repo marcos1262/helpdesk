@@ -4,6 +4,11 @@ public class Descricao {
     private long id;
     private String descricao;
 
+    public Descricao(long id, String descricao) {
+        this.id = id;
+        this.descricao = descricao;
+    }
+
     public Descricao(String descricao) {
         this.descricao = descricao;
     }

@@ -12,7 +12,7 @@ public class DAODescricao {
     private Connection conexao;
 
     //o método está preparado para gravar apenas uma descrição que venha inclusa no objeto chamado.
-    protected boolean cadastraDescricao(Chamado chamado) {
+    boolean cadastraDescricao(Chamado chamado) {
         try {
             this.conexao = new ConnectionFactory().getConnection();
             String sql = "INSERT INTO descricao (descricao, chamado_idchamado) VALUES (?,?)";
@@ -30,7 +30,7 @@ public class DAODescricao {
         return true;
     }
 
-    protected boolean atualizaDescricoes(Chamado chamado) {
+    boolean atualizaDescricoes(Chamado chamado) {
         boolean executou = true;
         //todo atualiza descrições
         return executou;

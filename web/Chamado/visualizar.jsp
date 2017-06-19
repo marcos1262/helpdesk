@@ -1,7 +1,8 @@
-<%@ page import="java.time.format.DateTimeFormatter"%>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
 <%@ page import="java.util.List" %>
+<%@ page import="model.Descricao" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
@@ -33,8 +34,9 @@
                 <small>Chamados</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="<%= application.getContextPath() %>/index.jsp"><i class="fa fa-dashboard"></i> Home</a>
-                </li>
+                <li><a href="<%= application.getContextPath() %>/index.jsp">
+                    <i class="fa fa-dashboard"></i> Home
+                </a></li>
                 <li class="active">Acompanhar chamado</li>
             </ol>
         </section>
@@ -52,7 +54,7 @@
                                     && request.getParameter("transferirChamado") == null) {
                                 Chamado c1 = new Chamado();
                                 c1.setId(Integer.parseInt(request.getParameter("id")));
-                                List<Chamado> res = new Facade().consultaChamados(c1, 0, 1);
+                                List<Chamado> res = new Facade().consultaChamados(c1, 0, 100);
                                 Chamado c = res.get(0);
                         %>
                         <form class="form-horizontal" method="post" action="">
@@ -116,7 +118,8 @@
                                 <label class="control-label col-md-1 required">Data<strong
                                         class="text-danger">*</strong></label>
                                 <div class="col-md-2">
-                                    <input name="data" type="text" class="form-control" value="<%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %>"
+                                    <input name="data" type="text" class="form-control"
+                                           value="<%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %>"
                                            disabled>
                                 </div>
                             </div>
@@ -126,30 +129,74 @@
                                         class="text-danger">*</strong></label>
                                 <div class="col-md-4">
                                     <input name="solicitante" type="text" class="form-control"
-                                           value="<%= new Facade().consultaUsuario(c.getSolicitante().getId()).getNome() %>" disabled>
+                                           value="<%= new Facade().consultaUsuario(c.getSolicitante().getId()).getNome() %>"
+                                           disabled>
                                 </div>
 
                                 <label class="control-label col-md-1 required">Técnico<strong
                                         class="text-danger">*</strong></label>
                                 <div class="col-md-2">
                                     <input name="tecnico" type="text" class="form-control"
-                                           value="<%= new Facade().consultaUsuario(c.getTecnico().getId()).getNome() %>" disabled/>
+                                           value="<%= new Facade().consultaUsuario(c.getTecnico().getId()).getNome() %>"
+                                           disabled/>
                                 </div>
                             </div>
 
-                            <%--TODO mostrar lista de descrições, receber novas descrições, excluir descrições--%>
-                            <div class="form-group">
+                            <%--TODO excluir descrições--%>
+                            <div class="form-group col-md-8 col-md-push-2">
+                                <b>Descrições</b>
+                                <table class="table table-hover paginated">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Descrição</th>
+                                        <%--<th style="width: 100px">Opções</th>--%>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <%
+                                        for (int i = 0; i < c.getDescricoes().size(); i++) {
+                                            Descricao d = c.getDescricoes().get(i);
+                                    %>
+                                    <tr>
+                                        <td><%= i + 1 %>
+                                        </td>
+                                        <td><%= d.getDescricao() %>
+                                        </td>
+
+                                        <%--<td>--%>
+                                        <%--&lt;%&ndash; TODO alguma opção para descrição &ndash;%&gt;--%>
+                                        <%--<form name="formAssumir" method="post" action="" class="inline">--%>
+                                        <%--<input type="hidden" name="id" value="<%= c.getId() %>">--%>
+                                        <%--<input type="hidden" name="assumirChamado" value="true">--%>
+                                        <%--<a style="margin-right: 20px;"--%>
+                                        <%--class="text-info" data-toggle="tooltip" title="Assumir chamado"--%>
+                                        <%--onclick="document.forms['formAssumir'].submit();">--%>
+                                        <%--<i class="fa fa-check-square"></i>--%>
+                                        <%--</a>--%>
+                                        <%--</form>--%>
+                                        <%--</td>--%>
+                                    </tr>
+                                    <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="form-group col-md-12">
                                 <label class="control-label col-md-2 required">Adicione à descrição</label>
                                 <div class="col-md-4">
-                                    <textarea name="adddesc" value=""></textarea>
+                                    <textarea name="adddesc"></textarea>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-8 col-md-offset-2">
-                                    <a href="<%= application.getContextPath() %>/index.jsp" class="btn btn-default">Voltar
-                                        para tela inicial</a>
-                                    <button type="submit" name="alterarChamado" class="btn btn-success">Salvar</button>
+                                    <a href="<%= application.getContextPath() %>/index.jsp" class="btn btn-default">
+                                        Voltar
+                                    </a>
+                                    <button type="submit" name="alterarChamado" class="btn btn-success col-md-offset-1">
+                                        Salvar
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -222,14 +269,21 @@
         c.setStatus(status);
         c.setPrioridade(prioridade);
 
-        Facade facade = new Facade();
-        if (facade.atualizaChamado(c))
+        String desc = request.getParameter("adddesc");
+        if (!desc.equals("")) {
+            c.addDescricao(new Descricao(desc));
+        }
+
+        if (new Facade().atualizaChamado(c))
 //                TODO mostrar acima do formulário (sem alert)
             out.println("<script>" +
                     "alert('Chamado alterado com sucesso!');" +
-                    "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
+                    "</script>");
+//                    "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
         else
-            out.println("<script>alert('Não foi possível alterar o chamado, por favor, contate um administrador.');</script>");
+            out.println("<script>" +
+                    "alert('Não foi possível alterar o chamado, por favor, contate um administrador.');" +
+                    "</script>");
     }
 %>
 

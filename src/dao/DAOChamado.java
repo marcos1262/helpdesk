@@ -40,9 +40,11 @@ public class DAOChamado {
             this.conexao = new ConnectionFactory().getConnection();
             {
                 String sql = "SELECT idchamado, titulo, prioridade, status, data, " +
+                        "iddescricao, descricao, " +
                         "u1.idusuario as solicId, u1.nome as solicNome, " +
                         "u2.idusuario as tecniId, u2.nome as tecniNome " +
-                        "FROM chamado, descricao, usuario u1, usuario u2 ";
+                        "FROM chamado, descricao, usuario u1, usuario u2 " +
+                        "WHERE ";
 
                 if (chamado.getId() != 0)
                     sql += "idchamado='" + chamado.getId() + "' ";
@@ -61,18 +63,23 @@ public class DAOChamado {
                     if (chamado.getTecnico().getId() == 0)
                         sql += "AND usuario_idtecnico IS NULL ";
                     else
-                        sql += "AND usuario_idtecnico='" + chamado.getTecnico().getId() + "' ";
+                        sql += "AND usuario_idtecnico='" + chamado.getTecnico().getId() + "' " +
+                                "AND chamado.usuario_idtecnico = u2.idusuario ";
 
                 sql += "AND chamado.idchamado = descricao.chamado_idchamado " +
                         "AND chamado.usuario_idsolicitante = u1.idusuario " +
-                        "AND chamado.usuario_idtecnico = u2.idusuario " +
-                        "ORDER BY idchamado LIMIT " + inicio + ", " + qtd;
+                        "ORDER BY data DESC, iddescricao ASC LIMIT " + inicio + ", " + qtd;
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 {
                     ResultSet rs = ps.executeQuery();
                     while (rs.next()) {
+                        Descricao desc = new Descricao(
+                                rs.getLong("iddescricao"),
+                                rs.getString("descricao")
+                        );
+
                         if (l.size() > 0 && rs.getLong("idchamado") == l.get(l.size() - 1).getId()) {
-                            l.get(l.size() - 1).getDescricoes().add(new Descricao(rs.getString("descricao")));
+                            l.get(l.size() - 1).getDescricoes().add(desc);
                         } else {
                             Chamado c = new Chamado();
                             {
@@ -95,12 +102,11 @@ public class DAOChamado {
                                 c.setTecnico(tecni);
 
                                 List<Descricao> ld = new ArrayList<>();
-                                ld.add(new Descricao(rs.getString("descricao")));
+                                ld.add(desc);
                                 c.setDescricoes(ld);
                             }
                             l.add(c);
                         }
-
                     }
                     rs.close();
                 }
@@ -161,7 +167,7 @@ public class DAOChamado {
      * @return Verdadeiro caso seja atualizado com sucesso ou Falso caso contrário
      */
     public boolean atualiza(Chamado chamado) {
-        boolean executou = false;
+        boolean executou = true;
         try {
             this.conexao = new ConnectionFactory().getConnection();
             {
@@ -189,11 +195,13 @@ public class DAOChamado {
                 ps.execute();
 
                 //Atualizando Descricões
-                if (new DAODescricao().atualizaDescricoes(chamado)) {
-                    executou = true;
-                } else {
-                    exclui(chamado);
-                }
+//                TODO atualizar lista de descrições (adicionar, excluir)
+//                if (new DAODescricao().atualizaDescricoes(chamado)) {
+                if (chamado.getDescricoes() != null)
+                    if (! new DAODescricao().cadastraDescricao(chamado))
+//                    TODO desfazer update
+//                    exclui(chamado);
+                        executou = false;
 
                 ps.close();
             }
@@ -233,9 +241,5 @@ public class DAOChamado {
     private LocalDateTime dataHoraJava(String dataHora) {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         return LocalDateTime.parse(dataHora, fmt);
-    }
-
-    public boolean addDescricao(long idchamado, Descricao descrição) {
-        return new DAODescricao().cadastraDescricao(new Chamado(idchamado, descrição));
     }
 }

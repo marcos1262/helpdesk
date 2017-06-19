@@ -68,7 +68,7 @@ public class Facade {
     public boolean excluiUsuario(long idusuario) {
         return new DAOUsuario().exclui(idusuario);
     }
-    
+
     /**
      * Busca um usuário a partir do id
      * (deleta no Banco de Dados).
@@ -152,10 +152,6 @@ public class Facade {
 
     public boolean atualizaChamado(Chamado chamado) {
         return new DAOChamado().atualiza(chamado);
-    }
-
-    public boolean addDescricao(long idchamado, Descricao descricao) {
-        return new DAOChamado().addDescricao(idchamado, descricao);
     }
 
     //==========================================================================//
