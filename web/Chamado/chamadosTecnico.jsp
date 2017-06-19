@@ -31,13 +31,10 @@
                 for (Chamado c : res2) {
             %>
             <tr>
-                <td><%= c.getId() %>
-                </td>
-                <td><%= c.getTitulo() %>
-                </td>
-                <td><%= c.getPrioridade().toString() %>
-                </td>
-                <%--TODO consultar descrição--%>
+                <td><%= c.getId() %></td>
+                <td><%= c.getTitulo() %></td>
+                <td><%= c.getPrioridade().toString() %></td>
+
                 <td>
                     <% if (c.getDescricoes() != null) {
                         if (c.getDescricoes().size() > 1)
@@ -46,8 +43,7 @@
                     } else out.print("Sem descrição...");
                     %>
                 </td>
-                <td><%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %>
-                </td>
+                <td><%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %></td>
 
                 <td>
                     <form name="formVisualizar" method="post" action="Chamado/visualizar.jsp" class="inline">

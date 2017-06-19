@@ -42,11 +42,9 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    public Usuario(String nome, String usuario, String senha, tipos tipo) {
+    public Usuario(long id, String nome) {
+        this.id = id;
         this.nome = nome;
-        this.usuario = usuario;
-        this.senha = senha;
-        this.tipo = tipo;
     }
 
     public String getNome() {
