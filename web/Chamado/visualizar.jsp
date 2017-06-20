@@ -249,18 +249,23 @@
 
     if (request.getParameter("transferirChamado") != null) {
         Long id = Long.parseLong(request.getParameter("id"));
+        
+        Chamado c = new Chamado(); 
+        c.setId(id);
+        
         String justificativa = request.getParameter("justificativa");
         Long idtecnico = Long.parseLong(request.getParameter("novo_tecnico"));
-//        TODO gravar justificativa
-
         Facade facade = new Facade();
-        if (facade.transfereChamado(id, idtecnico))
+        
+        
+        
+        if (facade.transfereChamado(id, idtecnico) && facade.cadastraHistorico("Chamado transferido", justificativa, usuario, c, new Usuario(idtecnico)))
 //                TODO mostrar acima do formulário (sem alert)
             out.println("<script>" +
-                    "alert('Chamado assumido com sucesso!');" +
+                    "alert('Chamado transferido com sucesso!');" +
                     "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
         else
-            out.println("<script>alert('Não foi possível assumir o chamado, por favor, contate um administrador.');</script>");
+            out.println("<script>alert('Não foi possível transferir o chamado, por favor, contate um administrador.');</script>");
     }
 
     if (request.getParameter("alterarChamado") != null) {

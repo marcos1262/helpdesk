@@ -109,7 +109,7 @@
                 +	'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                 +	'<h4 class="modal-title">'+ titulo +'</h4>'
                 +'</div>'
-                +'<form method="post" action="<%=application.getContextPath()%>/visualizar.jsp">'
+                +'<form method="post" action="<%=application.getContextPath()%>/Chamado/visualizar.jsp">'
                 +'<div class="modal-body">'
                 +'<input type="hidden" name="id" value="'+id+'">'
                 +'<input type="hidden" name="transferirChamado" value="true">'

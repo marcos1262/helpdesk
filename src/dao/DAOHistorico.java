@@ -4,6 +4,7 @@ import dao.bd.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import model.Facade;
@@ -27,21 +28,21 @@ public class DAOHistorico {
         return l;
     }
     public boolean cadastra(Historico historico){
-        boolean executou = false;
+        boolean executou = true;
         try {
             this.conexao = new ConnectionFactory().getConnection();
             {
                 String sql = "INSERT INTO historico " +
-                        "(acao,justificativa,hora,usuario1,chamado,usuario2) " +
+                        "(acao,justificativa,hora,usuario_idusuario1,chamado_idchamado,usuario_idusuario2) " +
                         "VALUES (?, ?, ?, ?, ?, ?)";
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 {
                     ps.setString(1, historico.getAcao());
                     ps.setString(2, historico.getJustificativa());
-                    ps.setString(3, new Facade().dataHoraMysql(historico.getHora()));
+                    ps.setString(3, new Facade().dataHoraMysql(LocalDateTime.now()));
                     ps.setLong(4, historico.getUsuario1().getId());
                     ps.setLong(5, historico.getChamado().getId());
-                    ps.setLong(4, historico.getUsuario2().getId());
+                    ps.setLong(6, historico.getUsuario2().getId());
                     ps.execute();
                 }
                 ps.close();

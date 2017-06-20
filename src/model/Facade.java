@@ -1,6 +1,7 @@
 package model;
 
 import dao.DAOChamado;
+import dao.DAOHistorico;
 import dao.DAOUsuario;
 
 import java.math.BigInteger;
@@ -162,14 +163,42 @@ public class Facade {
     }
 
     public boolean transfereChamado(long idChamado, long idNovoTecnico) {
-//        TODO transfere chamado
-        return false;
+        Chamado chamado = new Chamado();
+        chamado.setId(idChamado);
+        chamado.setTecnico(new Usuario(idNovoTecnico));
+        return new DAOChamado().atualiza(chamado);
     }
 
     public boolean atualizaChamado(Chamado chamado) {
         return new DAOChamado().atualiza(chamado);
     }
 
+    //==========================================================================//
+    //                              SESSÃO HISTÓRICO
+    //==========================================================================//
+    
+    /**
+     * Cadastra um Histórico no sistema
+     * (cadastra no Banco de Dados).
+     *
+     * @param acao        ação que desencadeou o cadastro do histórico
+     * @param justificativa    justificativa para a ação
+     * @param usuario1     usuário envolvido na ação
+     * @param chamado chamado alterado na ação
+     * @param usuario2 usuário 2 envolvido na ação
+     * @return Verdadeiro caso seja cadastrado com sucesso ou Falso caso contrário
+     */
+    public boolean cadastraHistorico(String acao, String justificativa, Usuario usuario1, Chamado chamado, Usuario usuario2) {
+        Historico historico = new Historico();
+        historico.setAcao(acao);
+        historico.setJustificativa(justificativa);
+        historico.setUsuario1(usuario1);
+        historico.setChamado(chamado);
+        historico.setUsuario2(usuario2);
+        return new DAOHistorico().cadastra(historico);
+    }
+    
+    
     //==========================================================================//
     //                         SESSÃO SERVIÇOS DIVERSOS
     //==========================================================================//
