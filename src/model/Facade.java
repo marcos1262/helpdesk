@@ -6,6 +6,8 @@ import dao.DAOUsuario;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -70,14 +72,17 @@ public class Facade {
     }
 
     /**
-     * Busca um usuário a partir do id
+     * Consulta fatia de todos os usuários (ideal para paginação),
+     * considerando os atributos não nulos de uma instância de {@link Usuario}
      * (consulta no Banco de Dados).
      *
-     * @param idusuario id do usuário
-     * @return Verdadeiro caso seja removido com sucesso ou Falso caso contrário
+     * @param usuario objeto que definirá os parâmetros da busca
+     * @param inicio  número de registro inicial
+     * @param qtd     quantidades de registros
+     * @return Lista de usuários começando em [inicio] com [qtd] itens ou NULL quando não há resultados
      */
-    public Usuario consultaUsuario(long idusuario) {
-        return new DAOUsuario().consulta(idusuario);
+    public List<Usuario> consultaUsuarios(Usuario usuario, int inicio, int qtd) {
+        return new DAOUsuario().consulta(usuario, inicio, qtd);
     }
     
     /**
@@ -114,8 +119,8 @@ public class Facade {
     }
 
     /**
-     * Exclui um chamado no sistema
-     * (Exclui do Banco de Dados).
+     * Cancela um chamado no sistema
+     * (Atualiza no Banco de Dados).
      *
      * @param idChamado codigo do chamado a ser excluido
      * @return Verdadeiro caso seja excluido com sucesso ou Falso caso contrário
@@ -144,6 +149,7 @@ public class Facade {
     public boolean assumeChamado(long idChamado, long idTecnico) {
         Chamado c = new Chamado();
         c.setId(idChamado);
+        c.setStatus("ATENDENDO");
         c.setTecnico(new Usuario(idTecnico));
         return new DAOChamado().atualiza(c);
     }
@@ -182,5 +188,15 @@ public class Facade {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+    public String dataHoraMysql(LocalDateTime dataHora) {
+        DateTimeFormatter formatador =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        return dataHora.format(formatador);
+    }
+
+    public LocalDateTime dataHoraJava(String dataHora) {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        return LocalDateTime.parse(dataHora, fmt);
     }
 }

@@ -41,7 +41,7 @@
             <td><%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %>
             </td>
             <td>
-                <% if (c.getTecnico().getId() != 0) {
+                <% if (c.getTecnico() != null && c.getTecnico().getId() != 0) {
                     out.print(c.getTecnico().getNome());
                 }%>
             </td>
