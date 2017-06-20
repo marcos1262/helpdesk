@@ -185,7 +185,7 @@
                             <div class="form-group col-md-12">
                                 <label class="control-label col-md-2 required">Adicione à descrição</label>
                                 <div class="col-md-4">
-                                    <textarea name="adddesc"></textarea>
+                                    <textarea class="form-control" name="adddesc"></textarea>
                                 </div>
                             </div>
 
@@ -244,19 +244,19 @@
     }
 
     if (request.getParameter("transferirChamado") != null) {
-//        Long id = Long.parseLong(request.getParameter("id"));
-//        String justificativa = request.getParameter("justificativa");
-//        Long idtecnico = Long.parseLong(request.getParameter("novo_tecnico"));
-////        TODO gravar justificativa
-//
-//        Facade facade = new Facade();
-//        if (facade.transfereChamado(id, idtecnico))
-////                TODO mostrar acima do formulário (sem alert)
-//            out.println("<script>" +
-//                    "alert('Chamado assumido com sucesso!');" +
-//                    "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
-//        else
-//            out.println("<script>alert('Não foi possível assumir o chamado, por favor, contate um administrador.');</script>");
+        Long id = Long.parseLong(request.getParameter("id"));
+        String justificativa = request.getParameter("justificativa");
+        Long idtecnico = Long.parseLong(request.getParameter("novo_tecnico"));
+//        TODO gravar justificativa
+
+        Facade facade = new Facade();
+        if (facade.transfereChamado(id, idtecnico))
+//                TODO mostrar acima do formulário (sem alert)
+            out.println("<script>" +
+                    "alert('Chamado assumido com sucesso!');" +
+                    "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
+        else
+            out.println("<script>alert('Não foi possível assumir o chamado, por favor, contate um administrador.');</script>");
     }
 
     if (request.getParameter("alterarChamado") != null) {

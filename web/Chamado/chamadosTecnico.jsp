@@ -1,3 +1,4 @@
+<%@page import="model.Usuario"%>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
@@ -66,7 +67,7 @@
                     <input type="hidden" name="id" value="<%= c.getId() %>">
                     <input type="hidden" name="transferirChamado" value="true">
                     <a class="text-info" data-toggle="tooltip" title="Transferir chamado"
-                       onclick="document.forms['formTransferir'].submit();">
+                       onclick="modalTransferir(<%= c.getId() %>);return false;">
                         <i class="fa fa-forward"></i>
                     </a>
                 </form>
@@ -88,3 +89,55 @@
 </p>
 
 <% } %>
+
+<div id="action-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    
+    function modalTransferir(id){
+        //Constroi título e descrição
+        titulo = "Transferir chamado";
+        
+        //Corpo da modal
+        $('.modal-content').html('<div class="modal-header">'
+                +	'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                +	'<h4 class="modal-title">'+ titulo +'</h4>'
+                +'</div>'
+                +'<form method="post" action="<%=application.getContextPath()%>/visualizar.jsp">'
+                +'<div class="modal-body">'
+                +'<input type="hidden" name="id" value="'+id+'">'
+                +'<input type="hidden" name="transferirChamado" value="true">'
+                +   '<select name="novo_tecnico" class="form-control">'
+                +       '<option selected value="">Selecione um técnico...</option>'
+                    <% 
+                        List<Usuario> tecnicos = new Facade().consultaTecnicos();
+                        
+                        for(Usuario t : tecnicos){
+                            if(t.getId() != usuario.getId()){
+                        
+                    %>
+                +       '<option value="<%= t.getId() %>"><%= t.getNome() %></option>'
+                    <%
+                            }
+                        }
+                    %>
+                +   '<input type="text" name="justificativa" class="form-control" placeholder="Digite uma justificativa"/>'
+                +'</div>'
+                +'<div class="modal-footer">'
+                +   '<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>'
+                +   '<button type="submit" class="btn btn-default pull-right">Transferir</button>'
+                +'</div>'
+                +'</form>'
+               						
+        );
+        $('#action-modal').modal('show');
+
+    }
+    
+</script>

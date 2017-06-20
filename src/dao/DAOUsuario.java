@@ -3,6 +3,7 @@ package dao;
 import dao.bd.ConnectionFactory;
 import model.Usuario;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -102,6 +103,45 @@ public class DAOUsuario {
         if (usuario1.validaSenha(usuario1))
             return usuario1;
         else return null;
+    }
+    
+    /**
+     * Consulta um usuário pelo tipo
+     *
+     * @param tipo id do usuário a ser retornado
+     * @return Usuário com os dados consultados ou NULL quando não há resultados
+     */
+    public List<Usuario> consultaTipo(String tipo) {
+        Usuario usuario1 = new Usuario();
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try {
+            this.conexao = new ConnectionFactory().getConnection();
+            {
+                String sql = "SELECT * FROM usuario WHERE tipo=?";
+                PreparedStatement ps = conexao.prepareStatement(sql);
+                ps.setString(1, tipo);
+                {
+                    ResultSet rs = ps.executeQuery();
+                    while (rs.next()) {
+                        usuario1.setId(rs.getLong("idusuario"));
+                        usuario1.setNome(rs.getString("nome"));
+                        usuario1.setUsuario(rs.getString("login"));
+                        usuario1.setSenha(rs.getString("senha"));
+                        usuario1.setTipo(rs.getString("tipo"));
+                        usuario1.setImagem(rs.getString("imagem"));
+                        usuarios.add(usuario1);
+                    }
+                    rs.close();
+                }
+                ps.close();
+            }
+            conexao.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return usuarios;
     }
 
     public boolean cadastra(Usuario usuario) {

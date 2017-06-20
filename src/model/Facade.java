@@ -71,13 +71,23 @@ public class Facade {
 
     /**
      * Busca um usuário a partir do id
-     * (deleta no Banco de Dados).
+     * (consulta no Banco de Dados).
      *
      * @param idusuario id do usuário
      * @return Verdadeiro caso seja removido com sucesso ou Falso caso contrário
      */
     public Usuario consultaUsuario(long idusuario) {
         return new DAOUsuario().consulta(idusuario);
+    }
+    
+    /**
+     * Busca os técnicos do sistema
+     * (consulta no Banco de Dados).
+     * 
+     *@return Lista com os técnicos do sistema
+     */
+    public List<Usuario> consultaTecnicos() {
+        return new DAOUsuario().consultaTipo("TECNI");
     }
 
     //==========================================================================//
