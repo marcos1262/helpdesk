@@ -37,13 +37,6 @@ desired effect
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-                <c:if test="${usuario.tipo == 'ADMIN'}">
-                    <li>
-                        <a href="<%= application.getContextPath() %>/adm/index.jsp" style="padding: 7px 0 8px 0;">
-                            <button class="btn btn-default">Área administrativa</button>
-                        </a>
-                    </li>
-                </c:if>
                 <!-- User Account Menu -->
                 <li class="dropdown user user-menu">
                     <!-- Menu Toggle Button -->
@@ -54,7 +47,7 @@ desired effect
                              class="user-image"
                              alt="<%= usuario.getNome() %>"/>
                         <% } else { %>
-                        <img src="<%= application.getContextPath() %>/assets/AdminLTE-2.3.11/dist/img/avatar.png"
+                        <img src="<%= application.getContextPath() %>/assets/img/avatar.png"
                              class="user-image"
                              alt="<%= usuario.getNome() %>"/>
                         <% } %>
@@ -71,7 +64,7 @@ desired effect
                                  class="img-circle"
                                  alt="<%= usuario.getNome() %>"/>
                             <% } else { %>
-                            <img src="<%= application.getContextPath() %>/assets/AdminLTE-2.3.11/dist/img/avatar.png"
+                            <img src="<%= application.getContextPath() %>/assets/img/avatar.png"
                                  class="img-circle"
                                  alt="<%= usuario.getNome() %>"/>
                             <% } %>
@@ -115,7 +108,7 @@ desired effect
                 <img src="<%= application.getContextPath() %>/uploads/<%= usuario.getImagem() %>" class="img-circle"
                      alt="<%= usuario.getNome() %>"/>
                 <% } else { %>
-                <img src="<%= application.getContextPath() %>/assets/AdminLTE-2.3.11/dist/img/avatar.png"
+                <img src="<%= application.getContextPath() %>/assets/img/avatar.png"
                      class="img-circle"
                      alt="<%= usuario.getNome() %>"/>
                 <% } %>

@@ -249,16 +249,14 @@
 
     if (request.getParameter("transferirChamado") != null) {
         Long id = Long.parseLong(request.getParameter("id"));
-        
-        Chamado c = new Chamado(); 
+
+        Chamado c = new Chamado();
         c.setId(id);
-        
+
         String justificativa = request.getParameter("justificativa");
         Long idtecnico = Long.parseLong(request.getParameter("novo_tecnico"));
         Facade facade = new Facade();
-        
-        
-        
+
         if (facade.transfereChamado(id, idtecnico) && facade.cadastraHistorico("Chamado transferido", justificativa, usuario, c, new Usuario(idtecnico)))
 //                TODO mostrar acima do formulário (sem alert)
             out.println("<script>" +

@@ -85,16 +85,6 @@ public class Facade {
     public List<Usuario> consultaUsuarios(Usuario usuario, int inicio, int qtd) {
         return new DAOUsuario().consulta(usuario, inicio, qtd);
     }
-    
-    /**
-     * Busca os técnicos do sistema
-     * (consulta no Banco de Dados).
-     * 
-     *@return Lista com os técnicos do sistema
-     */
-    public List<Usuario> consultaTecnicos() {
-        return new DAOUsuario().consultaTipo("TECNI");
-    }
 
     //==========================================================================//
     //                              SESSÃO CHAMADO
