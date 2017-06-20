@@ -14,6 +14,7 @@ public class Usuario implements Serializable {
             senha,
             imagem;
     private tipos tipo;
+    private Boolean ativo;
 
     public enum tipos {
         ADMIN("Administrador"),  // Adminstrador
@@ -114,6 +115,14 @@ public class Usuario implements Serializable {
                 ", senha='" + senha + '\'' +
                 ", tipo=" + tipo +
                 '}';
+    }
+
+    public Boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 
     public String getImagem() {

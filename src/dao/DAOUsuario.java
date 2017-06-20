@@ -2,6 +2,7 @@ package dao;
 
 import dao.bd.ConnectionFactory;
 import model.Usuario;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,51 @@ public class DAOUsuario {
      * @return Lista de usuários começando em [inicio] com [qtd] itens ou NULL quando não há resultados
      */
     public List<Usuario> consulta(Usuario usuario, int inicio, int qtd) {
-        // TODO consultar no BD
-        return null;
+        ArrayList<Usuario> l = new ArrayList<>();
+        try {
+            this.conexao = new ConnectionFactory().getConnection();
+            {
+                String sql = "SELECT * " +
+                        "FROM usuario " +
+                        "WHERE ";
+
+                if (usuario.getId() != 0)
+                    sql += "idusuario='" + usuario.getId() + "' ";
+                else sql += "TRUE ";
+                if (usuario.getNome() != null)
+                    sql += "AND nome LIKE '%" + usuario.getNome() + "%' ";
+                if (usuario.getUsuario() != null)
+                    sql += "AND login = '" + usuario.getUsuario() + "' ";
+                if (usuario.getTipo() != null)
+                    sql += "AND tipo = '" + usuario.getTipo() + "' ";
+                if (usuario.isAtivo() != null)
+                    sql += "AND ativo = '" + usuario.isAtivo() + "' ";
+
+                sql += "ORDER BY idusuario LIMIT " + inicio + ", " + qtd;
+                PreparedStatement ps = conexao.prepareStatement(sql);
+                {
+                    ResultSet rs = ps.executeQuery();
+                    while (rs.next()) {
+                        Usuario u = new Usuario();
+                        {
+                            u.setId(rs.getLong("idusuario"));
+                            u.setNome(rs.getString("nome"));
+                            u.setUsuario(rs.getString("login"));
+                            u.setSenha(rs.getString("senha"));
+                            u.setTipo(rs.getString("tipo"));
+                            u.setAtivo(rs.getBoolean("ativo"));
+                        }
+                        l.add(u);
+                    }
+                    rs.close();
+                }
+                ps.close();
+            }
+            conexao.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return l;
     }
 
     /**
@@ -106,7 +150,7 @@ public class DAOUsuario {
     }
 
     public boolean cadastra(Usuario usuario) {
-           try {
+        try {
             this.conexao = new ConnectionFactory().getConnection();
             {
                 String sql = "INSERT INTO usuario " +
@@ -130,12 +174,12 @@ public class DAOUsuario {
 
     public boolean atualiza(Usuario usuario) {
         boolean executou = false;
-           //todo atualiza
+        //todo atualiza
         return executou;
     }
 
     public boolean exclui(long idusuario) {
-           try {
+        try {
             this.conexao = new ConnectionFactory().getConnection();
             {
                 String sql = "DELETE FROM usuario " +

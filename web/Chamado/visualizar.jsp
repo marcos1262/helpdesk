@@ -53,7 +53,7 @@
                                     && request.getParameter("cancelarChamado") == null
                                     && request.getParameter("transferirChamado") == null) {
                                 Chamado c1 = new Chamado();
-                                c1.setId(Integer.parseInt(request.getParameter("id")));
+                                c1.setId(Long.parseLong(request.getParameter("id")));
                                 List<Chamado> res = new Facade().consultaChamados(c1, 0, 100);
                                 Chamado c = res.get(0);
                         %>
@@ -137,7 +137,7 @@
                                         class="text-danger">*</strong></label>
                                 <div class="col-md-2">
                                     <input name="tecnico" type="text" class="form-control"
-                                           value="<%= c.getTecnico().getNome() %>"
+                                           value="<%= new Facade().consultaUsuarios(c.getTecnico(), 0, 1).get(0).getNome() %>"
                                            disabled/>
                                 </div>
                             </div>

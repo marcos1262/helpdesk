@@ -53,17 +53,17 @@
             </td>
 
             <td>
-                <form name="formVisualizar" method="post" action="Chamado/visualizar.jsp" class="inline">
+                <form name="formVisualizar<%= c.getId() %>" method="post" action="Chamado/visualizar.jsp" class="inline">
                     <input type="hidden" name="id" value="<%= c.getId() %>">
                     <input type="hidden" name="visualizarChamado" value="true">
                     <a style="margin-right: 20px;"
                        class="text-info" data-toggle="tooltip" title="Visualizar chamado"
-                       onclick="document.forms['formVisualizar'].submit();">
+                       onclick="document.forms['formVisualizar<%= c.getId() %>'].submit();">
                         <i class="fa fa-edit"></i>
                     </a>
                 </form>
                 <%--TODO pedir justificativa--%>
-                <form name="formTransferir" method="post" action="Chamado/visualizar.jsp" class="inline">
+                <form name="formTransferir<%= c.getId() %>" method="post" action="Chamado/visualizar.jsp" class="inline">
                     <input type="hidden" name="id" value="<%= c.getId() %>">
                     <input type="hidden" name="transferirChamado" value="true">
                     <a class="text-info" data-toggle="tooltip" title="Transferir chamado"
@@ -99,11 +99,11 @@
 </div><!-- /.modal -->
 
 <script>
-    
+
     function modalTransferir(id){
         //Constroi título e descrição
         titulo = "Transferir chamado";
-        
+
         //Corpo da modal
         $('.modal-content').html('<div class="modal-header">'
                 +	'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
@@ -115,12 +115,12 @@
                 +'<input type="hidden" name="transferirChamado" value="true">'
                 +   '<select name="novo_tecnico" class="form-control">'
                 +       '<option selected value="">Selecione um técnico...</option>'
-                    <% 
+                    <%
                         List<Usuario> tecnicos = new Facade().consultaTecnicos();
-                        
+
                         for(Usuario t : tecnicos){
                             if(t.getId() != usuario.getId()){
-                        
+
                     %>
                 +       '<option value="<%= t.getId() %>"><%= t.getNome() %></option>'
                     <%
@@ -134,10 +134,10 @@
                 +   '<button type="submit" class="btn btn-default pull-right">Transferir</button>'
                 +'</div>'
                 +'</form>'
-               						
+
         );
         $('#action-modal').modal('show');
 
     }
-    
+
 </script>

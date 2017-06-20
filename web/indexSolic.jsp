@@ -22,7 +22,7 @@
             <th>Status</th>
             <th>Data</th>
             <th>Técnico</th>
-            <th style="width: 100px">#</th>
+            <th style="width: 100px">Opções</th>
         </tr>
         </thead>
         <tbody>
@@ -41,9 +41,10 @@
             <td><%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %>
             </td>
             <td>
-                <% if (c.getTecnico() != null && c.getTecnico().getId() != 0) {
-                    out.print(c.getTecnico().getNome());
-                }%>
+                <% if (c.getTecnico() != null && c.getTecnico().getId() != 0)
+                    out.print(new Facade().consultaUsuarios(c.getTecnico(), 0, 1).get(0).getNome());
+                else
+                    out.println("<i>Ainda não assumido...</i>");%>
             </td>
             <td>
                 <a style="margin-right: 20px;"

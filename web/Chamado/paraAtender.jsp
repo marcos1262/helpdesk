@@ -51,21 +51,21 @@
             </td>
 
             <td>
-                <form name="formAssumir" method="post" action="Chamado/visualizar.jsp" class="inline">
+                <form name="formAssumir<%= c.getId() %>" method="post" action="Chamado/visualizar.jsp" class="inline">
                     <input type="hidden" name="id" value="<%= c.getId() %>">
                     <input type="hidden" name="assumirChamado" value="true">
                     <a style="margin-right: 20px;"
                        class="text-info" data-toggle="tooltip" title="Assumir chamado"
-                       onclick="document.forms['formAssumir'].submit();">
+                       onclick="document.forms['formAssumir<%= c.getId() %>'].submit();">
                         <i class="fa fa-check-square"></i>
                     </a>
                 </form>
                 <%--TODO pedir justificativa--%>
-                <form name="formCancelar" method="post" action="Chamado/visualizar.jsp" class="inline">
+                <form name="formCancelar<%= c.getId() %>" method="post" action="Chamado/visualizar.jsp" class="inline">
                     <input type="hidden" name="id" value="<%= c.getId() %>">
                     <input type="hidden" name="cancelarChamado" value="true">
                     <a class="text-info" data-toggle="tooltip" title="Cancelar chamado"
-                       onclick="document.forms['formCancelar'].submit();">
+                       onclick="document.forms['formCancelar<%= c.getId() %>'].submit();">
                         <i class="fa fa-trash-o"></i>
                     </a>
                 </form>

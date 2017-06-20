@@ -1,0 +1,72 @@
+-- MySQL dump 10.13  Distrib 5.7.18, for Linux (x86_64)
+--
+-- Host: localhost    Database: helpdesk
+-- ------------------------------------------------------
+-- Server version	5.7.18-0ubuntu0.16.04.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Dumping data for table `chamado`
+--
+
+LOCK TABLES `chamado` WRITE;
+/*!40000 ALTER TABLE `chamado` DISABLE KEYS */;
+INSERT INTO `chamado` VALUES (13,'ok','BAIXA','ATENDENDO','2017-06-15 10:27:18',2,1),(14,'a','NORMAL','ABERTO','2017-06-16 12:32:43',1,1),(15,'ah','BAIXA','FECHADO_CANCELADO','2017-06-16 04:33:12',1,NULL),(16,'oooo','BAIXA','FECHADO_CANCELADO','2017-06-16 05:18:39',1,NULL),(17,'a','ALTA','ABERTO','2017-06-16 05:21:27',1,1),(18,'teste','BAIXA','ABERTO','2017-06-19 07:27:28',2,NULL);
+/*!40000 ALTER TABLE `chamado` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `descricao`
+--
+
+LOCK TABLES `descricao` WRITE;
+/*!40000 ALTER TABLE `descricao` DISABLE KEYS */;
+INSERT INTO `descricao` VALUES (1,'aê',13),(2,'b',14),(3,'Ã© sim!',15),(4,'kkk',16),(5,'b',17),(8,'tÃ´ aqui',13),(9,'mais um teste',18),(10,'oh my God...',13),(11,'Ã³',13),(12,'a',13);
+/*!40000 ALTER TABLE `descricao` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `historico`
+--
+
+LOCK TABLES `historico` WRITE;
+/*!40000 ALTER TABLE `historico` DISABLE KEYS */;
+/*!40000 ALTER TABLE `historico` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `usuario`
+--
+
+LOCK TABLES `usuario` WRITE;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+
+--------------------
+-- SENHA = 123456 --
+--------------------
+
+
+INSERT INTO `usuario` VALUES (1,'Marcos Santos','marcos1262','e10adc3949ba59abbe56e057f20f883e','TECNI',1,NULL),(2,'Paulo Maia','paulo','e10adc3949ba59abbe56e057f20f883e','SOLIC',1,NULL);
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-06-20  0:09:55
