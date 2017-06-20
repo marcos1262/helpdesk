@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
  * @author marcos
  */
 public class Historico {
+    private long id;
     private String acao,
             justificativa;
     private LocalDateTime hora;
@@ -61,5 +62,13 @@ public class Historico {
 
     public void setUsuario2(Usuario usuario2) {
         this.usuario2 = usuario2;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

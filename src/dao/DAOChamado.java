@@ -10,11 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.Descricao;
+import model.Facade;
 
 /**
  * Classe de acesso aos dados de um chamado (@see {@link Chamado}) no Banco de Dados
@@ -64,7 +64,7 @@ public class DAOChamado {
                 if (chamado.getStatus() != null)
                     sql += "AND status = '" + chamado.getStatus() + "' ";
                 if (chamado.getData() != null)
-                    sql += "AND data = '" + dataHoraMysql(chamado.getData()) + "' ";
+                    sql += "AND data = '" + new Facade().dataHoraMysql(chamado.getData()) + "' ";
                 if (chamado.getSolicitante() != null)
                     sql += "AND usuario_idsolicitante = '" + chamado.getSolicitante().getId() + "' ";
                 if (chamado.getTecnico() != null)
@@ -97,7 +97,7 @@ public class DAOChamado {
                                 c.setTitulo(rs.getString("titulo"));
                                 c.setPrioridade(rs.getString("prioridade"));
                                 c.setStatus(rs.getString("status"));
-                                c.setData(dataHoraJava(rs.getString("data")));
+                                c.setData(new Facade().dataHoraJava(rs.getString("data")));
 
                                 Usuario solic = new Usuario(
                                         rs.getLong("solicId"),
@@ -150,7 +150,7 @@ public class DAOChamado {
                     ps.setString(1, chamado.getTitulo());
                     ps.setString(2, chamado.getPrioridade().toString());
                     ps.setString(3, Chamado.statusOpcoes.ABERTO.toString());
-                    ps.setString(4, dataHoraMysql(LocalDateTime.now()));
+                    ps.setString(4, new Facade().dataHoraMysql(LocalDateTime.now()));
                     ps.setLong(5, chamado.getSolicitante().getId());
                     ps.execute();
                     final ResultSet rs = ps.getGeneratedKeys();
@@ -242,16 +242,5 @@ public class DAOChamado {
             throw new RuntimeException(e);
         }
         return true;
-    }
-
-    private String dataHoraMysql(LocalDateTime dataHora) {
-        DateTimeFormatter formatador =
-                DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
-        return dataHora.format(formatador);
-    }
-
-    private LocalDateTime dataHoraJava(String dataHora) {
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        return LocalDateTime.parse(dataHora, fmt);
     }
 }

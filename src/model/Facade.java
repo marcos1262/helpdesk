@@ -6,6 +6,8 @@ import dao.DAOUsuario;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -176,5 +178,15 @@ public class Facade {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+    public String dataHoraMysql(LocalDateTime dataHora) {
+        DateTimeFormatter formatador =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        return dataHora.format(formatador);
+    }
+
+    public LocalDateTime dataHoraJava(String dataHora) {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        return LocalDateTime.parse(dataHora, fmt);
     }
 }
