@@ -129,7 +129,7 @@
                                         class="text-danger">*</strong></label>
                                 <div class="col-md-4">
                                     <input name="solicitante" type="text" class="form-control"
-                                           value="<%= new Facade().consultaUsuario(c.getSolicitante().getId()).getNome() %>"
+                                           value="<%= c.getSolicitante().getNome() %>"
                                            disabled>
                                 </div>
 
@@ -137,7 +137,7 @@
                                         class="text-danger">*</strong></label>
                                 <div class="col-md-2">
                                     <input name="tecnico" type="text" class="form-control"
-                                           value="<%= new Facade().consultaUsuario(c.getTecnico().getId()).getNome() %>"
+                                           value="<%= c.getTecnico().getNome() %>"
                                            disabled/>
                                 </div>
                             </div>
@@ -225,7 +225,9 @@
                     "alert('Chamado assumido com sucesso!');" +
                     "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
         else
-            out.println("<script>alert('Não foi possível assumir o chamado, por favor, contate um administrador.');</script>");
+            out.println("<script>" +
+                    "alert('Não foi possível assumir o chamado, por favor, contate um administrador.');" +
+                    "</script>");
     }
 
     if (request.getParameter("cancelarChamado") != null) {
@@ -240,7 +242,9 @@
                     "alert('Chamado cancelado com sucesso!');" +
                     "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
         else
-            out.println("<script>alert('Não foi possível cancelar o chamado, por favor, contate um administrador.');</script>");
+            out.println("<script>" +
+                    "alert('Não foi possível cancelar o chamado, por favor, contate um administrador.');" +
+                    "</script>");
     }
 
     if (request.getParameter("transferirChamado") != null) {
@@ -256,7 +260,9 @@
 //                    "alert('Chamado assumido com sucesso!');" +
 //                    "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
 //        else
-//            out.println("<script>alert('Não foi possível assumir o chamado, por favor, contate um administrador.');</script>");
+        out.println("<script>" +
+                "alert('Não foi possível assumir o chamado, por favor, contate um administrador.');" +
+                "</script>");
     }
 
     if (request.getParameter("alterarChamado") != null) {
@@ -266,20 +272,21 @@
 
         Chamado c = new Chamado();
         c.setId(id);
-        c.setStatus(status);
-        c.setPrioridade(prioridade);
+        if (usuario.getTipo() == Usuario.tipos.TECNI) {
+            c.setStatus(status);
+            c.setPrioridade(prioridade);
+        }
 
         String desc = request.getParameter("adddesc");
-        if (!desc.equals("")) {
+        if (!desc.equals(""))
             c.addDescricao(new Descricao(desc));
-        }
 
         if (new Facade().atualizaChamado(c))
 //                TODO mostrar acima do formulário (sem alert)
             out.println("<script>" +
                     "alert('Chamado alterado com sucesso!');" +
-                    "</script>");
-//                    "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
+//                    "</script>");
+                    "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
         else
             out.println("<script>" +
                     "alert('Não foi possível alterar o chamado, por favor, contate um administrador.');" +

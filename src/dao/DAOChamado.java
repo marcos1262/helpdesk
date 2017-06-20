@@ -42,9 +42,17 @@ public class DAOChamado {
                 String sql = "SELECT idchamado, titulo, prioridade, status, data, " +
                         "iddescricao, descricao, " +
                         "u1.idusuario as solicId, u1.nome as solicNome, " +
-                        "u2.idusuario as tecniId, u2.nome as tecniNome " +
-                        "FROM chamado, descricao, usuario u1, usuario u2 " +
-                        "WHERE ";
+                        "usuario_idtecnico as tecniId ";
+
+                if (chamado.getTecnico() == null || chamado.getTecnico().getId() != 0)
+                    sql += ", u2.nome as tecniNome ";
+
+                sql += "FROM chamado, descricao, usuario u1 ";
+
+                if (chamado.getTecnico() == null || chamado.getTecnico().getId() != 0)
+                    sql += ", usuario u2 ";
+
+                sql += "WHERE ";
 
                 if (chamado.getId() != 0)
                     sql += "idchamado='" + chamado.getId() + "' ";
@@ -52,19 +60,21 @@ public class DAOChamado {
                 if (chamado.getTitulo() != null)
                     sql += "AND titulo LIKE '%" + chamado.getTitulo() + "%' ";
                 if (chamado.getPrioridade() != null)
-                    sql += "AND prioridade='" + chamado.getPrioridade() + "' ";
+                    sql += "AND prioridade = '" + chamado.getPrioridade() + "' ";
                 if (chamado.getStatus() != null)
-                    sql += "AND status='" + chamado.getStatus() + "' ";
+                    sql += "AND status = '" + chamado.getStatus() + "' ";
                 if (chamado.getData() != null)
-                    sql += "AND data='" + dataHoraMysql(chamado.getData()) + "' ";
+                    sql += "AND data = '" + dataHoraMysql(chamado.getData()) + "' ";
                 if (chamado.getSolicitante() != null)
-                    sql += "AND usuario_idsolicitante='" + chamado.getSolicitante().getId() + "' ";
+                    sql += "AND usuario_idsolicitante = '" + chamado.getSolicitante().getId() + "' ";
                 if (chamado.getTecnico() != null)
                     if (chamado.getTecnico().getId() == 0)
                         sql += "AND usuario_idtecnico IS NULL ";
                     else
-                        sql += "AND usuario_idtecnico='" + chamado.getTecnico().getId() + "' " +
-                                "AND chamado.usuario_idtecnico = u2.idusuario ";
+                        sql += "AND usuario_idtecnico = '" + chamado.getTecnico().getId() + "' " +
+                                "AND usuario_idtecnico = u2.idusuario ";
+                else
+                    sql += "AND usuario_idtecnico = u2.idusuario OR usuario_idtecnico IS NULL ";
 
                 sql += "AND chamado.idchamado = descricao.chamado_idchamado " +
                         "AND chamado.usuario_idsolicitante = u1.idusuario " +
@@ -95,11 +105,13 @@ public class DAOChamado {
                                 );
                                 c.setSolicitante(solic);
 
-                                Usuario tecni = new Usuario(
-                                        rs.getLong("tecniId"),
-                                        rs.getString("tecniNome")
-                                );
-                                c.setTecnico(tecni);
+                                if (rs.getString("tecniId") != null && !rs.getString("tecniId").equals("")) {
+                                    Usuario tecni = new Usuario(
+                                            rs.getLong("tecniId"),
+                                            rs.getString("tecniNome")
+                                    );
+                                    c.setTecnico(tecni);
+                                }
 
                                 List<Descricao> ld = new ArrayList<>();
                                 ld.add(desc);
@@ -183,7 +195,7 @@ public class DAOChamado {
                     sql += "status = status, ";
                 if (chamado.getTecnico() != null)
                     if (chamado.getTecnico().getId() == 0)
-                        sql += "usuario_idtecnico = NULL ";
+                        sql += "usuario_idtecnico IS NULL ";
                     else
                         sql += "usuario_idtecnico='" + chamado.getTecnico().getId() + "' ";
                 else
@@ -198,7 +210,7 @@ public class DAOChamado {
 //                TODO atualizar lista de descrições (adicionar, excluir)
 //                if (new DAODescricao().atualizaDescricoes(chamado)) {
                 if (chamado.getDescricoes() != null)
-                    if (! new DAODescricao().cadastraDescricao(chamado))
+                    if (!new DAODescricao().cadastraDescricao(chamado))
 //                    TODO desfazer update
 //                    exclui(chamado);
                         executou = false;

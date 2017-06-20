@@ -21,7 +21,7 @@ public class DAOUsuario {
      * @param qtd    quantidades de tuplas
      * @return Lista de usuários começando em [inicio] com [qtd] itens ou NULL quando não há resultados
      */
-    public List<Usuario> consulta(int inicio, int qtd) {
+    public List<Usuario> consulta(Usuario usuario, int inicio, int qtd) {
         // TODO consultar no BD
         return null;
     }
@@ -61,45 +61,6 @@ public class DAOUsuario {
         }
 
         if (usuario.validaSenha(usuario1))
-            return usuario1;
-        else return null;
-    }
-    
-    /**
-     * Consulta um usuário pelo id
-     *
-     * @param id id do usuário a ser retornado
-     * @return Usuário com os dados consultados ou NULL quando não há resultados
-     */
-    public Usuario consulta(long id) {
-        Usuario usuario1 = new Usuario();
-
-        try {
-            this.conexao = new ConnectionFactory().getConnection();
-            {
-                String sql = "SELECT * FROM usuario WHERE idusuario=?";
-                PreparedStatement ps = conexao.prepareStatement(sql);
-                ps.setLong(1, id);
-                {
-                    ResultSet rs = ps.executeQuery();
-                    if (rs.next()) {
-                        usuario1.setId(rs.getLong("idusuario"));
-                        usuario1.setNome(rs.getString("nome"));
-                        usuario1.setUsuario(rs.getString("login"));
-                        usuario1.setSenha(rs.getString("senha"));
-                        usuario1.setTipo(rs.getString("tipo"));
-                        usuario1.setImagem(rs.getString("imagem"));
-                    }
-                    rs.close();
-                }
-                ps.close();
-            }
-            conexao.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (usuario1.validaSenha(usuario1))
             return usuario1;
         else return null;
     }
