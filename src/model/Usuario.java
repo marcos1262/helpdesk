@@ -17,8 +17,8 @@ public class Usuario implements Serializable {
     private Boolean ativo;
 
     public enum tipos {
-        ADMIN("Administrador"),  // Adminstrador
-        TECNI("Técnico"),  // Técnico
+        ADMIN("Administrador"), // Adminstrador
+        TECNI("Técnico"),       // Técnico
         SOLIC("Solicitante");   // Solicitante
 
         private final String descricao;

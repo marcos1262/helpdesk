@@ -34,12 +34,22 @@ public class Chamado {
     }
 
     public enum statusOpcoes {
-        ABERTO,             // Ainda não foi avaliado por um técnico
-        ATENDENDO,          // Um técnico se prontificou em atender
-        ESPERANDO,          // Ainda não pode ser atendido
-        FECHADO_SUCESSO,    // Foi atendido com sucesso
-        FECHADO_FALHA,      // Não foi possível resolver o problema
-        FECHADO_CANCELADO   // O usuário cancelou o chamado
+        ABERTO("Aberto"),                           // Ainda não foi avaliado por um técnico
+        ATENDENDO("Em atendimento"),                // Um técnico se prontificou em atender
+        ESPERANDO("Em espera"),                     // Ainda não pode ser atendido
+        FECHADO_SUCESSO("Fechado (atendido)"),      // Foi atendido com sucesso
+        FECHADO_FALHA("Fechado (falha)"),           // Não foi possível resolver o problema
+        FECHADO_CANCELADO("Fechado (cancelado)");   // O usuário cancelou o chamado
+
+        private final String descricao;
+
+        statusOpcoes(String value) {
+            descricao = value;
+        }
+
+        public String getDescricao() {
+            return descricao;
+        }
     }
 
     public long getId() {
@@ -136,7 +146,7 @@ public class Chamado {
     }
 
     public void addDescricao(Descricao descricao) {
-        if(descricoes==null)
+        if (descricoes == null)
             descricoes = new ArrayList<>();
         descricoes.add(descricao);
     }
