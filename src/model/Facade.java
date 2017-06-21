@@ -145,13 +145,6 @@ public class Facade {
         return new DAOChamado().atualiza(c);
     }
 
-    public boolean alteraPrioridadeChamado(long idChamado, String prioridade) {
-        Chamado c = new Chamado();
-        c.setId(idChamado);
-        c.setPrioridade(prioridade);
-        return new DAOChamado().atualiza(c);
-    }
-
     public boolean transfereChamado(long idChamado, long idNovoTecnico) {
         Chamado chamado = new Chamado();
         chamado.setId(idChamado);
@@ -208,6 +201,7 @@ public class Facade {
             throw new RuntimeException(e);
         }
     }
+
     public String dataHoraMysql(LocalDateTime dataHora) {
         DateTimeFormatter formatador =
                 DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
