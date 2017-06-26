@@ -10,6 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import model.Historico.acoes;
 
 /**
  * Interface entre visão da aplicação e implementação das funcionalidades da aplicação
@@ -188,7 +189,7 @@ public class Facade {
      * @param usuario2 usuário 2 envolvido na ação
      * @return Verdadeiro caso seja cadastrado com sucesso ou Falso caso contrário
      */
-    public boolean cadastraHistorico(String acao, String justificativa, Usuario usuario1, Chamado chamado, Usuario usuario2) {
+    public boolean cadastraHistorico(acoes acao, String justificativa, Usuario usuario1, Chamado chamado, Usuario usuario2) {
         Historico historico = new Historico();
         historico.setAcao(acao);
         historico.setJustificativa(justificativa);

@@ -37,7 +37,7 @@ public class DAOHistorico {
                         "VALUES (?, ?, ?, ?, ?, ?)";
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 {
-                    ps.setString(1, historico.getAcao());
+                    ps.setString(1, historico.getAcao().toString());
                     ps.setString(2, historico.getJustificativa());
                     ps.setString(3, new Facade().dataHoraMysql(LocalDateTime.now()));
                     ps.setLong(4, historico.getUsuario1().getId());

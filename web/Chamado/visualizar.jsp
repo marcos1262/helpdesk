@@ -1,3 +1,5 @@
+<%@page import="model.Historico.acoes"%>
+<%@ page import="model.Historico"%>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
@@ -259,7 +261,7 @@
         
         
         
-        if (facade.transfereChamado(id, idtecnico) && facade.cadastraHistorico("Chamado transferido", justificativa, usuario, c, new Usuario(idtecnico)))
+        if (facade.transfereChamado(id, idtecnico) && facade.cadastraHistorico(acoes.TRANSFERIR_CHAMADO, justificativa, usuario, c, new Usuario(idtecnico)))
 //                TODO mostrar acima do formulário (sem alert)
             out.println("<script>" +
                     "alert('Chamado transferido com sucesso!');" +
