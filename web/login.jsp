@@ -20,21 +20,14 @@
         // FIXME quando volta a página, mostra login ou senha incorretos
     %>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <link rel="stylesheet" href="assets/AdminLTE-2.3.11/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/AdminLTE-2.3.11/dist/css/AdminLTE.min.css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    
+    <jsp:include page="importCSS.jsp"/>
+
     <style>
         body {
             position: fixed;
             height: 100%;
             width: 100%;
-            background-image: url("assets/img/bglogin.jpg");
-            background-attachment: fixed;
-            background-repeat: no-repeat;
+            background: url("assets/img/bglogin.jpg") no-repeat fixed;
             background-size: cover;
         }
         
@@ -73,9 +66,8 @@
     </div>
 </div>
 
-<!-- AdminLTE jQuery / Bootstrap js -->
-<script src="assets/AdminLTE-2.3.11/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<script src="assets/AdminLTE-2.3.11/bootstrap/js/bootstrap.min.js"></script>
+<jsp:include page="footer.jsp"/>
+
 <script>
     $('#container-login').animation('fadeIn');
 </script>

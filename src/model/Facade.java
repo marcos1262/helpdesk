@@ -86,16 +86,6 @@ public class Facade {
     public List<Usuario> consultaUsuarios(Usuario usuario, int inicio, int qtd) {
         return new DAOUsuario().consulta(usuario, inicio, qtd);
     }
-    
-    /**
-     * Busca os técnicos do sistema
-     * (consulta no Banco de Dados).
-     * 
-     *@return Lista com os técnicos do sistema
-     */
-    public List<Usuario> consultaTecnicos() {
-        return new DAOUsuario().consultaTipo("TECNI");
-    }
 
     //==========================================================================//
     //                              SESSÃO CHAMADO
@@ -156,13 +146,6 @@ public class Facade {
         return new DAOChamado().atualiza(c);
     }
 
-    public boolean alteraPrioridadeChamado(long idChamado, String prioridade) {
-        Chamado c = new Chamado();
-        c.setId(idChamado);
-        c.setPrioridade(prioridade);
-        return new DAOChamado().atualiza(c);
-    }
-
     public boolean transfereChamado(long idChamado, long idNovoTecnico) {
         Chamado chamado = new Chamado();
         chamado.setId(idChamado);
@@ -219,6 +202,7 @@ public class Facade {
             throw new RuntimeException(e);
         }
     }
+
     public String dataHoraMysql(LocalDateTime dataHora) {
         DateTimeFormatter formatador =
                 DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");

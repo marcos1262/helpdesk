@@ -44,13 +44,7 @@ public class DAOChamado {
                         "u1.idusuario as solicId, u1.nome as solicNome, " +
                         "usuario_idtecnico as tecniId ";
 
-                if (chamado.getTecnico() == null || chamado.getTecnico().getId() != 0)
-                    sql += ", u2.nome as tecniNome ";
-
                 sql += "FROM chamado, descricao, usuario u1 ";
-
-                if (chamado.getTecnico() == null || chamado.getTecnico().getId() != 0)
-                    sql += ", usuario u2 ";
 
                 sql += "WHERE ";
 
@@ -71,10 +65,7 @@ public class DAOChamado {
                     if (chamado.getTecnico().getId() == 0)
                         sql += "AND usuario_idtecnico IS NULL ";
                     else
-                        sql += "AND usuario_idtecnico = '" + chamado.getTecnico().getId() + "' " +
-                                "AND usuario_idtecnico = u2.idusuario ";
-                else
-                    sql += "AND usuario_idtecnico = u2.idusuario OR usuario_idtecnico IS NULL ";
+                        sql += "AND usuario_idtecnico = '" + chamado.getTecnico().getId() + "' ";
 
                 sql += "AND chamado.idchamado = descricao.chamado_idchamado " +
                         "AND chamado.usuario_idsolicitante = u1.idusuario " +
@@ -105,11 +96,8 @@ public class DAOChamado {
                                 );
                                 c.setSolicitante(solic);
 
-                                if (rs.getString("tecniId") != null && !rs.getString("tecniId").equals("")) {
-                                    Usuario tecni = new Usuario(
-                                            rs.getLong("tecniId"),
-                                            rs.getString("tecniNome")
-                                    );
+                                if (rs.getString("tecniId") != null) {
+                                    Usuario tecni = new Usuario(rs.getLong("tecniId"));
                                     c.setTecnico(tecni);
                                 }
 

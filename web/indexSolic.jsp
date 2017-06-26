@@ -22,7 +22,7 @@
             <th>Status</th>
             <th>Data</th>
             <th>Técnico</th>
-            <th style="width: 100px">#</th>
+            <th style="width: 100px">Opções</th>
         </tr>
         </thead>
         <tbody>
@@ -36,23 +36,33 @@
             </td>
             <td><%= c.getPrioridade().toString() %>
             </td>
-            <td><%= c.getStatus().toString() %>
+            <td><%= c.getStatus().getDescricao() %>
             </td>
             <td><%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %>
             </td>
             <td>
-                <% if (c.getTecnico() != null && c.getTecnico().getId() != 0) {
-                    out.print(c.getTecnico().getNome());
-                }%>
+                <% if (c.getTecnico() != null && c.getTecnico().getId() != 0)
+                    out.print(new Facade().consultaUsuarios(c.getTecnico(), 0, 1).get(0).getNome());
+                else
+                    out.println("<i>Ainda não assumido...</i>");%>
             </td>
             <td>
-                <a style="margin-right: 20px;"
-                   href="<%= application.getContextPath() %>/Chamado/visualizar.jsp?id=<%= c.getId() %>"
-                   class="text-info" data-toggle="tooltip" title="Mais ações"><i
-                        class="fa fa-plus-circle"></i></a>
-                <a href="<%= application.getContextPath() %>/Chamado/visualizar.jsp"
-                   class="text-info" data-toggle="tooltip" title="Cancelar chamado"><i
-                        class="fa fa-trash-o"></i></a>
+                <form style="margin-right: 20px;" name="formVisualizar<%= c.getId() %>" method="post" action="Chamado/visualizar.jsp" class="inline">
+                    <input type="hidden" name="id" value="<%= c.getId() %>">
+                    <a class="text-info" data-toggle="tooltip" title="Mais ações"
+                       onclick="document.forms['formVisualizar<%= c.getId() %>'].submit();">
+                        <i class="fa fa-plus-circle"></i>
+                    </a>
+                </form>
+                <%--TODO pedir justificativa--%>
+                <form name="formCancelar<%= c.getId() %>" method="post" action="Chamado/visualizar.jsp" class="inline">
+                    <input type="hidden" name="id" value="<%= c.getId() %>">
+                    <input type="hidden" name="cancelarChamado" value="true">
+                    <a class="text-info" data-toggle="tooltip" title="Cancelar chamado"
+                       onclick="document.forms['formCancelar<%= c.getId() %>'].submit();">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </form>
             </td>
         </tr>
         <% } %>

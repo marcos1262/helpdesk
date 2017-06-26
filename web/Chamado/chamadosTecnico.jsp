@@ -1,4 +1,4 @@
-<%@page import="model.Usuario"%>
+<%@page import="model.Usuario" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
@@ -53,17 +53,19 @@
             </td>
 
             <td>
-                <form name="formVisualizar" method="post" action="Chamado/visualizar.jsp" class="inline">
+                <form name="formVisualizar<%= c.getId() %>" method="post" action="Chamado/visualizar.jsp"
+                      class="inline">
                     <input type="hidden" name="id" value="<%= c.getId() %>">
                     <input type="hidden" name="visualizarChamado" value="true">
                     <a style="margin-right: 20px;"
                        class="text-info" data-toggle="tooltip" title="Visualizar chamado"
-                       onclick="document.forms['formVisualizar'].submit();">
+                       onclick="document.forms['formVisualizar<%= c.getId() %>'].submit();">
                         <i class="fa fa-edit"></i>
                     </a>
                 </form>
                 <%--TODO pedir justificativa--%>
-                <form name="formTransferir" method="post" action="Chamado/visualizar.jsp" class="inline">
+                <form name="formTransferir<%= c.getId() %>" method="post" action="Chamado/visualizar.jsp"
+                      class="inline">
                     <input type="hidden" name="id" value="<%= c.getId() %>">
                     <input type="hidden" name="transferirChamado" value="true">
                     <a class="text-info" data-toggle="tooltip" title="Transferir chamado"
@@ -96,48 +98,52 @@
 
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+</div>
+<!-- /.modal -->
 
 <script>
-    
-    function modalTransferir(id){
+
+    function modalTransferir(id) {
         //Constroi título e descrição
         titulo = "Transferir chamado";
-        
+
         //Corpo da modal
         $('.modal-content').html('<div class="modal-header">'
-                +	'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-                +	'<h4 class="modal-title">'+ titulo +'</h4>'
-                +'</div>'
-                +'<form method="post" action="<%=application.getContextPath()%>/Chamado/visualizar.jsp">'
-                +'<div class="modal-body">'
-                +'<input type="hidden" name="id" value="'+id+'">'
-                +'<input type="hidden" name="transferirChamado" value="true">'
-                +   '<select name="novo_tecnico" class="form-control">'
-                +       '<option selected value="">Selecione um técnico...</option>'
-                    <% 
-                        List<Usuario> tecnicos = new Facade().consultaTecnicos();
-                        
-                        for(Usuario t : tecnicos){
-                            if(t.getId() != usuario.getId()){
-                        
-                    %>
-                +       '<option value="<%= t.getId() %>"><%= t.getNome() %></option>'
-                    <%
-                            }
-                        }
-                    %>
-                +   '<input type="text" name="justificativa" class="form-control" placeholder="Digite uma justificativa"/>'
-                +'</div>'
-                +'<div class="modal-footer">'
-                +   '<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>'
-                +   '<button type="submit" class="btn btn-default pull-right">Transferir</button>'
-                +'</div>'
-                +'</form>'
-               						
+            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+            + '<h4 class="modal-title">' + titulo + '</h4>'
+            + '</div>'
+            + '<form method="post" action="<%=application.getContextPath()%>/Chamado/visualizar.jsp">'
+            + '<div class="modal-body">'
+            + '<input type="hidden" name="id" value="' + id + '">'
+            + '<input type="hidden" name="transferirChamado" value="true">'
+            + '<div class="form-group">'
+            + '<select name="novo_tecnico" class="form-control">'
+            + '<option selected value="">Selecione um técnico...</option>'
+            <%
+                Usuario u = new Usuario();
+                u.setTipo(Usuario.tipos.TECNI);
+
+                List<Usuario> tecnicos = new Facade().consultaUsuarios(u, 0, 20);
+
+                for(Usuario t : tecnicos){
+                    if(t.getId() != usuario.getId()){
+            %>
+            + '<option value="<%= t.getId() %>"><%= t.getNome() %></option>'
+            <%
+                    }
+                }
+            %>
+            + '</div>'
+            + '<div class="form-group">'
+            + '<input type="text" name="justificativa" class="form-control" placeholder="Digite uma justificativa"/>'
+            + '</div>'
+            + '</div>'
+            + '<div class="modal-footer">'
+            + '<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>'
+            + '<button type="submit" class="btn btn-success pull-right">Transferir</button>'
+            + '</div>'
+            + '</form>'
         );
         $('#action-modal').modal('show');
-
     }
-    
 </script>

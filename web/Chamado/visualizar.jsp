@@ -55,7 +55,7 @@
                                     && request.getParameter("cancelarChamado") == null
                                     && request.getParameter("transferirChamado") == null) {
                                 Chamado c1 = new Chamado();
-                                c1.setId(Integer.parseInt(request.getParameter("id")));
+                                c1.setId(Long.parseLong(request.getParameter("id")));
                                 List<Chamado> res = new Facade().consultaChamados(c1, 0, 100);
                                 Chamado c = res.get(0);
                         %>
@@ -76,7 +76,8 @@
                                 </label>
                                 <div class="col-md-2">
                                     <select name="prioridade" class="form-control" required
-                                            <% if (usuario.getId() != c.getTecnico().getId()) { %> disabled <% } %>>
+                                            <% if (c.getTecnico() == null || usuario.getId() != c.getTecnico().getId()) { %>
+                                            disabled <% } %> >
                                         <option <%= c.getPrioridade() == Chamado.prioridades.BAIXA ? "selected" : ""%>
                                                 value="BAIXA">Baixa
                                         </option>
@@ -96,29 +97,24 @@
                                 </label>
                                 <div class="col-md-4">
                                     <select name="status" class="form-control" required
-                                            <% if (usuario.getId() != c.getTecnico().getId()) { %> disabled <% } %>>
-                                        <option <%= c.getStatus() == Chamado.statusOpcoes.ABERTO ? "selected" : ""%>
-                                                value="ABERTO">Aberto
+                                            <% if (c.getTecnico() == null || usuario.getId() != c.getTecnico().getId()) { %>
+                                            disabled
+                                            <% } %>>
+                                        <%
+                                            for (Chamado.statusOpcoes s : Chamado.statusOpcoes.values()) {
+                                        %>
+                                        <option <%= c.getStatus() == s ? "selected" : ""%>
+                                                value="<%= s %>"><%= s.getDescricao() %>
                                         </option>
-                                        <option <%= c.getStatus() == Chamado.statusOpcoes.ATENDENDO ? "selected" : ""%>
-                                                value="ATENDENDO">Atendendo
-                                        </option>
-                                        <option <%= c.getStatus() == Chamado.statusOpcoes.ESPERANDO ? "selected" : ""%>
-                                                value="ESPERANDO">Esperando
-                                        </option>
-                                        <option <%= c.getStatus() == Chamado.statusOpcoes.FECHADO_CANCELADO ? "selected" : ""%>
-                                                value="FECHADO_CANCELADO">Fechado (Cancelado)
-                                        </option>
-                                        <option <%= c.getStatus() == Chamado.statusOpcoes.FECHADO_FALHA ? "selected" : ""%>
-                                                value="FECHADO_FALHA">Fechado (Falha)
-                                        </option>
-                                        <option <%= c.getStatus() == Chamado.statusOpcoes.FECHADO_SUCESSO ? "selected" : ""%>
-                                                value="FECHADO_SUCESSO">Fechado (Sucesso)
-                                        </option>
+                                        <%
+                                            }
+                                        %>
                                     </select>
                                 </div>
-                                <label class="control-label col-md-1 required">Data<strong
-                                        class="text-danger">*</strong></label>
+                                <label class="control-label col-md-1 required">
+                                    Data
+                                    <strong class="text-danger">*</strong>
+                                </label>
                                 <div class="col-md-2">
                                     <input name="data" type="text" class="form-control"
                                            value="<%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %>"
@@ -139,7 +135,8 @@
                                         class="text-danger">*</strong></label>
                                 <div class="col-md-2">
                                     <input name="tecnico" type="text" class="form-control"
-                                           value="<%= c.getTecnico().getNome() %>"
+                                           value="<%= c.getTecnico() != null ?
+                                           new Facade().consultaUsuarios(c.getTecnico(), 0, 1).get(0).getNome() : ""%>"
                                            disabled/>
                                 </div>
                             </div>
@@ -251,10 +248,10 @@
 
     if (request.getParameter("transferirChamado") != null) {
         Long id = Long.parseLong(request.getParameter("id"));
-        
-        Chamado c = new Chamado(); 
+
+        Chamado c = new Chamado();
         c.setId(id);
-        
+
         String justificativa = request.getParameter("justificativa");
         Long idtecnico = Long.parseLong(request.getParameter("novo_tecnico"));
         Facade facade = new Facade();
