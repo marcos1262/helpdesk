@@ -101,7 +101,7 @@ public class Facade {
      * @param idsolicitante id do solicitante ({@link Usuario}) do chamado
      * @return Verdadeiro caso seja aberto com sucesso ou Falso caso contrário
      */
-    public boolean abreChamado(String titulo, String prioridade, String descricao, long idsolicitante) {
+    public Chamado abreChamado(String titulo, String prioridade, String descricao, long idsolicitante) {
         Chamado chamado = new Chamado();
         chamado.setTitulo(titulo);
         chamado.setPrioridade(prioridade);

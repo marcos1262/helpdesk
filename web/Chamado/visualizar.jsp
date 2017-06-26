@@ -233,17 +233,21 @@
         Long id = Long.parseLong(request.getParameter("id"));
         String justificativa = request.getParameter("justificativa");
 //        TODO gravar justificativa
+        Chamado c = new Chamado();
+        c.setId(id);
 
         Facade facade = new Facade();
-        if (facade.cancelaChamado(id))
-//                TODO mostrar acima do formulário (sem alert)
+        if (facade.cancelaChamado(id)){
+            
+            facade.cadastraHistorico(acoes.CANCELAR_CHAMADO, justificativa, usuario, c, null);
             out.println("<script>" +
                     "alert('Chamado cancelado com sucesso!');" +
                     "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
-        else
+        } else {
             out.println("<script>" +
                     "alert('Não foi possível cancelar o chamado, por favor, contate um administrador.');" +
                     "</script>");
+        }
     }
 
     if (request.getParameter("transferirChamado") != null) {

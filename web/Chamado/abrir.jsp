@@ -1,3 +1,5 @@
+<%@page import="model.Chamado"%>
+<%@page import="model.Historico.acoes"%>
 <%@ page import="model.Facade" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -82,8 +84,11 @@
             out.println("<script>alert('O campo descrição é obrigatório!');</script>");
         } else {
             Facade facade = new Facade();
-            if (facade.abreChamado(titulo, prioridade, descricao, usuario.getId())) {
+            Chamado chamado = facade.abreChamado(titulo, prioridade, descricao, usuario.getId());
+            if (chamado != null) {
 //                TODO mostrar acima do formulário (sem alert)
+                //cadastra no historico
+                facade.cadastraHistorico(acoes.ABRIR_CHAMADO, null, usuario, chamado, null);
                 out.println("<script>" +
                         "alert('Chamado aberto com sucesso!');" +
                         "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
