@@ -9,18 +9,40 @@ import java.time.LocalDateTime;
  */
 public class Historico {
     private long id;
-    private String acao,
-            justificativa;
+    private acoes acao;
+    private String justificativa;
     private LocalDateTime hora;
     private Usuario usuario1;
     private Chamado chamado;
     private Usuario usuario2;
+    
+    public enum acoes {
+        ABRIR_CHAMADO("abriu o chamado"),
+        INCREMENTAR_DESCRICAO("incrementou a descrição do chamado"),
+        CANCELAR_CHAMADO("cancelou o chamado"),
+        ALTERAR_PRIORIDADE("alterou a prioridade do chamado"),
+        ALTERAR_STATUS("alterou os status do chamado"),
+        ASSUMIR_CHAMADO("assumiu o chamado"),
+        TRANSFERIR_CHAMADO("transferiu o chamado"),
+        CADASTRAR_USUARIO("cadastrou o usuario"),
+        ALTERAR_USUARIO("alterou o usuario");
+        
+        private final String descricao;
 
-    public String getAcao() {
+        acoes(String value) {
+            descricao = value;
+        }
+
+        public String getDescricao() {
+            return descricao;
+        }
+    }
+
+    public acoes getAcao() {
         return acao;
     }
 
-    public void setAcao(String acao) {
+    public void setAcao(acoes acao) {
         this.acao = acao;
     }
 
