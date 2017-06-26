@@ -66,8 +66,6 @@
                 <%--TODO pedir justificativa--%>
                 <form name="formTransferir<%= c.getId() %>" method="post" action="Chamado/visualizar.jsp"
                       class="inline">
-                    <input type="hidden" name="id" value="<%= c.getId() %>">
-                    <input type="hidden" name="transferirChamado" value="true">
                     <a class="text-info" data-toggle="tooltip" title="Transferir chamado"
                        onclick="modalTransferir(<%= c.getId() %>);return false;">
                         <i class="fa fa-forward"></i>
@@ -105,7 +103,7 @@
 
     function modalTransferir(id) {
         //Constroi título e descrição
-        titulo = "Transferir chamado";
+        var titulo = "Transferir chamado";
 
         //Corpo da modal
         $('.modal-content').html('<div class="modal-header">'

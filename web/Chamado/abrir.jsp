@@ -1,5 +1,5 @@
-<%@page import="model.Chamado"%>
-<%@page import="model.Historico.acoes"%>
+<%@page import="model.Chamado" %>
+<%@page import="model.Historico.acoes" %>
 <%@ page import="model.Facade" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -76,13 +76,13 @@
                 prioridade = request.getParameter("prioridade"),
                 descricao = request.getParameter("descricao");
 
-        if (titulo.equals("")) {
+        if (titulo.equals(""))
             out.println("<script>alert('O campo título é obrigatório!');</script>");
-        } else if (prioridade.equals("")) {
+        else if (prioridade.equals(""))
             out.println("<script>alert('O campo prioridade é obrigatório!');</script>");
-        } else if (descricao.equals("")) {
+        else if (descricao.equals(""))
             out.println("<script>alert('O campo descrição é obrigatório!');</script>");
-        } else {
+        else {
             Facade facade = new Facade();
             Chamado chamado = facade.abreChamado(titulo, prioridade, descricao, usuario.getId());
             if (chamado != null) {
