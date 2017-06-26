@@ -26,8 +26,8 @@ REQUISITOS:
 		geração de relatórios
 
 RELATÓRIOS:
-    número de atendimentos realizados por um técnico em um perído de tempo
-	número de chamados que foram abertos em um período de tempo
+    número de atendimentos realizados por um técnico em um perído de tempo (gráfico)
+	número de chamados que foram abertos em um período de tempo (gráfico)
 
 STATUS:
 	aberto
