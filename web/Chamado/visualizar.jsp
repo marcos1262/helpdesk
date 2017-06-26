@@ -1,5 +1,5 @@
-<%@page import="model.Historico.acoes"%>
-<%@ page import="model.Historico"%>
+<%@page import="model.Historico.acoes" %>
+<%@ page import="model.Historico" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
@@ -74,8 +74,10 @@
                                 <label class="control-label col-md-1 required">Prioridade
                                     <strong class="text-danger">*</strong>
                                 </label>
+                                <input type="hidden" name="prioridade_old" value="<%= c.getPrioridade() %>">
                                 <div class="col-md-2">
                                     <select name="prioridade" class="form-control" required
+                                            onchange="verificaPrioridade()"
                                             <% if (c.getTecnico() == null || usuario.getId() != c.getTecnico().getId()) { %>
                                             disabled <% } %> >
                                         <option <%= c.getPrioridade() == Chamado.prioridades.BAIXA ? "selected" : ""%>
@@ -90,6 +92,15 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div id="action-modal" class="modal fade">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div>
+                            <!-- /.modal -->
 
                             <div class="form-group">
                                 <label class="control-label col-md-2 required">Status <strong
@@ -213,6 +224,35 @@
 
 <%@include file="../footer.jsp" %>
 
+<script>
+    function verificaPrioridade() {
+        var nova = document.getElementsByName("prioridade")[0].value;
+        var antiga = document.getElementsByName("prioridade_old")[0].value;
+
+        if (nova !== antiga) {
+            //Constroi título e descrição
+            var titulo = "Transferir chamado";
+
+            //Corpo da modal
+            $('.modal-content').html(
+                '<div class="modal-header">'
+                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                + '<h4 class="modal-title">' + titulo + '</h4>'
+                + '</div>'
+                + '<div class="modal-body">'
+                + '<div class="form-group">'
+                + '<input type="text" name="justificativa" class="form-control" placeholder="Digite uma justificativa"/>'
+                + '</div>'
+                + '</div>'
+                + '<div class="modal-footer">'
+                + '<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Continuar</button>'
+                + '</div>'
+            );
+            $('#action-modal').modal('show');
+        }
+    }
+</script>
+
 <%
     if (request.getParameter("assumirChamado") != null) {
         Long id = Long.parseLong(request.getParameter("id"));
@@ -255,9 +295,8 @@
         String justificativa = request.getParameter("justificativa");
         Long idtecnico = Long.parseLong(request.getParameter("novo_tecnico"));
         Facade facade = new Facade();
-        
-        
-        
+
+
         if (facade.transfereChamado(id, idtecnico) && facade.cadastraHistorico(acoes.TRANSFERIR_CHAMADO, justificativa, usuario, c, new Usuario(idtecnico)))
 //                TODO mostrar acima do formulário (sem alert)
             out.println("<script>" +
@@ -271,6 +310,7 @@
         Long id = Long.parseLong(request.getParameter("id"));
         String status = request.getParameter("status");
         String prioridade = request.getParameter("prioridade");
+        String prioridade_old = request.getParameter("prioridade_old");
 
         Chamado c = new Chamado();
         c.setId(id);
@@ -283,13 +323,23 @@
         if (!desc.equals(""))
             c.addDescricao(new Descricao(desc));
 
-        if (new Facade().atualizaChamado(c))
+        if (new Facade().atualizaChamado(c)) {
 //                TODO mostrar acima do formulário (sem alert)
-            out.println("<script>" +
-                    "alert('Chamado alterado com sucesso!');" +
+
+            if (!prioridade.equals(prioridade_old)) {
+                String justificativa = request.getParameter("justificativa");
+
+                if (new Facade().cadastraHistorico(acoes.ALTERAR_PRIORIDADE, justificativa, usuario, c, null)) {
+                    out.println("<script>" +
+                            "alert('Chamado alterado com sucesso!');" +
 //                    "</script>");
-                    "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
-        else
+                            "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
+                }else
+                    out.println("<script>" +
+                            "alert('Não foi possível alterar o chamado, por favor, contate um administrador!');" +
+                            "</script>");
+            }
+        }else
             out.println("<script>" +
                     "alert('Não foi possível alterar o chamado, por favor, contate um administrador.');" +
                     "</script>");
