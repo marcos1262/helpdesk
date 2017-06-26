@@ -57,7 +57,7 @@
                             </label><br>
                             <label>
                                 Descrição:
-                                <input type="text" name="descricao" class="form-control"/>
+                                <textarea name="descricao" class="form-control"></textarea>
                             </label><br>
                             <input type="submit" name="abrirChamado" value="Abrir Chamado" class="btn btn-primary"/>
                         </form>

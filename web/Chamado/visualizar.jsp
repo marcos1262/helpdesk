@@ -282,7 +282,10 @@
         c.setId(id);
 
         Facade facade = new Facade();
-        if (facade.cancelaChamado(id)){
+        
+        if(usuario.getTipo() != Usuario.tipos.SOLIC && justificativa.equals("")){
+            out.println("<script>alert('A justificativa é obrigatória!');</script>");
+        } else if (facade.cancelaChamado(id)){
             if(usuario.getTipo() != Usuario.tipos.SOLIC)
                 facade.cadastraHistorico(acoes.CANCELAR_CHAMADO, justificativa, usuario, c, null);
             else
@@ -308,8 +311,9 @@
         Long idtecnico = Long.parseLong(request.getParameter("novo_tecnico"));
         Facade facade = new Facade();
 
-
-        if (facade.transfereChamado(id, idtecnico) && facade.cadastraHistorico(acoes.TRANSFERIR_CHAMADO, justificativa, usuario, c, new Usuario(idtecnico)))
+        if (justificativa.equals("")){
+            out.println("<script>alert('A justificativa é obrigatória!');</script>");
+        }else if (facade.transfereChamado(id, idtecnico) && facade.cadastraHistorico(acoes.TRANSFERIR_CHAMADO, justificativa, usuario, c, new Usuario(idtecnico)))
 //                TODO mostrar acima do formulário (sem alert)
             out.println("<script>" +
                     "alert('Chamado transferido com sucesso!');" +
