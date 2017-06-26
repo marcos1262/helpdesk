@@ -1,4 +1,4 @@
-<%@page import="model.Usuario.tipos"%>
+<%@page import="model.Usuario.tipos" %>
 <%@page import="model.Historico.acoes" %>
 <%@ page import="model.Historico" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
@@ -107,6 +107,7 @@
                                 <label class="control-label col-md-2 required">Status <strong
                                         class="text-danger">*</strong>
                                 </label>
+                                <input type="hidden" name="status_old" value="<%= c.getStatus() %>">
                                 <div class="col-md-4">
                                     <select name="status" class="form-control" required
                                             <% if (c.getTecnico() == null || usuario.getId() != c.getTecnico().getId()) { %>
@@ -155,7 +156,7 @@
 
                             <%--TODO excluir descrições--%>
                             <div class="form-group col-md-8 col-md-push-2">
-                                <b>Descrições</b>
+                                <b>Descrições / Comentários</b>
                                 <table class="table table-hover paginated">
                                     <thead>
                                     <tr>
@@ -261,7 +262,7 @@
         c.setId(id);
 
         Facade facade = new Facade();
-        if (facade.assumeChamado(id, usuario.getId())){
+        if (facade.assumeChamado(id, usuario.getId())) {
 //                TODO mostrar acima do formulário (sem alert)
             facade.cadastraHistorico(acoes.ASSUMIR_CHAMADO, null, usuario, c, null);
             out.println("<script>" +
@@ -277,17 +278,16 @@
     if (request.getParameter("cancelarChamado") != null) {
         Long id = Long.parseLong(request.getParameter("id"));
         String justificativa = request.getParameter("justificativa");
-//        TODO gravar justificativa
         Chamado c = new Chamado();
         c.setId(id);
 
         Facade facade = new Facade();
-        if (facade.cancelaChamado(id)){
-            if(usuario.getTipo() != Usuario.tipos.SOLIC)
+        if (facade.cancelaChamado(id)) {
+            if (usuario.getTipo() != Usuario.tipos.SOLIC)
                 facade.cadastraHistorico(acoes.CANCELAR_CHAMADO, justificativa, usuario, c, null);
             else
                 facade.cadastraHistorico(acoes.CANCELAR_CHAMADO, null, usuario, c, null);
-                
+
             out.println("<script>" +
                     "alert('Chamado cancelado com sucesso!');" +
                     "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
@@ -308,7 +308,6 @@
         Long idtecnico = Long.parseLong(request.getParameter("novo_tecnico"));
         Facade facade = new Facade();
 
-
         if (facade.transfereChamado(id, idtecnico) && facade.cadastraHistorico(acoes.TRANSFERIR_CHAMADO, justificativa, usuario, c, new Usuario(idtecnico)))
 //                TODO mostrar acima do formulário (sem alert)
             out.println("<script>" +
@@ -320,38 +319,60 @@
 
     if (request.getParameter("alterarChamado") != null) {
         Long id = Long.parseLong(request.getParameter("id"));
+        String justificativa = request.getParameter("justificativa");
+
         String status = request.getParameter("status");
+        String status_old = request.getParameter("status_old");
+
         String prioridade = request.getParameter("prioridade");
         String prioridade_old = request.getParameter("prioridade_old");
 
         Chamado c = new Chamado();
         c.setId(id);
-        if (usuario.getTipo() == Usuario.tipos.TECNI) {
+        if (usuario.getTipo() != Usuario.tipos.SOLIC) {
             c.setStatus(status);
             c.setPrioridade(prioridade);
         }
 
         String desc = request.getParameter("adddesc");
-        if (!desc.equals(""))
+        boolean incrementouDesc = false;
+        if (!desc.equals("")) {
             c.addDescricao(new Descricao(desc));
+            incrementouDesc = true;
+        }
 
-        if (new Facade().atualizaChamado(c)) {
+        if (status.equals(""))
+            out.println("<script>alert('O campo status é obrigatório!');</script>");
+        else if (prioridade.equals(""))
+            out.println("<script>alert('O campo prioridade é obrigatório!');</script>");
+        else if (!status.equals(status_old) && !incrementouDesc)
+            out.println("<script>alert('Para alterar o status do chamado, você precisa adicionar um comentário!');</script>");
+        else if (!prioridade.equals(prioridade_old) && justificativa.equals(""))
+            out.println("<script>alert('Para alterar a prioridade do chamado, você precisa informar uma justificativa!');</script>");
+        else if (new Facade().atualizaChamado(c)) {
 //                TODO mostrar acima do formulário (sem alert)
+            boolean histAltPrioridade = true,
+                    histAltStatus = true;
 
-            if (!prioridade.equals(prioridade_old)) {
-                String justificativa = request.getParameter("justificativa");
+            if (!prioridade.equals(prioridade_old)
+                    && !new Facade().cadastraHistorico(acoes.ALTERAR_PRIORIDADE, justificativa, usuario, c, null))
+                histAltPrioridade = false;
 
-                if (new Facade().cadastraHistorico(acoes.ALTERAR_PRIORIDADE, justificativa, usuario, c, null)) {
-                    out.println("<script>" +
-                            "alert('Chamado alterado com sucesso!');" +
+
+            if (!status.equals(status_old)
+                    && !new Facade().cadastraHistorico(acoes.ALTERAR_STATUS, null, usuario, c, null))
+                histAltStatus = false;
+
+            if (histAltPrioridade && histAltStatus)
+                out.println("<script>" +
+                        "alert('Chamado alterado com sucesso!');" +
 //                    "</script>");
-                            "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
-                }else
-                    out.println("<script>" +
-                            "alert('Não foi possível alterar o chamado, por favor, contate um administrador!');" +
-                            "</script>");
-            }
-        }else
+                        "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
+            else
+                out.println("<script>" +
+                        "alert('Não foi possível alterar o chamado, por favor, contate um administrador!');" +
+                        "</script>");
+        } else
             out.println("<script>" +
                     "alert('Não foi possível alterar o chamado, por favor, contate um administrador.');" +
                     "</script>");

@@ -62,10 +62,8 @@
                 </form>
                 <%--TODO pedir justificativa--%>
                 <form name="formCancelar<%= c.getId() %>" method="post" action="Chamado/visualizar.jsp" class="inline">
-                    <input type="hidden" name="id" value="<%= c.getId() %>">
-                    <input type="hidden" name="cancelarChamado" value="true">
                     <a class="text-info" data-toggle="tooltip" title="Cancelar chamado"
-                       onclick="document.forms['formCancelar<%= c.getId() %>'].submit();">
+                       onclick="modalCancelar(<%= c.getId() %>);return false;">
                         <i class="fa fa-trash-o"></i>
                     </a>
                 </form>
@@ -87,3 +85,40 @@
 </p>
 
 <% } %>
+<div id="action-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<script>
+
+    function modalCancelar(id) {
+        //Constroi título e descrição
+        var titulo = "Cancelar chamado";
+
+        //Corpo da modal
+        $('.modal-content').html('<div class="modal-header">'
+            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+            + '<h4 class="modal-title">' + titulo + '</h4>'
+            + '</div>'
+            + '<form method="post" action="<%=application.getContextPath()%>/Chamado/visualizar.jsp">'
+            + '<div class="modal-body">'
+            + '<input type="hidden" name="id" value="' + id + '">'
+            + '<input type="hidden" name="cancelarChamado" value="true">'
+            + '<div class="form-group">'
+            + '<input type="text" name="justificativa" class="form-control" placeholder="Digite uma justificativa"/>'
+            + '</div>'
+            + '</div>'
+            + '<div class="modal-footer">'
+            + '<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Voltar</button>'
+            + '<button type="submit" class="btn btn-danger pull-right">Cancelar chamado</button>'
+            + '</div>'
+            + '</form>'
+        );
+        $('#action-modal').modal('show');
+    }
+</script>
