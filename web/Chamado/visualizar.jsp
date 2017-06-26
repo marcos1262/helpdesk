@@ -1,3 +1,4 @@
+<%@page import="model.Usuario.tipos"%>
 <%@page import="model.Historico.acoes" %>
 <%@ page import="model.Historico" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
@@ -256,17 +257,21 @@
 <%
     if (request.getParameter("assumirChamado") != null) {
         Long id = Long.parseLong(request.getParameter("id"));
+        Chamado c = new Chamado();
+        c.setId(id);
 
         Facade facade = new Facade();
-        if (facade.assumeChamado(id, usuario.getId()))
+        if (facade.assumeChamado(id, usuario.getId())){
 //                TODO mostrar acima do formulário (sem alert)
+            facade.cadastraHistorico(acoes.ASSUMIR_CHAMADO, null, usuario, c, null);
             out.println("<script>" +
                     "alert('Chamado assumido com sucesso!');" +
                     "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
-        else
+        } else {
             out.println("<script>" +
                     "alert('Não foi possível assumir o chamado, por favor, contate um administrador.');" +
                     "</script>");
+        }
     }
 
     if (request.getParameter("cancelarChamado") != null) {
@@ -278,8 +283,11 @@
 
         Facade facade = new Facade();
         if (facade.cancelaChamado(id)){
-            
-            facade.cadastraHistorico(acoes.CANCELAR_CHAMADO, justificativa, usuario, c, null);
+            if(usuario.getTipo() != Usuario.tipos.SOLIC)
+                facade.cadastraHistorico(acoes.CANCELAR_CHAMADO, justificativa, usuario, c, null);
+            else
+                facade.cadastraHistorico(acoes.CANCELAR_CHAMADO, null, usuario, c, null);
+                
             out.println("<script>" +
                     "alert('Chamado cancelado com sucesso!');" +
                     "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
