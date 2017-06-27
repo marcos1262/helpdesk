@@ -1,4 +1,3 @@
-<%@ page import="model.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -7,15 +6,9 @@
     <%-- Java Code --%>
     <jsp:include page="include/security.jsp"/>
     <%
-        Usuario usuario;
-
-        if ((usuario = (Usuario) session.getAttribute("usuario")) != null)
+        if (session.getAttribute("usuario") != null)
             // TODO voltar para página anterior
-
-            if (usuario.getTipo() == Usuario.tipos.ADMIN)
-                response.sendRedirect("adm/index.jsp");
-            else
-                response.sendRedirect("index.jsp");
+            response.sendRedirect("index.jsp");
 
         // FIXME quando volta a página, mostra login ou senha incorretos
     %>

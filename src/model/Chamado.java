@@ -28,9 +28,19 @@ public class Chamado {
     }
 
     public enum prioridades {
-        ALTA,
-        NORMAL,
-        BAIXA
+        ALTA("Alta"),
+        NORMAL("Normal"),
+        BAIXA("Baixa");
+
+        private final String descricao;
+
+        prioridades(String value) {
+            descricao = value;
+        }
+
+        public String getDescricao() {
+            return descricao;
+        }
     }
 
     public enum statusOpcoes {

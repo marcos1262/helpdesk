@@ -1,11 +1,10 @@
-<%@page import="model.Usuario.tipos" %>
 <%@page import="model.Historico.acoes" %>
-<%@ page import="model.Historico" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.Descricao" %>
+<%@ page import="model.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 

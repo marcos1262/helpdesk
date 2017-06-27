@@ -78,7 +78,7 @@ public class DAOUsuario {
      * @return Usuário com os dados consultados ou NULL quando não há resultados
      */
     public Usuario consulta(Usuario usuario) {
-        Usuario usuario1 = new Usuario();
+        Usuario usuario1 = new Usuario("", "");
 
         try {
             this.conexao = new ConnectionFactory().getConnection();
