@@ -12,10 +12,7 @@
         if ((usuario = (Usuario) session.getAttribute("usuario")) != null)
             // TODO voltar para página anterior
 
-            if (usuario.getTipo() == Usuario.tipos.ADMIN)
-                response.sendRedirect("adm/index.jsp");
-            else
-                response.sendRedirect("index.jsp");
+            response.sendRedirect("index.jsp");
 
         // FIXME quando volta a página, mostra login ou senha incorretos
     %>
