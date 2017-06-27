@@ -182,6 +182,19 @@ public class Facade {
         return new DAOHistorico().cadastra(historico);
     }
     
+    //==========================================================================//
+    //                              SESSÃO TÉCNICO
+    //==========================================================================//
+    
+    public int chamadosAtendidos(Usuario tecnico){
+    
+        return new DAOUsuario().chamadosAtendidos(tecnico);
+    }
+    
+    public int chamadosEmAtendimento(Usuario tecnico){
+    
+        return new DAOUsuario().chamadosEmAtendimento(tecnico);
+    }
     
     //==========================================================================//
     //                         SESSÃO SERVIÇOS DIVERSOS
