@@ -1,3 +1,5 @@
+<%@page import="model.Chamado" %>
+<%@page import="model.Historico.acoes" %>
 <%@ page import="model.Facade" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -55,7 +57,7 @@
                             </label><br>
                             <label>
                                 Descrição:
-                                <input type="text" name="descricao" class="form-control"/>
+                                <textarea name="descricao" class="form-control"></textarea>
                             </label><br>
                             <input type="submit" name="abrirChamado" value="Abrir Chamado" class="btn btn-primary"/>
                         </form>
@@ -74,16 +76,19 @@
                 prioridade = request.getParameter("prioridade"),
                 descricao = request.getParameter("descricao");
 
-        if (titulo.equals("")) {
+        if (titulo.equals(""))
             out.println("<script>alert('O campo título é obrigatório!');</script>");
-        } else if (prioridade.equals("")) {
+        else if (prioridade.equals(""))
             out.println("<script>alert('O campo prioridade é obrigatório!');</script>");
-        } else if (descricao.equals("")) {
+        else if (descricao.equals(""))
             out.println("<script>alert('O campo descrição é obrigatório!');</script>");
-        } else {
+        else {
             Facade facade = new Facade();
-            if (facade.abreChamado(titulo, prioridade, descricao, usuario.getId())) {
+            Chamado chamado = facade.abreChamado(titulo, prioridade, descricao, usuario.getId());
+            if (chamado != null) {
 //                TODO mostrar acima do formulário (sem alert)
+                //cadastra no historico
+                facade.cadastraHistorico(acoes.ABRIR_CHAMADO, null, usuario, chamado, null);
                 out.println("<script>" +
                         "alert('Chamado aberto com sucesso!');" +
                         "window.location = '" + application.getContextPath() + "/index.jsp';</script>");

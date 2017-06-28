@@ -10,6 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import model.Historico.acoes;
 
 /**
  * Interface entre visão da aplicação e implementação das funcionalidades da aplicação
@@ -100,7 +101,7 @@ public class Facade {
      * @param idsolicitante id do solicitante ({@link Usuario}) do chamado
      * @return Verdadeiro caso seja aberto com sucesso ou Falso caso contrário
      */
-    public boolean abreChamado(String titulo, String prioridade, String descricao, long idsolicitante) {
+    public Chamado abreChamado(String titulo, String prioridade, String descricao, long idsolicitante) {
         Chamado chamado = new Chamado();
         chamado.setTitulo(titulo);
         chamado.setPrioridade(prioridade);
@@ -145,13 +146,6 @@ public class Facade {
         return new DAOChamado().atualiza(c);
     }
 
-    public boolean alteraPrioridadeChamado(long idChamado, String prioridade) {
-        Chamado c = new Chamado();
-        c.setId(idChamado);
-        c.setPrioridade(prioridade);
-        return new DAOChamado().atualiza(c);
-    }
-
     public boolean transfereChamado(long idChamado, long idNovoTecnico) {
         Chamado chamado = new Chamado();
         chamado.setId(idChamado);
@@ -178,7 +172,7 @@ public class Facade {
      * @param usuario2 usuário 2 envolvido na ação
      * @return Verdadeiro caso seja cadastrado com sucesso ou Falso caso contrário
      */
-    public boolean cadastraHistorico(String acao, String justificativa, Usuario usuario1, Chamado chamado, Usuario usuario2) {
+    public boolean cadastraHistorico(acoes acao, String justificativa, Usuario usuario1, Chamado chamado, Usuario usuario2) {
         Historico historico = new Historico();
         historico.setAcao(acao);
         historico.setJustificativa(justificativa);
@@ -188,6 +182,19 @@ public class Facade {
         return new DAOHistorico().cadastra(historico);
     }
     
+    //==========================================================================//
+    //                              SESSÃO TÉCNICO
+    //==========================================================================//
+    
+    public int chamadosAtendidos(Usuario tecnico){
+    
+        return new DAOUsuario().chamadosAtendidos(tecnico);
+    }
+    
+    public int chamadosEmAtendimento(Usuario tecnico){
+    
+        return new DAOUsuario().chamadosEmAtendimento(tecnico);
+    }
     
     //==========================================================================//
     //                         SESSÃO SERVIÇOS DIVERSOS
@@ -208,6 +215,7 @@ public class Facade {
             throw new RuntimeException(e);
         }
     }
+
     public String dataHoraMysql(LocalDateTime dataHora) {
         DateTimeFormatter formatador =
                 DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");

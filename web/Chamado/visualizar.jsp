@@ -1,9 +1,11 @@
+<%@page import="model.Historico.acoes" %>
 <%@page import="java.time.LocalDateTime"%>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.Descricao" %>
+<%@ page import="model.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
@@ -73,9 +75,12 @@
                                 <label class="control-label col-md-1 required">Prioridade
                                     <strong class="text-danger">*</strong>
                                 </label>
+                                <input type="hidden" name="prioridade_old" value="<%= c.getPrioridade() %>">
                                 <div class="col-md-2">
                                     <select name="prioridade" class="form-control" required
-                                            <% if (usuario.getId() != c.getTecnico().getId()) { %> disabled <% } %>>
+                                            onchange="verificaPrioridade()"
+                                            <% if (c.getTecnico() == null || usuario.getId() != c.getTecnico().getId()) { %>
+                                            disabled <% } %> >
                                         <option <%= c.getPrioridade() == Chamado.prioridades.BAIXA ? "selected" : ""%>
                                                 value="BAIXA">Baixa
                                         </option>
@@ -89,35 +94,40 @@
                                 </div>
                             </div>
 
+                            <div id="action-modal" class="modal fade">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div>
+                            <!-- /.modal -->
+
                             <div class="form-group">
                                 <label class="control-label col-md-2 required">Status <strong
                                         class="text-danger">*</strong>
                                 </label>
+                                <input type="hidden" name="status_old" value="<%= c.getStatus() %>">
                                 <div class="col-md-4">
                                     <select name="status" class="form-control" required
-                                            <% if (usuario.getId() != c.getTecnico().getId()) { %> disabled <% } %>>
-                                        <option <%= c.getStatus() == Chamado.statusOpcoes.ABERTO ? "selected" : ""%>
-                                                value="ABERTO">Aberto
+                                            <% if (c.getTecnico() == null || usuario.getId() != c.getTecnico().getId()) { %>
+                                            disabled
+                                            <% } %>>
+                                        <%
+                                            for (Chamado.statusOpcoes s : Chamado.statusOpcoes.values()) {
+                                        %>
+                                        <option <%= c.getStatus() == s ? "selected" : ""%>
+                                                value="<%= s %>"><%= s.getDescricao() %>
                                         </option>
-                                        <option <%= c.getStatus() == Chamado.statusOpcoes.ATENDENDO ? "selected" : ""%>
-                                                value="ATENDENDO">Atendendo
-                                        </option>
-                                        <option <%= c.getStatus() == Chamado.statusOpcoes.ESPERANDO ? "selected" : ""%>
-                                                value="ESPERANDO">Esperando
-                                        </option>
-                                        <option <%= c.getStatus() == Chamado.statusOpcoes.FECHADO_CANCELADO ? "selected" : ""%>
-                                                value="FECHADO_CANCELADO">Fechado (Cancelado)
-                                        </option>
-                                        <option <%= c.getStatus() == Chamado.statusOpcoes.FECHADO_FALHA ? "selected" : ""%>
-                                                value="FECHADO_FALHA">Fechado (Falha)
-                                        </option>
-                                        <option <%= c.getStatus() == Chamado.statusOpcoes.FECHADO_SUCESSO ? "selected" : ""%>
-                                                value="FECHADO_SUCESSO">Fechado (Sucesso)
-                                        </option>
+                                        <%
+                                            }
+                                        %>
                                     </select>
                                 </div>
-                                <label class="control-label col-md-1 required">Data<strong
-                                        class="text-danger">*</strong></label>
+                                <label class="control-label col-md-1 required">
+                                    Data
+                                    <strong class="text-danger">*</strong>
+                                </label>
                                 <div class="col-md-2">
                                     <input name="data" type="text" class="form-control"
                                            value="<%= c.getData().format(DateTimeFormatter.ISO_LOCAL_DATE) %>"
@@ -138,14 +148,15 @@
                                         class="text-danger">*</strong></label>
                                 <div class="col-md-2">
                                     <input name="tecnico" type="text" class="form-control"
-                                           value="<%= new Facade().consultaUsuarios(c.getTecnico(), 0, 1).get(0).getNome() %>"
+                                           value="<%= c.getTecnico() != null ?
+                                           new Facade().consultaUsuarios(c.getTecnico(), 0, 1).get(0).getNome() : ""%>"
                                            disabled/>
                                 </div>
                             </div>
 
                             <%--TODO excluir descrições--%>
                             <div class="form-group col-md-8 col-md-push-2">
-                                <b>Descrições</b>
+                                <b>Descrições / Comentários</b>
                                 <table class="table table-hover paginated">
                                     <thead>
                                     <tr>
@@ -221,37 +232,79 @@
 
 <%@include file="../footer.jsp" %>
 
+<script>
+    function verificaPrioridade() {
+        var nova = document.getElementsByName("prioridade")[0].value;
+        var antiga = document.getElementsByName("prioridade_old")[0].value;
+
+        if (nova !== antiga) {
+            //Constroi título e descrição
+            var titulo = "Transferir chamado";
+
+            //Corpo da modal
+            $('.modal-content').html(
+                '<div class="modal-header">'
+                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                + '<h4 class="modal-title">' + titulo + '</h4>'
+                + '</div>'
+                + '<div class="modal-body">'
+                + '<div class="form-group">'
+                + '<input type="text" name="justificativa" class="form-control" placeholder="Digite uma justificativa"/>'
+                + '</div>'
+                + '</div>'
+                + '<div class="modal-footer">'
+                + '<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Continuar</button>'
+                + '</div>'
+            );
+            $('#action-modal').modal('show');
+        }
+    }
+</script>
+
 <%
     if (request.getParameter("assumirChamado") != null) {
         Long id = Long.parseLong(request.getParameter("id"));
+        Chamado c = new Chamado();
+        c.setId(id);
 
         Facade facade = new Facade();
-        if (facade.assumeChamado(id, usuario.getId()))
+        if (facade.assumeChamado(id, usuario.getId())) {
 //                TODO mostrar acima do formulário (sem alert)
+            facade.cadastraHistorico(acoes.ASSUMIR_CHAMADO, null, usuario, c, null);
             out.println("<script>" +
                     "alert('Chamado assumido com sucesso!');" +
                     "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
-        else
+        } else {
             out.println("<script>" +
                     "alert('Não foi possível assumir o chamado, por favor, contate um administrador.');" +
                     "</script>");
+        }
     }
 
     if (request.getParameter("cancelarChamado") != null) {
         Long id = Long.parseLong(request.getParameter("id"));
         String justificativa = request.getParameter("justificativa");
-//        TODO gravar justificativa
+        Chamado c = new Chamado();
+        c.setId(id);
 
         Facade facade = new Facade();
-        if (facade.cancelaChamado(id))
-//                TODO mostrar acima do formulário (sem alert)
+        
+        if(usuario.getTipo() != Usuario.tipos.SOLIC && justificativa.equals("")){
+            out.println("<script>alert('A justificativa é obrigatória!');</script>");
+        } else if (facade.cancelaChamado(id)){
+            if(usuario.getTipo() != Usuario.tipos.SOLIC)
+                facade.cadastraHistorico(acoes.CANCELAR_CHAMADO, justificativa, usuario, c, null);
+            else
+                facade.cadastraHistorico(acoes.CANCELAR_CHAMADO, null, usuario, c, null);
+
             out.println("<script>" +
                     "alert('Chamado cancelado com sucesso!');" +
                     "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
-        else
+        } else {
             out.println("<script>" +
                     "alert('Não foi possível cancelar o chamado, por favor, contate um administrador.');" +
                     "</script>");
+        }
     }
 
     if (request.getParameter("transferirChamado") != null) {
@@ -264,7 +317,9 @@
         Long idtecnico = Long.parseLong(request.getParameter("novo_tecnico"));
         Facade facade = new Facade();
 
-        if (facade.transfereChamado(id, idtecnico) && facade.cadastraHistorico("Chamado transferido", justificativa, usuario, c, new Usuario(idtecnico)))
+        if (justificativa.equals("")){
+            out.println("<script>alert('A justificativa é obrigatória!');</script>");
+        }else if (facade.transfereChamado(id, idtecnico) && facade.cadastraHistorico(acoes.TRANSFERIR_CHAMADO, justificativa, usuario, c, new Usuario(idtecnico)))
 //                TODO mostrar acima do formulário (sem alert)
             out.println("<script>" +
                     "alert('Chamado transferido com sucesso!');" +
@@ -275,27 +330,61 @@
 
     if (request.getParameter("alterarChamado") != null) {
         Long id = Long.parseLong(request.getParameter("id"));
+        String justificativa = request.getParameter("justificativa");
+
         String status = request.getParameter("status");
+        String status_old = request.getParameter("status_old");
+
         String prioridade = request.getParameter("prioridade");
+        String prioridade_old = request.getParameter("prioridade_old");
 
         Chamado c = new Chamado();
         c.setId(id);
-        if (usuario.getTipo() == Usuario.tipos.TECNI) {
+        if (usuario.getTipo() != Usuario.tipos.SOLIC) {
             c.setStatus(status);
             c.setPrioridade(prioridade);
         }
 
         String desc = request.getParameter("adddesc");
-        if (!desc.equals(""))
+            
+        boolean incrementouDesc = false;
+        if (!desc.equals("")) {
             c.addDescricao(new Descricao(desc,LocalDateTime.now(),usuario));
+            incrementouDesc = true;
+        }
 
-        if (new Facade().atualizaChamado(c))
+        if (status.equals(""))
+            out.println("<script>alert('O campo status é obrigatório!');</script>");
+        else if (prioridade.equals(""))
+            out.println("<script>alert('O campo prioridade é obrigatório!');</script>");
+        else if (!status.equals(status_old) && !incrementouDesc)
+            out.println("<script>alert('Para alterar o status do chamado, você precisa adicionar um comentário!');</script>");
+        else if (!prioridade.equals(prioridade_old) && justificativa.equals(""))
+            out.println("<script>alert('Para alterar a prioridade do chamado, você precisa informar uma justificativa!');</script>");
+        else if (new Facade().atualizaChamado(c)) {
 //                TODO mostrar acima do formulário (sem alert)
-            out.println("<script>" +
-                    "alert('Chamado alterado com sucesso!');" +
+            boolean histAltPrioridade = true,
+                    histAltStatus = true;
+
+            if (!prioridade.equals(prioridade_old)
+                    && !new Facade().cadastraHistorico(acoes.ALTERAR_PRIORIDADE, justificativa, usuario, c, null))
+                histAltPrioridade = false;
+
+
+            if (!status.equals(status_old)
+                    && !new Facade().cadastraHistorico(acoes.ALTERAR_STATUS, null, usuario, c, null))
+                histAltStatus = false;
+
+            if (histAltPrioridade && histAltStatus)
+                out.println("<script>" +
+                        "alert('Chamado alterado com sucesso!');" +
 //                    "</script>");
-                    "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
-        else
+                        "window.location = '" + application.getContextPath() + "/index.jsp';</script>");
+            else
+                out.println("<script>" +
+                        "alert('Não foi possível alterar o chamado, por favor, contate um administrador!');" +
+                        "</script>");
+        } else
             out.println("<script>" +
                     "alert('Não foi possível alterar o chamado, por favor, contate um administrador.');" +
                     "</script>");

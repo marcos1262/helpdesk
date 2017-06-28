@@ -80,6 +80,18 @@ CREATE TABLE IF NOT EXISTS `helpdesk`.`descricao` (
   AUTO_INCREMENT = 3
   DEFAULT CHARACTER SET = utf8;
 
+ALTER TABLE `helpdesk`.`descricao`
+  ADD COLUMN `data` DATETIME NOT NULL AFTER `chamado_idchamado`,
+  ADD COLUMN `usuario_idautor` INT NOT NULL AFTER `data`,
+  ADD INDEX `fk_descricao_usuario_idx` (`usuario_idautor` ASC);
+ALTER TABLE `helpdesk`.`descricao`
+  ADD CONSTRAINT `fk_descricao_usuario`
+FOREIGN KEY (`usuario_idautor`)
+REFERENCES `helpdesk`.`usuario` (`idusuario`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
 -- -----------------------------------------------------
 -- Table `helpdesk`.`historico`
 -- -----------------------------------------------------

@@ -129,8 +129,9 @@ public class DAOChamado {
      * @param chamado objeto com os dados a serem salvos
      * @return Verdadeiro caso seja cadastrado com sucesso ou Falso caso contrário
      */
-    public boolean cadastra(Chamado chamado) {
+    public Chamado cadastra(Chamado chamado) {
         boolean executou = false;
+        int idcadastrado = 0;
         try {
             this.conexao = new ConnectionFactory().getConnection();
             {
@@ -152,6 +153,7 @@ public class DAOChamado {
                         executou = new DAODescricao().cadastraDescricao(chamado);
                         if (!executou) {
                             exclui(chamado);
+                            chamado = null;
                         }
                     }
                 }
@@ -161,7 +163,7 @@ public class DAOChamado {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return executou;
+        return chamado;
     }
 
     /**

@@ -4,6 +4,7 @@ import dao.bd.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +38,21 @@ public class DAOHistorico {
                         "VALUES (?, ?, ?, ?, ?, ?)";
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 {
-                    ps.setString(1, historico.getAcao());
+                    ps.setString(1, historico.getAcao().toString());
                     ps.setString(2, historico.getJustificativa());
                     ps.setString(3, new Facade().dataHoraMysql(LocalDateTime.now()));
                     ps.setLong(4, historico.getUsuario1().getId());
-                    ps.setLong(5, historico.getChamado().getId());
-                    ps.setLong(6, historico.getUsuario2().getId());
+                    
+                    if(historico.getChamado() != null)
+                        ps.setLong(5, historico.getChamado().getId());
+                    else
+                        ps.setNull(5, Types.INTEGER);
+                    
+                    if(historico.getUsuario2() != null)
+                        ps.setLong(6, historico.getUsuario2().getId());
+                    else
+                        ps.setNull(6, Types.INTEGER);
+                    
                     ps.execute();
                 }
                 ps.close();

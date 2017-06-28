@@ -6,6 +6,7 @@ import model.Usuario;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import model.Chamado;
 
 /**
  * Classe de acesso aos dados de um usuário (@see {@link Usuario}) no Banco de Dados
@@ -78,7 +79,7 @@ public class DAOUsuario {
      * @return Usuário com os dados consultados ou NULL quando não há resultados
      */
     public Usuario consulta(Usuario usuario) {
-        Usuario usuario1 = new Usuario();
+        Usuario usuario1 = new Usuario("", "");
 
         try {
             this.conexao = new ConnectionFactory().getConnection();
@@ -155,6 +156,62 @@ public class DAOUsuario {
             throw new RuntimeException(e);
         }
         return true;
+    }
+    
+    //==========================================================================//
+    //                              SESSÃO TÉCNICOS
+    //==========================================================================//
+    
+    public int chamadosAtendidos(Usuario tecnico){
+        int retorno = 0;
+        try {
+            this.conexao = new ConnectionFactory().getConnection();
+            {
+                String sql = "SELECT COUNT(*) FROM chamado WHERE usuario_idtecnico ='" + tecnico.getId() + "' AND status ='"+ Chamado.statusOpcoes.FECHADO_SUCESSO +"'";
+                PreparedStatement ps = conexao.prepareStatement(sql);
+                {
+                    ResultSet rs = ps.executeQuery();
+                    if (rs.next()) {
+                        retorno = rs.getInt(1);
+                    }
+                    rs.close();
+                }
+                ps.close();
+            }
+            conexao.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        
+        return retorno;
+    }
+    
+    public int chamadosEmAtendimento(Usuario tecnico){
+        int retorno = 0;
+        try {
+            this.conexao = new ConnectionFactory().getConnection();
+            {
+                String sql = "SELECT COUNT(*) FROM chamado WHERE usuario_idtecnico ='" + tecnico.getId() 
+                        + "' AND NOT (status ='" + Chamado.statusOpcoes.FECHADO_SUCESSO +"'"
+                        + " OR status ='" + Chamado.statusOpcoes.FECHADO_CANCELADO +"'"
+                        + " OR status ='" + Chamado.statusOpcoes.FECHADO_FALHA +"')";
+                
+                PreparedStatement ps = conexao.prepareStatement(sql);
+                {
+                    ResultSet rs = ps.executeQuery();
+                    if (rs.next()) {
+                        retorno = rs.getInt(1);
+                    }
+                    rs.close();
+                }
+                ps.close();
+            }
+            conexao.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        
+        return retorno;
     }
 
 }
