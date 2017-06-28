@@ -105,7 +105,7 @@ public class Facade {
         chamado.setTitulo(titulo);
         chamado.setPrioridade(prioridade);
         chamado.setSolicitante(new Usuario(idsolicitante));
-        chamado.addDescricao(new Descricao(descricao));
+        chamado.addDescricao(new Descricao(descricao, LocalDateTime.now(), new Usuario(idsolicitante)));
         return new DAOChamado().cadastra(chamado);
     }
 

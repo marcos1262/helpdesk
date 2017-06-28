@@ -1,3 +1,4 @@
+<%@page import="java.time.LocalDateTime"%>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
@@ -150,6 +151,8 @@
                                     <tr>
                                         <th style="width: 10px">#</th>
                                         <th>Descrição</th>
+                                        <th>Data</th>
+                                        <th>Autor</th>
                                         <%--<th style="width: 100px">Opções</th>--%>
                                     </tr>
                                     </thead>
@@ -162,6 +165,10 @@
                                         <td><%= i + 1 %>
                                         </td>
                                         <td><%= d.getDescricao() %>
+                                        </td>
+                                        <td><%= new Facade().dataHoraMysql(d.getData()) %>
+                                        </td>
+                                        <td><%= d.getAutor() %>
                                         </td>
 
                                         <%--<td>--%>
@@ -280,7 +287,7 @@
 
         String desc = request.getParameter("adddesc");
         if (!desc.equals(""))
-            c.addDescricao(new Descricao(desc));
+            c.addDescricao(new Descricao(desc,LocalDateTime.now(),usuario));
 
         if (new Facade().atualizaChamado(c))
 //                TODO mostrar acima do formulário (sem alert)

@@ -40,11 +40,12 @@ public class DAOChamado {
             this.conexao = new ConnectionFactory().getConnection();
             {
                 String sql = "SELECT idchamado, titulo, prioridade, status, data, " +
-                        "iddescricao, descricao, " +
+                        "iddescricao, descricao, descricao.data as dataDesc" +
                         "u1.idusuario as solicId, u1.nome as solicNome, " +
+                        "u2.idusuario as autorId, u2.nome as autorNome, " +
                         "usuario_idtecnico as tecniId ";
 
-                sql += "FROM chamado, descricao, usuario u1 ";
+                sql += "FROM chamado, descricao, usuario u1, usuario u2 ";
 
                 sql += "WHERE ";
 
@@ -69,6 +70,7 @@ public class DAOChamado {
 
                 sql += "AND chamado.idchamado = descricao.chamado_idchamado " +
                         "AND chamado.usuario_idsolicitante = u1.idusuario " +
+                        "AND descricao.usuario_idautor = u2.idusuario " +
                         "ORDER BY data DESC, iddescricao ASC LIMIT " + inicio + ", " + qtd;
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 {
@@ -76,7 +78,9 @@ public class DAOChamado {
                     while (rs.next()) {
                         Descricao desc = new Descricao(
                                 rs.getLong("iddescricao"),
-                                rs.getString("descricao")
+                                rs.getString("descricao"),
+                                new Facade().dataHoraJava(rs.getString("dataDesc")),
+                                new Usuario(rs.getLong("autorId"),rs.getString("autorNome"))
                         );
 
                         if (l.size() > 0 && rs.getLong("idchamado") == l.get(l.size() - 1).getId()) {
