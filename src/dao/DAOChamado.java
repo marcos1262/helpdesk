@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +30,12 @@ public class DAOChamado {
      * Consulta fatia de todos os chamados (ideal para paginação),
      * considerando os atributos não nulos de uma instância de {@link Chamado}.
      *
-     * @param chamado objeto que definirá os parâmetros da busca
-     * @param inicio  número de registro inicial
-     * @param qtd     quantidades de registros
+     * @param chamados objeto que definirá os parâmetros da busca
+     * @param inicio   número de registro inicial
+     * @param qtd      quantidades de registros
      * @return Lista de chamados começando em [inicio] com [qtd] itens ou NULL quando não há resultados
      */
-    public List<Chamado> consulta(Chamado chamado, int inicio, int qtd) {
+    public List<Chamado> consulta(List<Chamado> chamados, int inicio, int qtd, LocalDate data_inicial, LocalDate data_final) {
         ArrayList<Chamado> l = new ArrayList<>();
         try {
             this.conexao = new ConnectionFactory().getConnection();
@@ -46,26 +47,57 @@ public class DAOChamado {
 
                 sql += "FROM chamado, descricao, usuario u1 ";
 
-                sql += "WHERE ";
+                sql += "WHERE TRUE ";
 
-                if (chamado.getId() != 0)
-                    sql += "idchamado='" + chamado.getId() + "' ";
-                else sql += "TRUE ";
-                if (chamado.getTitulo() != null)
-                    sql += "AND titulo LIKE '%" + chamado.getTitulo() + "%' ";
-                if (chamado.getPrioridade() != null)
-                    sql += "AND prioridade = '" + chamado.getPrioridade() + "' ";
-                if (chamado.getStatus() != null)
-                    sql += "AND status = '" + chamado.getStatus() + "' ";
-                if (chamado.getData() != null)
-                    sql += "AND data = '" + new Facade().dataHoraMysql(chamado.getData()) + "' ";
-                if (chamado.getSolicitante() != null)
-                    sql += "AND usuario_idsolicitante = '" + chamado.getSolicitante().getId() + "' ";
-                if (chamado.getTecnico() != null)
-                    if (chamado.getTecnico().getId() == 0)
-                        sql += "AND usuario_idtecnico IS NULL ";
-                    else
-                        sql += "AND usuario_idtecnico = '" + chamado.getTecnico().getId() + "' ";
+                if (chamados.size() > 0) {
+                    if (chamados.get(0).getId() != 0)
+                        sql += "AND idchamado='" + chamados.get(0).getId() + "' ";
+                    if (chamados.get(0).getData() != null)
+                        sql += "AND data = '" + new Facade().dataHoraMysql(chamados.get(0).getData()) + "' ";
+                    if (chamados.get(0).getSolicitante() != null)
+                        sql += "AND usuario_idsolicitante = '" + chamados.get(0).getSolicitante().getId() + "' ";
+                    if (chamados.get(0).getTecnico() != null)
+                        if (chamados.get(0).getTecnico().getId() == 0)
+                            sql += "AND usuario_idtecnico IS NULL ";
+                        else
+                            sql += "AND usuario_idtecnico = '" + chamados.get(0).getTecnico().getId() + "' ";
+                }
+
+                String sqlTitulo = "(FALSE ";
+                for (Chamado chamado :
+                        chamados) {
+                    if (chamado.getTitulo() != null)
+                        sqlTitulo += "OR titulo LIKE '%" + chamado.getTitulo() + "%' ";
+                }
+                sqlTitulo += ") ";
+                if (!sqlTitulo.equals("(FALSE ) ")) sql += "AND "+sqlTitulo;
+
+                String sqlPrioridade = "(FALSE ";
+                for (Chamado chamado :
+                        chamados) {
+                    if (chamado.getPrioridade() != null)
+                        sqlPrioridade += "OR prioridade = '" + chamado.getPrioridade() + "' ";
+                }
+                sqlPrioridade += ") ";
+                if (!sqlPrioridade.equals("(FALSE ) ")) sql += "AND "+sqlPrioridade;
+
+                String sqlStatus = "(FALSE ";
+                for (Chamado chamado :
+                        chamados) {
+                    if (chamado.getStatus() != null)
+                        sqlStatus += "OR status = '" + chamado.getStatus() + "' ";
+                }
+                sqlStatus += ") ";
+                if (!sqlStatus.equals("(FALSE ) ")) sql += "AND "+sqlStatus;
+
+                if (data_inicial != null) {
+                    sql += "AND data >= '" + data_inicial + "' ";
+                }
+                if (data_final != null) {
+                    sql += "AND data <= '" + data_final + "' ";
+                }
+
+                if (sql.endsWith("TRUE ")) return null;
 
                 sql += "AND chamado.idchamado = descricao.chamado_idchamado " +
                         "AND chamado.usuario_idsolicitante = u1.idusuario " +

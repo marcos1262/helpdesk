@@ -1,3 +1,4 @@
+<%@ page import="model.Usuario" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -25,12 +26,12 @@ desired effect
 <header class="main-header">
 
     <!-- Logo -->
-    <a href="<%= application.getContextPath() %>/index.jsp" class="logo"><b>Help</b>Desk</a>
+    <a href="<%= application.getContextPath() %>/index.jsp" class="logo" id="logo"><b>Help</b>Desk</a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
         <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" onclick="changeName()">
             <span class="sr-only">Toggle navigation</span>
         </a>
         <!-- Navbar Right Menu -->
@@ -92,6 +93,21 @@ desired effect
             </ul>
         </div>
     </nav>
+
+    <script>
+        var i = 0;
+        var logo = document.getElementById("logo");
+
+        function changeName() {
+            if (i) {
+                logo.innerHTML = "<b>Help</b>Desk";
+                i--;
+            } else {
+                logo.innerHTML = "<b>H</b>D";
+                i++;
+            }
+        }
+    </script>
 </header>
 
 <!-- Left side column. contains the logo and sidebar -->
@@ -113,7 +129,8 @@ desired effect
                 <% } %>
             </div>
             <div class="pull-left info">
-                <p><%= usuario.getNome() %></p>
+                <p><%= usuario.getNome() %>
+                </p>
                 <%= usuario.getTipo().getDescricao()%>
             </div>
         </div>
@@ -148,7 +165,11 @@ desired effect
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="<%=application.getContextPath()%>/Chamado/abrir.jsp">Novo Chamado</a></li>
-                    <li><a href="<%=application.getContextPath()%>/index.jsp">Meus Chamados</a></li>
+                    <% if (usuario.getTipo() != Usuario.tipos.ADMIN) { %>
+                        <li><a href="<%=application.getContextPath()%>/index.jsp">Meus Chamados</a></li>
+                    <% } else { %>
+                        <li><a href="<%=application.getContextPath()%>/meusChamados.jsp">Meus Chamados</a></li>
+                    <% } %>
                     <c:if test="${usuario.tipo == 'TECNI'}">
                         <li><a href="<%=application.getContextPath() %>/index.jsp">Chamados para atender</a></li>
                     </c:if>

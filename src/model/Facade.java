@@ -7,9 +7,12 @@ import dao.DAOUsuario;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+
 import model.Historico.acoes;
 
 /**
@@ -135,7 +138,13 @@ public class Facade {
      * @return Lista de chamados começando em [inicio] com [qtd] itens ou NULL quando não há resultados
      */
     public List<Chamado> consultaChamados(Chamado chamado, int inicio, int qtd) {
-        return new DAOChamado().consulta(chamado, inicio, qtd);
+        ArrayList<Chamado> c = new ArrayList<>();
+        c.add(chamado);
+        return new DAOChamado().consulta(c, inicio, qtd, null, null);
+    }
+
+    public List<Chamado> consultaChamados(List<Chamado> chamados, int inicio, int qtd, LocalDate data_inicial, LocalDate data_final) {
+        return new DAOChamado().consulta(chamados, inicio, qtd, data_inicial, data_final);
     }
 
     public boolean assumeChamado(long idChamado, long idTecnico) {
@@ -160,16 +169,16 @@ public class Facade {
     //==========================================================================//
     //                              SESSÃO HISTÓRICO
     //==========================================================================//
-    
+
     /**
      * Cadastra um Histórico no sistema
      * (cadastra no Banco de Dados).
      *
-     * @param acao        ação que desencadeou o cadastro do histórico
-     * @param justificativa    justificativa para a ação
-     * @param usuario1     usuário envolvido na ação
-     * @param chamado chamado alterado na ação
-     * @param usuario2 usuário 2 envolvido na ação
+     * @param acao          ação que desencadeou o cadastro do histórico
+     * @param justificativa justificativa para a ação
+     * @param usuario1      usuário envolvido na ação
+     * @param chamado       chamado alterado na ação
+     * @param usuario2      usuário 2 envolvido na ação
      * @return Verdadeiro caso seja cadastrado com sucesso ou Falso caso contrário
      */
     public boolean cadastraHistorico(acoes acao, String justificativa, Usuario usuario1, Chamado chamado, Usuario usuario2) {
@@ -181,21 +190,21 @@ public class Facade {
         historico.setUsuario2(usuario2);
         return new DAOHistorico().cadastra(historico);
     }
-    
+
     //==========================================================================//
     //                              SESSÃO TÉCNICO
     //==========================================================================//
-    
-    public int chamadosAtendidos(Usuario tecnico){
-    
+
+    public int chamadosAtendidos(Usuario tecnico) {
+
         return new DAOUsuario().chamadosAtendidos(tecnico);
     }
-    
-    public int chamadosEmAtendimento(Usuario tecnico){
-    
+
+    public int chamadosEmAtendimento(Usuario tecnico) {
+
         return new DAOUsuario().chamadosEmAtendimento(tecnico);
     }
-    
+
     //==========================================================================//
     //                         SESSÃO SERVIÇOS DIVERSOS
     //==========================================================================//
