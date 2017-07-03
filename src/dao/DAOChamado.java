@@ -40,15 +40,13 @@ public class DAOChamado {
         try {
             this.conexao = new ConnectionFactory().getConnection();
             {
-                String sql = "SELECT idchamado, titulo, prioridade, status, data, " +
-                        "iddescricao, descricao, descricao.data as dataDesc" +
+                String sql = "SELECT idchamado, titulo, prioridade, status, chamado.data as data, " +
+                        "iddescricao, descricao, descricao.data as dataDesc, " +
                         "u1.idusuario as solicId, u1.nome as solicNome, " +
                         "u2.idusuario as autorId, u2.nome as autorNome, " +
-                        "usuario_idtecnico as tecniId ";
-
-                sql += "FROM chamado, descricao, usuario u1, usuario u2 ";
-
-                sql += "WHERE TRUE ";
+                        "usuario_idtecnico as tecniId " +
+                        "FROM chamado, descricao, usuario u1, usuario u2 " +
+                        "WHERE TRUE ";
 
                 if (chamados.size() > 0) {
                     if (chamados.get(0).getId() != 0)
@@ -71,6 +69,7 @@ public class DAOChamado {
                         sqlTitulo += "OR titulo LIKE '%" + chamado.getTitulo() + "%' ";
                 }
                 sqlTitulo += ") ";
+                System.out.println("_"+sqlTitulo+"_");
                 if (!sqlTitulo.equals("(FALSE ) ")) sql += "AND "+sqlTitulo;
 
                 String sqlPrioridade = "(FALSE ";
@@ -102,8 +101,9 @@ public class DAOChamado {
 
                 sql += "AND chamado.idchamado = descricao.chamado_idchamado " +
                         "AND chamado.usuario_idsolicitante = u1.idusuario " +
-                        "AND descricao.usuario_idautor = u2.idusuario " +
-                        "ORDER BY data DESC, iddescricao ASC LIMIT " + inicio + ", " + qtd;
+                        "AND descricao.usuario_idusuario = u2.idusuario " +
+                        "ORDER BY chamado.data DESC, iddescricao ASC LIMIT " + inicio + ", " + qtd;
+                System.out.println(sql);
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 {
                     ResultSet rs = ps.executeQuery();
