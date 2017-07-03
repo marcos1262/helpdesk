@@ -1,4 +1,5 @@
 <%@page import="model.Historico.acoes" %>
+<%@page import="java.time.LocalDateTime"%>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
@@ -161,6 +162,8 @@
                                     <tr>
                                         <th style="width: 10px">#</th>
                                         <th>Descrição</th>
+                                        <th>Data</th>
+                                        <th>Autor</th>
                                         <%--<th style="width: 100px">Opções</th>--%>
                                     </tr>
                                     </thead>
@@ -173,6 +176,10 @@
                                         <td><%= i + 1 %>
                                         </td>
                                         <td><%= d.getDescricao() %>
+                                        </td>
+                                        <td><%= new Facade().dataHoraMysql(d.getData()) %>
+                                        </td>
+                                        <td><%= d.getAutor() %>
                                         </td>
 
                                         <%--<td>--%>
@@ -339,9 +346,10 @@
         }
 
         String desc = request.getParameter("adddesc");
+            
         boolean incrementouDesc = false;
         if (!desc.equals("")) {
-            c.addDescricao(new Descricao(desc));
+            c.addDescricao(new Descricao(desc,LocalDateTime.now(),usuario));
             incrementouDesc = true;
         }
 

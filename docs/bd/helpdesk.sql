@@ -123,8 +123,13 @@ CREATE TABLE IF NOT EXISTS `helpdesk`.`historico` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 )
+
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8;
+  
+ALTER TABLE `descricao` ADD `usuario_idusuario` INT NOT NULL ,
+ADD `data` DATETIME NOT NULL;
+ALTER TABLE `helpdesk`.`descricao` ADD INDEX `fk_descricao_usuario_idx` ( `usuario_idusuario` );
 
 
 SET SQL_MODE = @OLD_SQL_MODE;
