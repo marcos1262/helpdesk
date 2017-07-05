@@ -41,18 +41,17 @@ public class DAOChamado {
             this.conexao = new ConnectionFactory().getConnection();
             {
                 String sql = "SELECT idchamado, titulo, prioridade, status, chamado.data as data, " +
-                        "iddescricao, descricao, descricao.data as dataDesc, " +
+                        "iddescricao, descricao, descricao.data as dataDesc, descricao.usuario_idusuario as autorId, " +
                         "u1.idusuario as solicId, u1.nome as solicNome, " +
-                        "u2.idusuario as autorId, u2.nome as autorNome, " +
                         "usuario_idtecnico as tecniId " +
-                        "FROM chamado, descricao, usuario u1, usuario u2 " +
+                        "FROM chamado, descricao, usuario u1 " +
                         "WHERE TRUE ";
 
                 if (chamados.size() > 0) {
                     if (chamados.get(0).getId() != 0)
                         sql += "AND idchamado='" + chamados.get(0).getId() + "' ";
                     if (chamados.get(0).getData() != null)
-                        sql += "AND data = '" + new Facade().dataHoraMysql(chamados.get(0).getData()) + "' ";
+                        sql += "AND chamado.data = '" + new Facade().dataHoraMysql(chamados.get(0).getData()) + "' ";
                     if (chamados.get(0).getSolicitante() != null)
                         sql += "AND usuario_idsolicitante = '" + chamados.get(0).getSolicitante().getId() + "' ";
                     if (chamados.get(0).getTecnico() != null)
@@ -91,19 +90,18 @@ public class DAOChamado {
                 if (!sqlStatus.equals("(FALSE ) ")) sql += "AND "+sqlStatus;
 
                 if (data_inicial != null) {
-                    sql += "AND data >= '" + data_inicial + "' ";
+                    sql += "AND chamado.data >= '" + data_inicial + "' ";
                 }
                 if (data_final != null) {
-                    sql += "AND data <= '" + data_final + "' ";
+                    sql += "AND chamado.data <= '" + data_final + "' ";
                 }
 
                 if (sql.endsWith("TRUE ")) return null;
 
                 sql += "AND chamado.idchamado = descricao.chamado_idchamado " +
                         "AND chamado.usuario_idsolicitante = u1.idusuario " +
-                        "AND descricao.usuario_idusuario = u2.idusuario " +
                         "ORDER BY chamado.data DESC, iddescricao ASC LIMIT " + inicio + ", " + qtd;
-                System.out.println(sql);
+
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 {
                     ResultSet rs = ps.executeQuery();
@@ -112,7 +110,7 @@ public class DAOChamado {
                                 rs.getLong("iddescricao"),
                                 rs.getString("descricao"),
                                 new Facade().dataHoraJava(rs.getString("dataDesc")),
-                                new Usuario(rs.getLong("autorId"),rs.getString("autorNome"))
+                                new Usuario(rs.getLong("autorId"))
                         );
 
                         if (l.size() > 0 && rs.getLong("idchamado") == l.get(l.size() - 1).getId()) {
@@ -162,8 +160,6 @@ public class DAOChamado {
      * @return Verdadeiro caso seja cadastrado com sucesso ou Falso caso contrário
      */
     public Chamado cadastra(Chamado chamado) {
-        boolean executou = false;
-        int idcadastrado = 0;
         try {
             this.conexao = new ConnectionFactory().getConnection();
             {
@@ -182,8 +178,7 @@ public class DAOChamado {
                     if (rs.next()) {
                         //Gravando Descricao
                         chamado.setId(rs.getInt(1));
-                        executou = new DAODescricao().cadastraDescricao(chamado);
-                        if (!executou) {
+                        if (! new DAODescricao().cadastraDescricao(chamado)) {
                             exclui(chamado);
                             chamado = null;
                         }

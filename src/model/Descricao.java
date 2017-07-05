@@ -6,6 +6,7 @@ public class Descricao {
     private long id;
     private String descricao;
     private LocalDateTime data;
+    private Usuario autor;
 
     public Descricao(long id, String descricao, LocalDateTime data, Usuario autor) {
         this.id = id;
@@ -13,7 +14,6 @@ public class Descricao {
         this.data = data;
         this.autor = autor;
     }
-    private Usuario autor;
 
     public Descricao(String descricao, LocalDateTime data, Usuario autor) {
         this.descricao = descricao;

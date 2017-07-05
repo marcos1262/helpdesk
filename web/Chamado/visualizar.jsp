@@ -1,5 +1,5 @@
 <%@page import="model.Historico.acoes" %>
-<%@page import="java.time.LocalDateTime"%>
+<%@page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="model.Facade" %>
 <%@ page import="model.Chamado" %>
@@ -179,7 +179,7 @@
                                         </td>
                                         <td><%= new Facade().dataHoraMysql(d.getData()) %>
                                         </td>
-                                        <td><%= d.getAutor() %>
+                                        <td><%= new Facade().consultaUsuarios(d.getAutor(), 0, 1).get(0).getNome() %>
                                         </td>
 
                                         <%--<td>--%>
@@ -288,11 +288,11 @@
         c.setId(id);
 
         Facade facade = new Facade();
-        
-        if(usuario.getTipo() != Usuario.tipos.SOLIC && justificativa.equals("")){
+
+        if (usuario.getTipo() != Usuario.tipos.SOLIC && justificativa.equals("")) {
             out.println("<script>alert('A justificativa é obrigatória!');</script>");
-        } else if (facade.cancelaChamado(id)){
-            if(usuario.getTipo() != Usuario.tipos.SOLIC)
+        } else if (facade.cancelaChamado(id)) {
+            if (usuario.getTipo() != Usuario.tipos.SOLIC)
                 facade.cadastraHistorico(acoes.CANCELAR_CHAMADO, justificativa, usuario, c, null);
             else
                 facade.cadastraHistorico(acoes.CANCELAR_CHAMADO, null, usuario, c, null);
@@ -317,9 +317,9 @@
         Long idtecnico = Long.parseLong(request.getParameter("novo_tecnico"));
         Facade facade = new Facade();
 
-        if (justificativa.equals("")){
+        if (justificativa.equals("")) {
             out.println("<script>alert('A justificativa é obrigatória!');</script>");
-        }else if (facade.transfereChamado(id, idtecnico) && facade.cadastraHistorico(acoes.TRANSFERIR_CHAMADO, justificativa, usuario, c, new Usuario(idtecnico)))
+        } else if (facade.transfereChamado(id, idtecnico) && facade.cadastraHistorico(acoes.TRANSFERIR_CHAMADO, justificativa, usuario, c, new Usuario(idtecnico)))
 //                TODO mostrar acima do formulário (sem alert)
             out.println("<script>" +
                     "alert('Chamado transferido com sucesso!');" +
@@ -346,10 +346,10 @@
         }
 
         String desc = request.getParameter("adddesc");
-            
+
         boolean incrementouDesc = false;
         if (!desc.equals("")) {
-            c.addDescricao(new Descricao(desc,LocalDateTime.now(),usuario));
+            c.addDescricao(new Descricao(desc, LocalDateTime.now(), usuario));
             incrementouDesc = true;
         }
 
