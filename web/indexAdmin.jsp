@@ -1,12 +1,6 @@
-<%@include file="relatorioChamados.jsp" %>
+<h4>Relatórios</h4>
 
-<!--
-<form method="post" action="">
-    <div class="form-group">
-        <select name="tipo_relatorio" class="form-control">
-            <option value="">teste</option>
-        </select>
-    </div>
-</form> -->
-
-<%--<%@include file="relatorioTecnicos.jsp" %>--%>
+<ul>
+    <li><a href="relatorioChamados.jsp">Relatório de Chamados</a></li>
+    <li><a href="relatorioTecnicos.jsp">Relatório de Técnicos</a></li>
+</ul>
