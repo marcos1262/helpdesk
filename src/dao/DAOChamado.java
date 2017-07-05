@@ -68,7 +68,6 @@ public class DAOChamado {
                         sqlTitulo += "OR titulo LIKE '%" + chamado.getTitulo() + "%' ";
                 }
                 sqlTitulo += ") ";
-                System.out.println("_"+sqlTitulo+"_");
                 if (!sqlTitulo.equals("(FALSE ) ")) sql += "AND "+sqlTitulo;
 
                 String sqlPrioridade = "(FALSE ";
