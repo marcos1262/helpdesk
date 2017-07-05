@@ -17,7 +17,7 @@ public class DAODescricao {
     boolean cadastraDescricao(Chamado chamado) {
         try {
             this.conexao = new ConnectionFactory().getConnection();
-            String sql = "INSERT INTO descricao (descricao, chamado_idchamado, usuario_idautor, data) VALUES (?,?,?,?)";
+            String sql = "INSERT INTO descricao (descricao, chamado_idchamado, usuario_idusuario, data) VALUES (?,?,?,?)";
             PreparedStatement ps = conexao.prepareStatement(sql);
             {
                 ps.setString(1, chamado.getDescricoes().get(0).getDescricao());
