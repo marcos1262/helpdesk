@@ -95,7 +95,7 @@ public class DAOChamado {
                     sql += "AND chamado.data <= '" + data_final + "' ";
                 }
 
-                if (sql.endsWith("TRUE ")) return null;
+                if (sql.endsWith("TRUE ")) return l;
 
                 sql += "AND chamado.idchamado = descricao.chamado_idchamado " +
                         "AND chamado.usuario_idsolicitante = u1.idusuario " +

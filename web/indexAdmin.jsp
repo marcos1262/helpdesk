@@ -1,6 +1,6 @@
-<h4>Relatórios</h4>
+<h4>RelatÃ³rios</h4>
 
 <ul>
-    <li><a href="relatorioChamados.jsp">Relatório de Chamados</a></li>
-    <li><a href="relatorioTecnicos.jsp">Relatório de Técnicos</a></li>
+    <li><a href="relatorioChamados.jsp">RelatÃ³rio de Chamados</a></li>
+    <li><a href="relatorioTecnicos.jsp">RelatÃ³rio de TÃ©cnicos</a></li>
 </ul>
