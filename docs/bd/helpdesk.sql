@@ -82,11 +82,11 @@ CREATE TABLE IF NOT EXISTS `helpdesk`.`descricao` (
 
 ALTER TABLE `helpdesk`.`descricao`
   ADD COLUMN `data` DATETIME NOT NULL AFTER `chamado_idchamado`,
-  ADD COLUMN `usuario_idautor` INT NOT NULL AFTER `data`,
-  ADD INDEX `fk_descricao_usuario_idx` (`usuario_idautor` ASC);
+  ADD COLUMN `usuario_idusuario` INT NOT NULL AFTER `data`,
+  ADD INDEX `fk_descricao_usuario_idx` (`usuario_idusuario` ASC);
 ALTER TABLE `helpdesk`.`descricao`
   ADD CONSTRAINT `fk_descricao_usuario`
-FOREIGN KEY (`usuario_idautor`)
+FOREIGN KEY (`usuario_idusuario`)
 REFERENCES `helpdesk`.`usuario` (`idusuario`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
@@ -126,10 +126,10 @@ CREATE TABLE IF NOT EXISTS `helpdesk`.`historico` (
 
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8;
-  
-ALTER TABLE `descricao` ADD `usuario_idusuario` INT NOT NULL ,
-ADD `data` DATETIME NOT NULL;
-ALTER TABLE `helpdesk`.`descricao` ADD INDEX `fk_descricao_usuario_idx` ( `usuario_idusuario` );
+#
+# ALTER TABLE `descricao` ADD `usuario_idusuario` INT NOT NULL ,
+# ADD `data` DATETIME NOT NULL;
+# ALTER TABLE `helpdesk`.`descricao` ADD INDEX `fk_descricao_usuario_idx` ( `usuario_idusuario` );
 
 
 SET SQL_MODE = @OLD_SQL_MODE;
